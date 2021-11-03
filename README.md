@@ -23,3 +23,6 @@ http://localhost:3000/
 http://localhost:3000/reader.html
 
 nvm install 16.13.0
+
+npm init react-app easypay
+https://github.com/ggbbest/easypay
