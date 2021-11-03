@@ -21,3 +21,5 @@ pm2
 
 http://localhost:3000/
 http://localhost:3000/reader.html
+
+nvm install 16.13.0
