@@ -1,13 +1,41 @@
 var createError = require('http-errors');
-var express = require('express');
+// var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const express = require("express");
+const dotenv = require('dotenv');
+const cors = require("cors");
+const HttpException = require('./app/utils/HttpException.utils');
+const errorMiddleware = require('./app/middlewares/error.middleware');
+const userRouter = require('./routes/user.route');
+
+// Init express
+const app = express();
+// Init environment
+dotenv.config();
+// parse requests of content-type: application/json
+// parses incoming requests with JSON payloads
+app.use(express.json());
+// enabling cors for all requests by using cors middleware
+app.use(cors());
+// Enable pre-flight
+app.options("*", cors());
+
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+//####################################
+app.use(`/api/v1/users`, userRouter);
 
-var app = express();
+// Error middleware
+app.use(errorMiddleware);
+
+// starting the server
+// app.listen(port, () => console.log(`🚀 Server running on port ${port}!`));
+//####################################
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
