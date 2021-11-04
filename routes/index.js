@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var QRCode = require('qrcode');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+const STATIC_PATH = path.join(__dirname, '../public')
 
 const userController = require('../app/controllers/user.controller');
 const auth = require('../app/middlewares/auth.middleware');
@@ -16,12 +19,28 @@ const { createUserSchema, updateUserSchema, validateLogin } = require('../app/mi
 //   res.render('index', { title: 'Express', dataUrl : url});
 // });
 router.get('/', function(req, res, next) {
-  const msg = "https://easypay.c4ei.net/sAd=assdaasdas&rAd=asadsad&amt=0.0001&tt="+Date.now();
-  // const url = QRCode.toDataURL(msg);
-  QRCode.toDataURL(msg,function(err, url){
-    res.render('index', { title: 'Express', dataUrl : url});
-  });  
+
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    const msg = "https://easypay.c4ei.net/sAd=assdaasdas&rAd=asadsad&amt=0.0001&tt="+Date.now();
+    // const url = QRCode.toDataURL(msg);
+    QRCode.toDataURL(msg,function(err, url){
+      res.render('index', { title: 'Express', dataUrl : url});
+    });
+    // // res.render('pages/login', get_user_info_json(user_id));
+    // try{
+    //   console.log('######### index.js 119 get_user_info_json ######### '+req.cookies.user_idx+' #########');
+    //   res.render('pages/login', get_user_info_json(req.cookies.user_idx));
+    // }catch(e){
+    //     // alert(e);
+    // }
+  }
 });
+//ulogin
+
 
 router.get('/', auth(), awaitHandlerFactory(userController.getAllUsers)); // localhost:3000/api/v1/users
 router.get('/id/:id', auth(), awaitHandlerFactory(userController.getUserById)); // localhost:3000/api/v1/users/id/1

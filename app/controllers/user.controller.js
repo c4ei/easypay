@@ -63,7 +63,9 @@ class UserController {
             throw new HttpException(500, 'Something went wrong');
         }
 
-        res.status(201).send('User was created!');
+        // res.status(201).send('User was created!');
+        res.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
+        res.end("<script>alert('User was created!\nplease log in');document.location.href='/';</script>");
     };
 
     updateUser = async (req, res, next) => {
@@ -107,6 +109,9 @@ class UserController {
         if (!user) {
             throw new HttpException(401, 'Unable to login!');
         }
+        // var bcrypt = require('bcrypt');
+        // user_dbpwd = user_dbpwd.replace(/^\$2y(.+)$/i, '$2a$1');
+        // if(bcrypt.compareSync(param_password, user_dbpwd)){
 
         const isMatch = await bcrypt.compare(pass, user.password);
 
@@ -121,8 +126,17 @@ class UserController {
         });
 
         const { password, ...userWithoutPassword } = user;
+        
 
-        res.send({ ...userWithoutPassword, token });
+        let user_idx  = user.id;
+        let user_email  = user.email;
+        let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        
+        res.cookie('user_idx', user_idx); // 2020-01-27
+        res.cookie('user_email', user_email); // 2020-01-27
+        res.redirect('/');
+
+        // res.send({ ...userWithoutPassword, token });
     };
 
     checkValidation = (req) => {

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' href='/client/src/img/CloudpokerLogo.png' type='image/png' />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" type="text/css" href="/client/src/css/login.css">
+    <title>ctp poker Create a game</title>
+</head>
+
+<body>
+    <section class="header">
+        <h2>[<%=user_name%>] welcome to ctp poker</h2>
+    </section>
+
+    <main>
+        <p>set up your private game</p>
+        <form id="login-form">
+            <input class="u-full-width" required type="text" id="name" name="name" minlength="2" maxlength="9" placeholder="Name" value="U<%=user_id%>" readonly >
+            <input class="u-full-width" type="number" id="stack" name="stack" placeholder="Starting Stack" value="<%=user_POT%>" readonly >
+            <div class="row">
+                <div class="six columns">
+                    <input class="u-full-width" type="number" id="small-blind" name="small-blind" min=0
+                        placeholder="Small Blind">
+                </div>
+                <div class="six columns">
+                    <input class="u-full-width" type="number" id="big-blind" name="big-blind" min=0 placeholder="Big Blind">
+                </div>
+            </div>
+            <input class="u-full-width" type="text" id="table-name" name="table-name" minlength="2" maxlength="15" placeholder="Table Name (optional)" value="T<%=user_id%>" readonly >
+            <div class="row">
+                <div class="six columns">
+                    <label class="straddle" id="straddle">
+                        <input type="checkbox" name="straddle">
+                        <span class="label-body">Straddle</span>
+                    </label>
+                </div>
+                <div class="six columns">
+                    <label class="straddle" id="multi-straddle">
+                        <input type="checkbox" name="multi-straddle">
+                        <span class="label-body">Multi-straddle</span>
+                    </label>
+                </div>
+            </div>
+            <button class="u-full-width button-primary" id="btn_makeGame">Create Game</button>
+        </form>
+    </main>
+    <script src="../client/dist/login.bundle.js"></script>
+    <script>
+        var _btn_makeGame = document.getElementById('btn_makeGame');
+        var _user_POT = parseFloat("<%=user_POT%>").toFixed(0);
+        if(_user_POT>99){
+            _btn_makeGame.click();
+        }else{
+            _btn_makeGame.style.display="none";
+            alert('게임에 참가 하시려면 최소 100개 이상의 POT를 보유 하셔야 합니다.\ncitypay.org 에서 GGB 를 구매 가능 합니다.');
+            document.location.href="https://citypay.org";
+        }
+    </script>
+</body>
+
+</html>

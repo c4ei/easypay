@@ -1,0 +1,116 @@
+﻿<html lang="en"><head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>easypay</title>
+	<link rel="stylesheet" href="/css/main.css">
+	<script src="/js/jquery.min.js"></script>
+</head>
+
+<body data-theme="light">
+<main class="">
+<div style="padding-top:50px;"></div>
+<div style="text-align:center;max-width:800px;margin: auto;">
+	<div id="popup-parent">
+		<div class="popup-container">
+			<!--- Log In --->
+			<div id="ly_user_form">
+
+				<!--- Log In --->
+				<div id="ly_user_Login" style="display:block;" class="popup">
+					<div class="container-header bottom-margin">
+						<h3>Log In</h3>
+					</div>
+					<div class="flex">
+						<form action="/login" method="POST">
+
+						<label class="input animate-label">
+							<input name="email" id="email" type="text" required="">
+							<div class="label">email</div>
+						</label>
+
+						<label class="input animate-label">
+							<input name="password" id="password" type="password" required="">
+							<div class="label">Password</div>
+						</label>
+						<br />
+						<div class="action" id="FORM_LOGINButton">
+							<button class="btn" type="submit">
+								Log In						</button>
+							<svg viewBox="0 0 73 73" class="loader">
+								<path d="M72.5,36.5c0,19.88-16.12,36-36,36s-36-16.12-36-36s16.12-36,36-36S72.5,16.62,72.5,36.5"></path>
+							</svg>
+						</div>
+						<br />
+						</form>
+					</div>
+					<h5>본 사이트는 크롬에<br/>최적화 되어있습니다.</h5>
+
+				</div>
+
+				<!--- REG --->
+				<div id="ly_user_pwd_reg"  style="display: none;"  class="popup">
+					<h3><?php echo $lang['FORM_CREATE']; ?></h3> <!-- create a new account -->
+					<br>
+					<form action="/" method="POST" class="clearfix">
+					<!-- <input type="hidden" name="action" value="register" /> -->
+					
+					<label class="input animate-label">
+					<input name="username" id="usernameReg" type="text" required="">
+					<div class="label">username</div>
+					</label>
+					
+
+					<label class="input animate-label">
+					<input name="email" id="emailReg" type="text" required="">
+					<div class="label">email</div>
+					</label>
+
+					<label class="input animate-label">
+					<input name="password" id="passwordReg" type="password" required="">
+					<div class="label">password</div><!-- 암호 -->
+					</label>
+
+					<label class="input animate-label">
+					<input name="confirm_password" id="passwordRegconf" type="password" required="">
+					<div class="label">password</div><!-- 암호 -->
+					</label>
+					<br />
+					<div class="action" >
+						<button class="btn" type="submit" >
+							SIGN UP
+						</button>
+					</div>
+					<br />
+					<h5>회원가입시 <a href="/terms.html" target="_blank">약관</a>에 동의합니다.</h5>
+					</form>
+					<br />
+				</div>
+
+			</div>
+			<div id="lySelfrom"  class="popup">
+				<script>
+					function jsfn_show(str){
+						if(str == 'Login'){
+							$('#ly_user_Login').show();
+							$('#ly_user_pwd_reg').hide();
+							$('#alink_Login').hide();
+							$('#alink_Register').show();
+						}else{
+							$('#ly_user_Login').hide();
+							$('#ly_user_pwd_reg').show();
+							$('#alink_Login').show();
+							$('#alink_Register').hide();
+						}
+					}
+				</script>
+				<a href="javascript:jsfn_show('Login');" id="alink_Login" style="display:none;">login</a> 
+				<a href="javascript:jsfn_show('Register');" id="alink_Register" style="display:block;">sign up</a>
+			</div>
+
+		</div>
+	</div>
+</div>
+</main>
+
+</body>
+</html>

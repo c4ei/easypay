@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel="stylesheet" type="text/css" href="/client/src/css/login.css">
+</head>
+<body>
+<section class="header">
+    <h2><%= title %></h2>
+    Disappears from the list after 15 minutes
+</section>
+<!-- <main> -->
+<center>
+    <div id="orders_container">
+        <table class="type02" style="table-layout:auto;margin-bottom:1px;" id="txlist">
+        <thead>
+            <tr>
+                <th scope="row">No</th>
+                <th scope="row">Room Name</th>
+                <th scope="row">Ctn</th>
+                <th scope="row">Create Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%
+            for(var i=0; i<rows.length; i++)
+            {
+                var data = rows[i];
+            %>
+            <tr>
+                <td ><%=i+1%>           </td>
+                <td title="session id"><a href="/session/<%=data.title%>"><b style="color: #07bf03;"><%=data.title%></b></a></td>
+                <td><%=data.hit%>       </td>
+                <td><%=data.regdate%>   </td>
+            </tr>
+            <%
+            }
+            %>
+        </tbody>
+        </table>
+    </div>
+</center>
+
+<!-- </main> -->
+</body>
+</html>

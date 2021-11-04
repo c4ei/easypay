@@ -8,20 +8,20 @@ exports.createUserSchema = [
         .withMessage('username is required')
         .isLength({ min: 3 })
         .withMessage('Must be at least 3 chars long'),
-    body('first_name')
-        .exists()
-        .withMessage('Your first name is required')
-        .isAlpha()
-        .withMessage('Must be only alphabetical chars')
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
-    body('last_name')
-        .exists()
-        .withMessage('Your last name is required')
-        .isAlpha()
-        .withMessage('Must be only alphabetical chars')
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
+    // body('first_name')
+    //     .exists()
+    //     .withMessage('Your first name is required')
+    //     .isAlpha()
+    //     .withMessage('Must be only alphabetical chars')
+    //     .isLength({ min: 3 })
+    //     .withMessage('Must be at least 3 chars long'),
+    // body('last_name')
+    //     .exists()
+    //     .withMessage('Your last name is required')
+    //     .isAlpha()
+    //     .withMessage('Must be only alphabetical chars')
+    //     .isLength({ min: 3 })
+    //     .withMessage('Must be at least 3 chars long'),
     body('email')
         .exists()
         .withMessage('Email is required')
@@ -55,18 +55,18 @@ exports.updateUserSchema = [
         .optional()
         .isLength({ min: 3 })
         .withMessage('Must be at least 3 chars long'),
-    body('first_name')
-        .optional()
-        .isAlpha()
-        .withMessage('Must be only alphabetical chars')
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
-    body('last_name')
-        .optional()
-        .isAlpha()
-        .withMessage('Must be only alphabetical chars')
-        .isLength({ min: 3 })
-        .withMessage('Must be at least 3 chars long'),
+    // body('first_name')
+    //     .optional()
+    //     .isAlpha()
+    //     .withMessage('Must be only alphabetical chars')
+    //     .isLength({ min: 3 })
+    //     .withMessage('Must be at least 3 chars long'),
+    // body('last_name')
+    //     .optional()
+    //     .isAlpha()
+    //     .withMessage('Must be only alphabetical chars')
+    //     .isLength({ min: 3 })
+    //     .withMessage('Must be at least 3 chars long'),
     body('email')
         .optional()
         .isEmail()
@@ -100,7 +100,8 @@ exports.updateUserSchema = [
         .withMessage('Please provide required field to update')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['username', 'password', 'confirm_password', 'email', 'role', 'first_name', 'last_name', 'age'];
+            // const allowUpdates = ['username', 'password', 'confirm_password', 'email', 'role', 'first_name', 'last_name', 'age'];
+            const allowUpdates = ['username', 'password', 'confirm_password', 'email', 'role', 'age'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
