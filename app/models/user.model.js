@@ -1,6 +1,7 @@
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 const Role = require('../utils/userRoles.utils');
+let regip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
 class UserModel {
     tableName = 'user';
 
@@ -29,11 +30,12 @@ class UserModel {
         return result[0];
     }
 
-    create = async ({ username, password, email, role = Role.User, age = 0 }) => {
+    
+    create = async ({ username, password, email, role = Role.User , regip}) => {
         const sql = `INSERT INTO ${this.tableName}
-        (username, password, email, role, age) VALUES (?,?,?,?,?)`;
-
-        const result = await query(sql, [username, password, email, role, age]);
+        (username, password, email, role) VALUES (?,?,?,?)`;
+        
+        const result = await query(sql, [username, password, email, role, regip ]);
         const affectedRows = result ? result.affectedRows : 0;
 
         return affectedRows;
