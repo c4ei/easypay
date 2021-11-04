@@ -1,7 +1,8 @@
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 const Role = require('../utils/userRoles.utils');
-let regip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+
+
 class UserModel {
     tableName = 'user';
 
@@ -20,21 +21,17 @@ class UserModel {
 
     findOne = async (params) => {
         const { columnSet, values } = multipleColumnSet(params)
-
         const sql = `SELECT * FROM ${this.tableName}
         WHERE ${columnSet}`;
 
         const result = await query(sql, [...values]);
-
         // return back the first row (user)
         return result[0];
     }
-
     
-    create = async ({ username, password, email, role = Role.User , regip}) => {
-        const sql = `INSERT INTO ${this.tableName}
-        (username, password, email, role) VALUES (?,?,?,?)`;
-        
+    create = async ({ username, password, email, role = Role.User, regip }) => {
+        // let regip = (req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress);
+        const sql = `INSERT INTO ${this.tableName} (username, password, email, role, regip) VALUES (?,?,?,?,?)`;
         const result = await query(sql, [username, password, email, role, regip ]);
         const affectedRows = result ? result.affectedRows : 0;
 
@@ -43,11 +40,8 @@ class UserModel {
 
     update = async (params, id) => {
         const { columnSet, values } = multipleColumnSet(params)
-
         const sql = `UPDATE user SET ${columnSet} WHERE id = ?`;
-
         const result = await query(sql, [...values, id]);
-
         return result;
     }
 

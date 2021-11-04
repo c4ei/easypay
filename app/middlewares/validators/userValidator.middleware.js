@@ -1,7 +1,6 @@
 const { body } = require('express-validator');
 const Role = require('../../utils/userRoles.utils');
 
-
 exports.createUserSchema = [
     body('username')
         .exists()
@@ -44,12 +43,12 @@ exports.createUserSchema = [
         .exists()
         .custom((value, { req }) => value === req.body.password)
         .withMessage('confirm_password field must have the same value as the password field'),
-    body('regip')
-        .optional()
     // body('age')
     //     .optional()
     //     .isNumeric()
     //     .withMessage('Must be a number')
+    // body('regip')
+    //     .optional()
 ];
 
 exports.updateUserSchema = [
@@ -95,6 +94,8 @@ exports.updateUserSchema = [
     //     .optional()
     //     .isNumeric()
     //     .withMessage('Must be a number'),
+    // body('last_ip')
+    //     .optional(),
     body()
         .custom(value => {
             return !!Object.keys(value).length;
@@ -103,7 +104,7 @@ exports.updateUserSchema = [
         .custom(value => {
             const updates = Object.keys(value);
             // const allowUpdates = ['username', 'password', 'confirm_password', 'email', 'role', 'first_name', 'last_name', 'age'];
-            let last_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+            // let last_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
             const allowUpdates = ['username', 'password', 'confirm_password', 'email', 'role', 'last_ip'];
             return updates.every(update => allowUpdates.includes(update));
         })

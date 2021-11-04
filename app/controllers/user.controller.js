@@ -54,25 +54,33 @@ class UserController {
 
     createUser = async (req, res, next) => {
         this.checkValidation(req);
-
+        // let regip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
         await this.hashPassword(req);
+        // await this.get_regip(req);
+        // if (req.body.regip) {
+        //     req.body.regip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        // }
+        var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        // user_ip
 
         const result = await UserModel.create(req.body);
-
         if (!result) {
             throw new HttpException(500, 'Something went wrong');
         }
 
         // res.status(201).send('User was created!');
         res.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
-        res.end("<script>alert('User was created!\nplease log in');document.location.href='/';</script>");
+        res.end("<script>alert('User was created! please log in');document.location.href='/';</script>");
     };
 
     updateUser = async (req, res, next) => {
         this.checkValidation(req);
 
         await this.hashPassword(req);
-
+        // await this.get_last_ip(req);
+        if (req.body.last_ip) {
+            req.body.last_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        }
         const { confirm_password, ...restOfUpdates } = req.body;
 
         // do the update query and get the result
@@ -128,9 +136,9 @@ class UserController {
         const { password, ...userWithoutPassword } = user;
         
 
-        let user_idx  = user.id;
-        let user_email  = user.email;
-        let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        var user_idx  = user.id;
+        var user_email  = user.email;
+        // var user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
         
         res.cookie('user_idx', user_idx); // 2020-01-27
         res.cookie('user_email', user_email); // 2020-01-27
@@ -152,6 +160,18 @@ class UserController {
             req.body.password = await bcrypt.hash(req.body.password, 8);
         }
     }
+
+    // get_last_ip = async (req) => {
+    //     if (req.body.last_ip) {
+    //         req.body.last_ip = await req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+    //     }
+    // }
+    // get_regip = async (req) => {
+    //     if (req.body.regip) {
+    //         req.body.regip = await req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+    //     }
+    // }
+
 }
 
 

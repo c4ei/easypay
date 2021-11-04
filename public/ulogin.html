@@ -22,6 +22,7 @@
 					</div>
 					<div class="flex">
 						<form action="/login" method="POST">
+						<input type="hidden" name="last_ip" />
 
 						<label class="input animate-label">
 							<input name="email" id="email" type="text" required="">
@@ -49,11 +50,11 @@
 
 				<!--- REG --->
 				<div id="ly_user_pwd_reg"  style="display: none;"  class="popup">
-					<h3><?php echo $lang['FORM_CREATE']; ?></h3> <!-- create a new account -->
+					<h3>create a new account</h3> 
 					<br>
 					<form action="/" method="POST" class="clearfix">
-					<!-- <input type="hidden" name="action" value="register" /> -->
-					
+					<input type="hidden" name="regip" />
+
 					<label class="input animate-label">
 					<input name="username" id="usernameReg" type="text" required="">
 					<div class="label">username</div>

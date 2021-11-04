@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var QRCode = require('qrcode');
 var path = require('path');
-var cookieParser = require('cookie-parser');
+// var bodyParser = require('body-parser');
+// var cookieParser = require('cookie-parser');
 const STATIC_PATH = path.join(__dirname, '../public')
 
 const userController = require('../app/controllers/user.controller');
@@ -10,7 +11,6 @@ const auth = require('../app/middlewares/auth.middleware');
 const Role = require('../app/utils/userRoles.utils');
 const awaitHandlerFactory = require('../app/middlewares/awaitHandlerFactory.middleware');
 const { createUserSchema, updateUserSchema, validateLogin } = require('../app/middlewares/validators/userValidator.middleware');
-
 
 /* GET home page. */
 // router.get('/', async function(req, res, next) {
