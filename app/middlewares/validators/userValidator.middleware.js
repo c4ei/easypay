@@ -44,10 +44,12 @@ exports.createUserSchema = [
         .exists()
         .custom((value, { req }) => value === req.body.password)
         .withMessage('confirm_password field must have the same value as the password field'),
-    body('age')
+    body('regip')
         .optional()
-        .isNumeric()
-        .withMessage('Must be a number')
+    // body('age')
+    //     .optional()
+    //     .isNumeric()
+    //     .withMessage('Must be a number')
 ];
 
 exports.updateUserSchema = [
@@ -89,10 +91,10 @@ exports.updateUserSchema = [
         .optional()
         .custom((value, { req }) => value === req.body.password)
         .withMessage('confirm_password field must have the same value as the password field'),
-    body('age')
-        .optional()
-        .isNumeric()
-        .withMessage('Must be a number'),
+    // body('age')
+    //     .optional()
+    //     .isNumeric()
+    //     .withMessage('Must be a number'),
     body()
         .custom(value => {
             return !!Object.keys(value).length;
@@ -101,7 +103,8 @@ exports.updateUserSchema = [
         .custom(value => {
             const updates = Object.keys(value);
             // const allowUpdates = ['username', 'password', 'confirm_password', 'email', 'role', 'first_name', 'last_name', 'age'];
-            const allowUpdates = ['username', 'password', 'confirm_password', 'email', 'role', 'age'];
+            let last_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+            const allowUpdates = ['username', 'password', 'confirm_password', 'email', 'role', 'last_ip'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
