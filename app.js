@@ -24,6 +24,35 @@ app.use(express.json());
 app.use(cors());
 // Enable pre-flight
 app.options("*", cors());
+//###########################
+// var bodyParser = require('body-parser');
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// express를 설치했다면 body-parser가 필요 없다
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// app.use(
+//   bodyParser.raw({ type: 'application/x-www-form-urlencoded' }),
+//   function (req, res, next) {
+//   try {
+//   req.body = JSON.parse(req.body)
+//   } catch (err) {
+//   log.info('application/x-www-form-urlencoded JSON PARSE ERROR : ', err);
+//   req.body = require('qs').parse(req.body.toString());
+//   }
+//   next();
+//   }
+// );
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// res.send() => res.body에 값을 입력할 수 있습니다. res.send({username: "darren"}) 이면 res.body에 username이란 이름으로 값을 넣어줍니다.
+// res.status() => 상태코드
+// res.json() => json 형태로 응답함.
+// res.end() => 끝냄
+//###########################
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

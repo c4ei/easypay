@@ -52,16 +52,37 @@ class UserController {
         res.send(userWithoutPassword);
     };
 
+    // app.post(‘/update/:id’, (req, res) => {
+    //     Person.updateOne(
+    //     { _id: req.params.id }, 
+    //     { $set: { name: req.body.name, age: req.body.age } }, 
+    //     (err, person) => {
+    //       if(err) return res.json(err);
+    //       res.redirect(‘/’);
+    //     });
+    //   });
+
     createUser = async (req, res, next) => {
         this.checkValidation(req);
-        // let regip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        
         await this.hashPassword(req);
-        // await this.get_regip(req);
-        // if (req.body.regip) {
-        //     req.body.regip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-        // }
-        var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-        // user_ip
+        await this.get_regip(req);
+        
+        // let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        // console.log('/home/dev/www/easypay/app/controllers/user.controller.js\n');
+        // console.log(' req.body.email : ' + req.body.email +'\n');
+        // console.log(' req.body.regip : ' + req.body.regip +'\n');
+        console.log(JSON.stringify(req.body));
+        // if (req.body.regip) { req.body.regip === user_ip; }
+        // console.log(' req.body.regip : ' + req.body.regip +'\n');
+        // const str_cr_user = {
+        //     regip: user_ip,
+        //     username: req.body.username,
+        //     email: req.body.email,
+        //     password: req.body.password,
+        //     confirm_password: req.body.confirm_password,
+        // };
+        // res.send(str_cr_user);
 
         const result = await UserModel.create(req.body);
         if (!result) {
@@ -166,11 +187,13 @@ class UserController {
     //         req.body.last_ip = await req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
     //     }
     // }
-    // get_regip = async (req) => {
-    //     if (req.body.regip) {
-    //         req.body.regip = await req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-    //     }
-    // }
+    get_regip = (req) => {
+        var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        if (user_ip ==""){ user_ip = "unknown"; }
+        if (req.body.regip) {
+            req.body.regip = user_ip;
+        }
+    }
 
 }
 
