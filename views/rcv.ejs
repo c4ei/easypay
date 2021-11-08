@@ -2,16 +2,75 @@
 <html>
   <head>
     <title><%= title %></title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>easypay</title>
+    <link rel="stylesheet" href="/css/main.css">
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/js/jquery.min.js"></script>
   </head>
   <body>
 <!-- /easypay/routes/index.js  -->
     <h1><%= title %></h1>
     <p>Welcome to <%= email %></p>
-    my c4ei_addr : <%=c4ei_addr%><br> my c4ei_balance : <%= c4ei_balance %>
-    <br/><br/>
-    <%= rcv_email %><br/>
-    send rcv_adr : <%=rcv_adr%><br> send rcv_amt : <%= rcv_amt %>
+    <!-- my c4ei_addr : <%=c4ei_addr%><br> my c4ei_balance : <%= c4ei_balance %>
+    <br/><br/> -->
+
+<table width="100%" border="0">
+  <!-- <tr>
+    <td></td>
+    <td></td>
+  </tr> -->
+  <form id="sendForm">
+  <tr>
+    <td width="150">my address</td>
+    <td ><input type="text"  id="txt_my_addr" name="txt_my_addr" value="<%=c4ei_addr%>" style="width: 350px;"> </td>
+  </tr>
+  <tr>
+    <td width="150">my c4ei_balance</td>
+    <td ><input type="text"  id="txt_my_balance" name="txt_my_balance" value="<%=c4ei_balance%>" style="width: 250px;" readonly > </td>
+  </tr>
+
+  <tr>
+    <td>recever email</td>
+    <td><%= rcv_email %></td>
+  </tr>
+  <tr>
+    <td width="150">receive address</td>
+    <td ><input type="text"  id="txt_rcv_address" name="txt_rcv_address" value="<%=rcv_adr%>" style="width: 350px;" readonly > </td>
+  </tr>
+  <tr>
+    <td>send amount</td>
+    <td><input type="number" id="txt_rcv_amt" name="txt_rcv_amt" value="<%= rcv_amt %>" style="width: 250px;"> </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><input type="button" value="send" id="btn_send" onclick="jsfn_send();"></td>
+  </tr>
+</form>
+</table>
+    <br/>
+<script>
+  function jsfn_send(){
+    var txt_my_addr     = $('#txt_my_addr').val();
+    var txt_my_balance  = $('#txt_my_balance').val();
+    var txt_rcv_address = $('#txt_rcv_address').val();
+    var txt_rcv_amt     = $('#txt_rcv_amt').val();
+    
+    if(txt_my_addr==txt_rcv_address){
+      alert('can\'t send your self');
+      return;
+    }
+    if(txt_my_balance < txt_rcv_amt){
+      alert('can\'t send your balance is small');
+      return;
+    }
+    if(confirm('Are you sure? sended can\'t stop proceed')){
+      $('#sendForm').action = "/sendc4ei";
+      $('#sendForm').submit();
+    }
+  }
+</script>
 
   </body>
 </html>

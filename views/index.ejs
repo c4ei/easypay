@@ -8,11 +8,19 @@
 <!-- /easypay/routes/index.js  -->
     <h1><%= title %></h1>
     <p>Welcome to <%= email %></p>
-    c4ei_addr : <%=c4ei_addr%>
-    <br>
-    c4ei_balance : <%= c4ei_balance %>
-    <div>
-      <img src="<%=dataUrl%>" alt="qr"/>
-    </div>
+    <% if (c4ei_addr!="" &&c4ei_addr!=null){ %>
+      c4ei_addr : <%=c4ei_addr%>
+      <br>
+      c4ei_balance : <%= c4ei_balance %>
+      <div>
+        <img src="<%=dataUrl%>" alt="qr"/>
+      </div>      
+    <% } else { %>
+      <a href="/address_generator">make address</a>
+    <%
+    }
+    %>
+    <br/><br/>
+    <a href="/logout"> logout </a>
   </body>
 </html>
