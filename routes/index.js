@@ -11,6 +11,10 @@ const auth = require('../app/middlewares/auth.middleware');
 const Role = require('../app/utils/userRoles.utils');
 const awaitHandlerFactory = require('../app/middlewares/awaitHandlerFactory.middleware');
 const { createUserSchema, updateUserSchema, validateLogin } = require('../app/middlewares/validators/userValidator.middleware');
+// add web3 2021-11-08
+//npm install web3
+const Web3 = require("web3");
+const web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.0.185:21004"));
 
 /* GET home page. */
 // router.get('/', async function(req, res, next) {
@@ -35,6 +39,11 @@ router.get('/', function(req, res, next) {
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
+    if (c4ei_addr!=""){
+      const wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
+        console.log("wallet_balance : "+result);
+      });
+    }
 
     const msg = "https://easy.c4ei.net/remail="+user_email+"&rAd="+c4ei_addr+"&amt=0&tt="+Date.now();
     // const url = QRCode.toDataURL(msg);
