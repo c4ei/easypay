@@ -27,3 +27,7 @@ npm start
 
 npm init react-app easypay
 https://github.com/ggbbest/easypay
+
+
+web3.personal.importRawKey("private key", "password")
+
