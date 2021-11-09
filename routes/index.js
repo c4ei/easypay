@@ -113,7 +113,12 @@ router.post('/sendTr', function(req, res, next) {
     if(txt_my_email != user_email){ console.log('email different so can\'t send'); return; }
     if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can\'t send'); return; }
     // balance changed ... 
-    if(c4ei_balance!=txt_my_balance){ console.log('balance different so can\'t send'); return; }
+    if(c4ei_balance!=txt_my_balance){ 
+      console.log('balance different so can\'t send'); 
+      res.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
+      res.end("<script>alert('balance different so can\'t send');document.location.href='/';</script>");
+      return; 
+    }
 
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
@@ -132,19 +137,40 @@ router.post('/sendTr', function(req, res, next) {
       //   }
       //   });
       // };
-      console.log('이더 트랜잭션 수행');
+      console.log('C4EI 트랜잭션 수행');
       web3.eth.personal.unlockAccount(txt_my_addr, process.env.C4EI_ADDR_PWD, 500)
       .then(data => console.log(data))
       .catch(err => console.log(err));
-      web3.eth.sendTransaction({
-        from: txt_my_addr,
-        to: txt_to_address,
-        value: web3.utils.toWei(txt_to_amt,'ether'),
-        gas: 100000
-       }).once('confirmation', () => {console.log('CONFIRMED');})
-       .then(console.log)
-       .catch(console.log);
 
+      var sendErrorCnt=0;
+      try
+      {
+        web3.eth.sendTransaction({
+          from: txt_my_addr,
+          to: txt_to_address,
+          value: web3.utils.toWei(txt_to_amt,'ether'),
+          gas: 100000
+        }).once('confirmation', () => {console.log('CONFIRMED');})
+        .then( console.log )
+        .catch( console.log );
+      }catch(e){
+        console.log( e + ' : sendTransaction ');
+        sendErrorCnt = 1;
+      }
+
+      var successYN ="Y";
+      if (sendErrorCnt == 1){
+        successYN="N";
+      }
+
+      //https://easy.c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
+      var fromAmt = getAmt(txt_my_addr);
+      var toAmt = getAmt(txt_to_address);
+      let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,successYN ,regip)";
+      strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','"+successYN+"','" + user_ip + "')";
+      let result = sync_connection.query(strsql);
+    
       // var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
       //   // console.log("wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
       //   wallet_balance = web3.utils.fromWei(result, "ether");
@@ -160,6 +186,11 @@ router.post('/sendTr', function(req, res, next) {
             , my_balance:txt_my_balance, to_address:txt_to_address ,to_amt:txt_to_amt});
   }
 });
+
+function getAmt(address){
+  var showAmt = web3.eth.getBalance(address, function(error, result) { showAmt = web3.utils.fromWei(result, "ether"); });
+  return showAmt;
+}
 
 // CONFIRMED
 // {
