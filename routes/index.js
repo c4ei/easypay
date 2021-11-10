@@ -21,20 +21,6 @@ var db_config = require(__dirname + '/database.js');// 2020-09-13
 var sync_mysql = require('sync-mysql'); //2020-01-28
 let sync_connection = new sync_mysql(db_config.constr());
 
-function chkNetwork(){
-  web3.eth.net.isListening().then((s) => {
-    console.log('####################################');
-    console.log('We\'re still connected to the node');
-    console.log('####################################');
-    return true;
-  }).catch((e) => {
-    console.log('####################################');
-    console.log('Lost connection to the node, reconnecting');
-    console.log('####################################');
-    //////web3.setProvider(your_provider_here);
-    return false;
-  });
-}
 
 router.get('/', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -49,15 +35,11 @@ router.get('/', function(req, res, next) {
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
     console.log("49 c4ei_addr :"+c4ei_addr);
-    if(!chkNetwork()){
-      console.log("network access fail! :");
-      res.sendFile(STATIC_PATH + '/network.html')
-      return;
-    }
+    // fn_ChkC4eiNetAlive();
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
         // console.log("[/home/dev/www]/easypay/routes/index.js 39] wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
-        console.log("40 result :"+result);
+        // console.log("42 result :"+result);
         wallet_balance = web3.utils.fromWei(result, "ether");
         // wallet_balance = getAmtWei(result);
         if (wallet_balance != c4ei_balance){
@@ -145,21 +127,6 @@ router.post('/sendTr', function(req, res, next) {
 
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
-      // 이더 트랜잭션 수행
-      // exports.sendTransaction =
-      // function(from,to,value,gas,callback) {
-      //   web3.eth.sendTransaction({
-      //   to: txt_to_address,
-      //   from: txt_my_addr,
-      //   value: web3.toWei(txt_to_amt,'ether'), 
-      //   gas: 100000}, function (err, hash) {
-      //   if (err) {
-      //     return callback(err, '');
-      //   } else {
-      //     return callback(null, hash);
-      //   }
-      //   });
-      // };
       console.log('C4EI 트랜잭션 수행');
       web3.eth.personal.unlockAccount(txt_my_addr, process.env.C4EI_ADDR_PWD, 500)
       .then(data => console.log(data))
@@ -187,22 +154,22 @@ router.post('/sendTr', function(req, res, next) {
       }
 
       //https://easy.c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
-      var fromAmt = getAmt(txt_my_addr);
-      var toAmt = getAmt(txt_to_address);
+      // var fromAmt = JSON.stringify(getAmt(txt_my_addr));
+      // var fromAmt = getAmt(txt_my_addr);
+      // console.log(fromAmt + " : fromAmt 158");
+      // var toAmt = getAmt(txt_to_address);
+      // console.log(toAmt + " : toAmt 160");
       let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-      var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,successYN ,regip)";
-      strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','"+successYN+"','" + user_ip + "')";
-      let result = sync_connection.query(strsql);
-    
-      // var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
-      //   // console.log("wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
-      //   wallet_balance = web3.utils.fromWei(result, "ether");
-      //   if (wallet_balance != c4ei_balance){
-      //     let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
-      //     console.log("wallet_balance :"+wallet_balance);
-      //     c4ei_balance = wallet_balance;
-      //   }
-      // });
+      var fromAmt = web3.eth.getBalance(txt_my_addr, function(error, result1) {
+        var toAmt = web3.eth.getBalance(txt_to_address, function(error, result2) {
+          fromAmt = web3.utils.fromWei(result1, "ether");
+          toAmt = web3.utils.fromWei(result2, "ether");
+          var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,successYN ,regip)";
+          strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','"+successYN+"','" + user_ip + "')";
+          let result = sync_connection.query(strsql);
+          console.log(result +" :last insert Tidx");
+        });      
+      });
     }
     /////////////////////////
     res.render('sendok', { title: 'easypay Send OK', my_email : txt_my_email, my_addr:txt_my_addr
@@ -212,21 +179,20 @@ router.post('/sendTr', function(req, res, next) {
 
 async function getAmt(address){
   try {
-    var showAmt =  await web3.eth.getBalance(address, function(error, result) { 
-      console.log(result +" : result");
+    var showAmt = await web3.eth.getBalance(address, function(error, result) { 
       showAmt = getAmtWei(result) ;
-      console.log(showAmt +" : showAmt");
-      return showAmt;
+      // console.log(showAmt +" : showAmt");
     });
   } catch (e) {
     return -1;
   }
+  return showAmt;
 }
 
 async function getAmtWei(amt){
   try {
-    amt = web3.utils.fromWei(amt, "ether");
-    console.log(amt +" : amt");
+    amt = await web3.utils.fromWei(amt, "ether");
+    // console.log(amt +" : amt - async function - 198");
     return amt;
   } catch (e) {
     return -1;
@@ -290,6 +256,29 @@ router.delete('/id/:id', auth(Role.Admin), awaitHandlerFactory(userController.de
 
 router.post('/login', validateLogin, awaitHandlerFactory(userController.userLogin)); // localhost:3000/api/v1/users/login
 
+
+function fn_ChkC4eiNetAlive(res){
+  if(!chkNetwork()){
+    console.log("network access fail! :");
+    res.sendFile(STATIC_PATH + '/network.html')
+    return;
+  }
+}
+
+function chkNetwork(){
+  web3.eth.net.isListening().then((s) => {
+    console.log('####################################');
+    console.log('We\'re still connected to the node');
+    console.log('####################################');
+    return true;
+  }).catch((e) => {
+    console.log('####################################');
+    console.log('Lost connection to the node, reconnecting');
+    console.log('####################################');
+    //////web3.setProvider(your_provider_here);
+    return false;
+  });
+}
 
 function getCurTimestamp() {
   const d = new Date();

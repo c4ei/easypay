@@ -72,7 +72,7 @@ class UserController {
         // console.log('/home/dev/www/easypay/app/controllers/user.controller.js\n');
         // console.log(' req.body.email : ' + req.body.email +'\n');
         // console.log(' req.body.regip : ' + req.body.regip +'\n');
-        console.log(JSON.stringify(req.body));
+        // console.log(JSON.stringify(req.body));
         // if (req.body.regip) { req.body.regip === user_ip; }
         // console.log(' req.body.regip : ' + req.body.regip +'\n');
         // const str_cr_user = {
@@ -129,40 +129,36 @@ class UserController {
     };
 
     userLogin = async (req, res, next) => {
+        // console.log("easypay/app/controllers/user.controller.js [132] userLogin ");
         this.checkValidation(req);
-
         const { email, password: pass } = req.body;
-
         const user = await UserModel.findOne({ email });
-
+        // console.log("easypay/app/controllers/user.controller.js [136] userLogin ");
         if (!user) {
             throw new HttpException(401, 'Unable to login!');
         }
         // var bcrypt = require('bcrypt');
         // user_dbpwd = user_dbpwd.replace(/^\$2y(.+)$/i, '$2a$1');
         // if(bcrypt.compareSync(param_password, user_dbpwd)){
-
         const isMatch = await bcrypt.compare(pass, user.password);
-
         if (!isMatch) {
             throw new HttpException(401, 'Incorrect password!');
         }
-
+        // console.log("easypay/app/controllers/user.controller.js [147] userLogin ");
         // user matched!
         const secretKey = process.env.SECRET_JWT || "";
         const token = jwt.sign({ user_id: user.id.toString() }, secretKey, {
             expiresIn: '24h'
         });
-
         const { password, ...userWithoutPassword } = user;
-        
-
+        // console.log("easypay/app/controllers/user.controller.js [152] userLogin ");
         var user_idx  = user.id;
         var user_email  = user.email;
         // var user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
         
         res.cookie('user_idx', user_idx); // 2020-01-27
         res.cookie('user_email', user_email); // 2020-01-27
+        // console.log("easypay/app/controllers/user.controller.js [159] userLogin ");
         res.redirect('/');
 
         // res.send({ ...userWithoutPassword, token });
@@ -170,7 +166,9 @@ class UserController {
 
     checkValidation = (req) => {
         const errors = validationResult(req)
+        // console.log("easypay/app/controllers/user.controller.js [169] checkValidation ");
         if (!errors.isEmpty()) {
+            // console.log("easypay/app/controllers/user.controller.js [171] err ");
             throw new HttpException(400, 'Validation faild', errors);
         }
     }
