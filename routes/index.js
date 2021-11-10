@@ -21,6 +21,21 @@ var db_config = require(__dirname + '/database.js');// 2020-09-13
 var sync_mysql = require('sync-mysql'); //2020-01-28
 let sync_connection = new sync_mysql(db_config.constr());
 
+function chkNetwork(){
+  web3.eth.net.isListening().then((s) => {
+    console.log('####################################');
+    console.log('We\'re still connected to the node');
+    console.log('####################################');
+    return true;
+  }).catch((e) => {
+    console.log('####################################');
+    console.log('Lost connection to the node, reconnecting');
+    console.log('####################################');
+    //////web3.setProvider(your_provider_here);
+    return false;
+  });
+}
+
 router.get('/', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
     res.sendFile(STATIC_PATH + '/ulogin.html')
@@ -33,11 +48,18 @@ router.get('/', function(req, res, next) {
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
-    console.log("c4ei_addr :"+c4ei_addr);
+    console.log("49 c4ei_addr :"+c4ei_addr);
+    if(!chkNetwork()){
+      console.log("network access fail! :");
+      res.sendFile(STATIC_PATH + '/network.html')
+      return;
+    }
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
-        // console.log("wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
+        // console.log("[/home/dev/www]/easypay/routes/index.js 39] wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
+        console.log("40 result :"+result);
         wallet_balance = web3.utils.fromWei(result, "ether");
+        // wallet_balance = getAmtWei(result);
         if (wallet_balance != c4ei_balance){
           let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
           console.log("wallet_balance :"+wallet_balance);
@@ -72,6 +94,7 @@ router.get('/rcv', function(req, res, next) {
       var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
         // console.log("wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
         wallet_balance = web3.utils.fromWei(result, "ether");
+        // wallet_balance = getAmtWei(result);
         if (wallet_balance != c4ei_balance){
           let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
           console.log("wallet_balance :"+wallet_balance);
@@ -187,28 +210,28 @@ router.post('/sendTr', function(req, res, next) {
   }
 });
 
-function getAmt(address){
-  var showAmt = web3.eth.getBalance(address, function(error, result) { showAmt = web3.utils.fromWei(result, "ether"); });
-  return showAmt;
+async function getAmt(address){
+  try {
+    var showAmt =  await web3.eth.getBalance(address, function(error, result) { 
+      console.log(result +" : result");
+      showAmt = getAmtWei(result) ;
+      console.log(showAmt +" : showAmt");
+      return showAmt;
+    });
+  } catch (e) {
+    return -1;
+  }
 }
 
-// CONFIRMED
-// {
-//   blockHash: '0x9bf4d02cb212c20a7dabe7753222735215b1df2920a52035124e87a02f2547e9',
-//   blockNumber: 249514,
-//   contractAddress: null,
-//   cumulativeGasUsed: 21000,
-//   effectiveGasPrice: '0x3b9aca00',
-//   from: '0x21725f3b26f74c8e451d851e040e717fbcf19e5b',
-//   gasUsed: 21000,
-//   logs: [],
-//   logsBloom: '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-//   status: true,
-//   to: '0x0077b5723b4017b38471f80725f7e3c3347ffb03',
-//   transactionHash: '0x2858030fa72b6d0fb52d321db7466724adefc2381128e7b94e5e4002959a6d7c',
-//   transactionIndex: 0,
-//   type: '0x0'
-// }
+async function getAmtWei(amt){
+  try {
+    amt = web3.utils.fromWei(amt, "ether");
+    console.log(amt +" : amt");
+    return amt;
+  } catch (e) {
+    return -1;
+  }
+}
 
 
 // async function isUnlocked (web3, address) {
