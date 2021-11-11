@@ -122,12 +122,12 @@ router.post('/sendTr', function(req, res, next) {
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
-    if(txt_my_email != user_email){ console.log('email different so can\'t send'); return; }
-    if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can\'t send'); return; }
+    if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
+    if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
     // balance changed ... 
     if(c4ei_balance!=txt_my_balance){ 
-      console.log('balance different so can\'t send'); 
-      res.render('msgpage', { title: 'easypay Message', msg : 'balance different so can\'t send'});
+      console.log('balance different so can`t send'); 
+      res.render('msgpage', { title: 'easypay Message', msg : 'balance different so can`t send'});
       return; 
     }
     //발송 주소에 해당하는 회원이 없습니다.

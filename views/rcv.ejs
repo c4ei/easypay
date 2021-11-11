@@ -70,14 +70,14 @@
     var txt_to_amt     = $('#txt_to_amt').val();
     
     if(txt_my_addr==txt_to_address){
-      alert('can\'t send your self');
+      alert('can`t send your self');
       return;
     }
     if(txt_my_balance < txt_to_amt){
-      alert('can\'t send your balance is small');
+      alert('can`t send your balance is small');
       return;
     }
-    if(confirm('Are you sure? sended can\'t stop proceed')){
+    if(confirm('Are you sure? sended can`t stop proceed')){
       $('#sendForm').action = "/sendTr";
       $('#sendForm').submit();
     }
