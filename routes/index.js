@@ -65,6 +65,36 @@ router.get('/', function(req, res, next) {
   }
 });
 
+router.get('/syncbalance', function(req, res, next) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    // console.log("c4ei_addr :"+c4ei_addr);
+    if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+      var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
+        // console.log("wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
+        wallet_balance = web3.utils.fromWei(result, "ether");
+        // wallet_balance = getAmtWei(result);
+        if (wallet_balance != c4ei_balance){
+          let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
+          console.log("wallet_balance :"+wallet_balance);
+          c4ei_balance = wallet_balance;
+        }
+      });
+    }
+    /////////////////////////
+  }
+  res.redirect('/');
+});
+
 ///////
 router.get('/rcv', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -130,6 +160,12 @@ router.post('/sendTr', function(req, res, next) {
       res.render('msgpage', { title: 'easypay Message', msg : 'balance different so can`t send'});
       return; 
     }
+    if((c4ei_balance-txt_to_amt)<0){ 
+      console.log('not enough balance so can`t send'); 
+      res.render('msgpage', { title: 'easypay Message', msg : 'not enough balance so can`t send'});
+      return; 
+    }
+
     //발송 주소에 해당하는 회원이 없습니다.
     let result1 = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance FROM user WHERE c4ei_addr='" + txt_to_address + "'");
     let to_id = result1[0].id;
@@ -163,7 +199,7 @@ router.post('/sendTr', function(req, res, next) {
     }
     /////////////////////////
     res.render('sendok', { title: 'easypay Send OK', my_email : txt_my_email, my_addr:txt_my_addr
-            , my_balance:txt_my_balance, to_address:txt_to_address ,to_amt:txt_to_amt});
+            , my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
   }
 });
 
