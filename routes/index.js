@@ -36,8 +36,11 @@ router.get('/', function(req, res, next) {
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
-    console.log("49 c4ei_addr :"+c4ei_addr);
+    // console.log("49 c4ei_addr :"+c4ei_addr);
     // fn_ChkC4eiNetAlive();
+    /////////////////////////
+    /// c4ei_block_bal balance update 
+    /////////////////////////
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
         // console.log("[/home/dev/www]/easypay/routes/index.js 39] wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
@@ -45,12 +48,14 @@ router.get('/', function(req, res, next) {
         wallet_balance = web3.utils.fromWei(result, "ether");
         // wallet_balance = getAmtWei(result);
         if (wallet_balance != c4ei_balance){
-          let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
+          // let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
+          let result = sync_connection.query("update user set c4ei_block_bal='"+wallet_balance+"' WHERE id='" + user_id + "'");
           console.log("wallet_balance :"+wallet_balance);
           c4ei_balance = wallet_balance;
         }
       });
     }
+    /////////////////////////
     /////////////////////////
     const msg = "https://easy.c4ei.net/rcv?rcv_email="+user_email+"&rcv_adr="+c4ei_addr+"&rcv_amt=0&tt="+getCurTimestamp();  //Date.now()
     console.log("msg :"+msg);
@@ -129,43 +134,11 @@ router.post('/sendTr', function(req, res, next) {
 
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
-      console.log('C4EI 트랜잭션 수행');
-
-      web3.eth.personal.unlockAccount(txt_my_addr, process.env.C4EI_ADDR_PWD, 500)
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
-
-      var sendErrorCnt=0;
-      try
-      {
-        web3.eth.sendTransaction({
-          from: txt_my_addr,
-          to: txt_to_address,
-          value: web3.utils.toWei(txt_to_amt,'ether'),
-          gas: 100000
-        }).once('confirmation', () => {console.log('CONFIRMED');})
-        .then( console.log )
-        .catch( console.log );
-      }catch(e){
-        console.log( e + ' : sendTransaction ');
-        sendErrorCnt = 1;
-      }
-
-      var successYN ="Y";
-      if (sendErrorCnt == 1){
-        successYN="N";
-      }
-
       //https://easy.c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
-      // var fromAmt = JSON.stringify(getAmt(txt_my_addr));
-      // var fromAmt = getAmt(txt_my_addr);
-      // console.log(fromAmt + " : fromAmt 158");
-      // var toAmt = getAmt(txt_to_address);
-      // console.log(toAmt + " : toAmt 160");
       let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      save_db_user_bal(user_id, txt_to_address, txt_to_amt, user_ip);
+      save_db_sendlog(user_id, txt_my_addr, txt_to_address, txt_to_amt, user_ip);
       
-      let rs_tidx = save_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,successYN,user_ip);
-      console.log("############# " + rs_tidx +" : rs_tidx #############");
       //######################################################################################
       //######################################################################################
       // sync save !!!!
@@ -188,23 +161,54 @@ router.post('/sendTr', function(req, res, next) {
   }
 });
 
-async function save_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,successYN,user_ip){
+async function save_db_user_bal(user_id, txt_to_address, txt_to_amt, user_ip){
+  console.log("save_db_user_bal");
+
+  let result1 = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance FROM user WHERE c4ei_addr='" + txt_to_address + "'");
+  let to_id = result1[0].id;
+
+  const connection = await pool.getConnection(async conn => conn); 
+  let strsql ="update user set c4ei_balance=c4ei_balance-'"+txt_to_amt+"', last_reg=now(),last_ip='"+user_ip+"' where id = '" + user_id + "'";
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_user_bal update 1 success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+  let strsql2 ="update user set c4ei_balance=c4ei_balance+'"+txt_to_amt+"', last_reg=now() where id = '" + to_id + "'";
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql2); 
+    await connection.commit(); 
+    console.log('save_db_user_bal update 2 success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+
+}
+
+async function save_db_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip){
   //######################################################################################
   // async save test !!!!
   //######################################################################################
-  var rtn = 0;
-  var fromAmt = await getAmt(txt_my_addr);
-  fromAmt = await getAmtWei(fromAmt);
-  var toAmt = await getAmt(txt_to_address);
-  toAmt = await getAmtWei(toAmt);
-  var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,successYN ,regip)";
-  strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','"+successYN+"','" + user_ip + "')";
+  var fromAmt = await getAmt(txt_my_addr); fromAmt = await getAmtWei(fromAmt);
+  var toAmt = await getAmt(txt_to_address); toAmt = await getAmtWei(toAmt);
+  var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,regip)";
+  strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','" + user_ip + "')";
   const connection = await pool.getConnection(async conn => conn); 
   try { 
     await connection.beginTransaction(); 
     await connection.query(strsql); 
     await connection.commit(); 
-    console.log('save_sendlog insert success!'); 
+    console.log('save_db_sendlog insert success!'); 
   } catch (err) { 
     await connection.rollback(); 
     throw err; 
@@ -213,35 +217,65 @@ async function save_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,succes
 
     // sync
     let result1 = sync_connection.query("select max(tidx) as maxtidx from sendlog where userIdx = '" + user_id + "'");
-    rtn = result1[0].maxtidx;
-    console.log("############# " + rtn +" : rtn #############");
+    let tidx = result1[0].maxtidx;
+    console.log("############# " + tidx +" : rtn #############");
+    sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx);
+
   }
-
-  // const connection2 = await pool.getConnection(async conn => conn); 
-  // var strsql2 = " select max(tidx) as maxtidx from sendlog where userIdx = '" + user_id + "'";
-  // let result2 = await connection.query(strsql2); 
-  // rtn = result2[0].maxtidx;
-  // console.log("############# " + rtn +" : rtn #############");
-  // connection2.release(); 
-
-  return rtn;
 }
-/*
-const mysql = require('mysql2/promise'); 
-const pool = mysql.createPool(...); 
-const connection = await pool.getConnection(async conn => conn); 
-try { 
-	await connection.beginTransaction(); 
-	await connection.query(...); 
-	await connection.commit(); 
-	console.log('success!'); 
-} catch (err) { 
-	await connection.rollback(); 
-	throw err; 
-} finally { 
-	connection.release(); 
+
+async function fn_unlockAccount(addr){
+  await web3.eth.personal.unlockAccount(addr, process.env.C4EI_ADDR_PWD, 500).then(function (result) {
+    console.log('fn_unlockAccount result :' + result);
+  });
 }
-*/
+
+async function sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx){
+  console.log('C4EI 트랜잭션 수행');
+  await fn_unlockAccount(txt_my_addr);
+  
+  // web3.eth.sendTransaction({from: '0x123...', data: '0x432...'})
+  // .once('sending', function(payload){ ... })
+  // .once('sent', function(payload){ ... })
+  // .once('transactionHash', function(hash){ ... })
+  // .once('receipt', function(receipt){ ... })
+  // .on('confirmation', function(confNumber, receipt, latestBlockHash){ ... })
+  // .on('error', function(error){ ... })
+  // .then(function(receipt){
+  //   // will be fired once the receipt is mined
+  // }); and it does not recognize .once, .on, or.then
+  // or.catch
+
+  var log="";
+  web3.eth.sendTransaction({
+    from: txt_my_addr,
+    to: txt_to_address,
+    value: web3.utils.toWei(txt_to_amt,'ether'),
+    gas: 100000
+  }).
+  //on('confirmation', function(confNumber, receipt, latestBlockHash){ console.log('CONFIRMED'); })
+  once('sent', function(payload){ console.log('sent'); })
+  .then(function(receipt){
+    save_db_sendlog_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
+  });
+}
+
+async function save_db_sendlog_end(tidx ,blockNumber,contractAddress,blockHash,transactionHash , successYN){
+  console.log("save_db_sendlog_end");
+  const connection = await pool.getConnection(async conn => conn); 
+  let strsql ="update sendlog set blockNumber='"+blockNumber+"',contractAddress='"+contractAddress+"',blockHash='"+blockHash+"',transactionHash='"+transactionHash+"', successYN='"+successYN+"', last_reg=now() where tidx = '" + tidx + "'";
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_sendlog insert success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+}
 
 async function getAmt(address){
   try {

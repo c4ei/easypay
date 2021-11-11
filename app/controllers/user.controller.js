@@ -6,6 +6,11 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
+
+var db_config = require('../../routes/database.js');// 2020-09-13
+const mysql2 = require('mysql2/promise'); 
+const pool = mysql2.createPool(db_config.constr()); 
+
 /******************************************************************************
  *                              User Controller
  ******************************************************************************/
@@ -154,11 +159,26 @@ class UserController {
         // console.log("easypay/app/controllers/user.controller.js [152] userLogin ");
         var user_idx  = user.id;
         var user_email  = user.email;
-        // var user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        var user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
         
         res.cookie('user_idx', user_idx); // 2020-01-27
         res.cookie('user_email', user_email); // 2020-01-27
         // console.log("easypay/app/controllers/user.controller.js [159] userLogin ");
+
+        const connection = await pool.getConnection(async conn => conn); 
+        let strsql ="update user set loginCnt=loginCnt+1, last_reg=now(),last_ip='"+user_ip+"' where id = '" + user_idx + "'";
+        try { 
+          await connection.beginTransaction(); 
+          await connection.query(strsql); 
+          await connection.commit(); 
+          console.log('db user loginCnt update success!'); 
+        } catch (err) { 
+          await connection.rollback(); 
+          throw err; 
+        } finally { 
+          connection.release();
+        }
+
         res.redirect('/');
 
         // res.send({ ...userWithoutPassword, token });
