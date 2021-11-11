@@ -21,7 +21,7 @@
 						<h3>Log In</h3>
 					</div>
 					<div class="flex">
-						<form action="/login" method="POST">
+						<form id="frmLogin" method="POST">
 						<input type="hidden" name="last_ip" />
 
 						<label class="input animate-label">
@@ -34,13 +34,16 @@
 							<div class="label">Password</div>
 						</label>
 						<br />
-						<div class="action" id="FORM_LOGINButton">
-							<button class="btn" type="submit">
+						<!-- <div class="action" id="FORM_LOGINButton"> -->
+						<!-- <div id="FORM_LOGINButton">
+							<button class="btn" type="button" onclick="jsfn_login_vaild();">
 								Log In						</button>
 							<svg viewBox="0 0 73 73" class="loader">
 								<path d="M72.5,36.5c0,19.88-16.12,36-36,36s-36-16.12-36-36s16.12-36,36-36S72.5,16.62,72.5,36.5"></path>
 							</svg>
-						</div>
+						</div> -->
+						<input type="button" value="Login" onclick="jsfn_login_vaild();" class="btn">
+
 						<br />
 						</form>
 					</div>
@@ -52,7 +55,7 @@
 				<div id="ly_user_pwd_reg"  style="display: none;"  class="popup">
 					<h3>create a new account</h3> 
 					<br>
-					<form action="/" method="POST" class="clearfix">
+					<form id="frmReg" method="POST" class="clearfix">
 					<input type="hidden" name="regip" />
 
 					<label class="input animate-label">
@@ -76,11 +79,12 @@
 					<div class="label">confirm password</div><!-- 암호 -->
 					</label>
 					<br />
-					<div class="action" >
-						<button class="btn" type="submit" >
+					<input type="button" value="REGISTER" onclick="jsfn_reg_vaild();" class="btn">
+					<!-- <div class="action" >
+						<button class="btn" type="button" onclick="jsfn_reg_vaild();">
 							SIGN UP
 						</button>
-					</div>
+					</div> -->
 					<br />
 					<h5>회원가입시 <a href="/terms.html" target="_blank">약관</a>에 동의합니다.</h5>
 					</form>
@@ -112,6 +116,50 @@
 	</div>
 </div>
 </main>
-
+<script>
+function jsfn_login_vaild(){
+	var _email = document.getElementById('email').value;
+	var _password = document.getElementById('password').value;
+	if( _email == "" || _email == 'undefinde' || (_email.length < 8) ){
+		alert('email at least 8 leter');
+		return
+	}
+	if( _password == "" || _password == 'undefinde' || (_password.length < 8) ){
+		alert('password at least 8 leter');
+		return
+	}
+	var frm = document.getElementById('frmLogin');
+	frm.action="/login";
+	frm.submit();
+}
+function jsfn_reg_vaild(){
+	alert('jsfn_reg_vaild');
+	var usernameReg 	= document.getElementById('usernameReg').value; //$('#usernameReg').val();
+	var emailReg 		= document.getElementById('emailReg').value; //$('#emailReg').val();
+	var passwordReg 	= document.getElementById('passwordReg').value; //$('#passwordReg').val();
+	var passwordRegconf = document.getElementById('passwordRegconf').value; //$('#passwordRegconf').val();
+	
+	if( usernameReg == "" || usernameReg == 'undefinde' || (usernameReg.length < 5) ){
+		alert('username at least 5 leter');
+		return
+	}
+	alert( emailReg.lengh + ' : emailReg.lengh ');
+	if( emailReg == "" || emailReg == 'undefinde' || (emailReg.length < 8) ){
+		alert('username at least 8 leter');
+		return
+	}
+	if( passwordReg == "" || passwordReg == 'undefinde' || (passwordReg.length < 8 )){
+		alert('password at least 8 leter');
+		return
+	}
+	if( passwordRegconf == "" || passwordRegconf == 'undefinde' || (passwordReg != passwordRegconf)){
+		alert('password unmatched');
+		return
+	}
+	var frm = document.getElementById('frmReg');
+	frm.action="/";
+	frm.submit();
+}
+</script>
 </body>
 </html>

@@ -127,8 +127,14 @@ router.post('/sendTr', function(req, res, next) {
     // balance changed ... 
     if(c4ei_balance!=txt_my_balance){ 
       console.log('balance different so can\'t send'); 
-      res.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
-      res.end("<script>alert('balance different so can\'t send');document.location.href='/';</script>");
+      res.render('msgpage', { title: 'easypay Message', msg : 'balance different so can\'t send'});
+      return; 
+    }
+    //발송 주소에 해당하는 회원이 없습니다.
+    let result1 = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance FROM user WHERE c4ei_addr='" + txt_to_address + "'");
+    let to_id = result1[0].id;
+    if(to_id == undefined ||to_id==""){
+      res.render('msgpage', { title: 'easypay Message', msg : '발송 주소에 해당하는 회원이 없습니다'});
       return; 
     }
 
@@ -151,7 +157,7 @@ router.post('/sendTr', function(req, res, next) {
       //     strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','"+successYN+"','" + user_ip + "')";
       //     let result = sync_connection.query(strsql);
       //     console.log(result +" :sendlog 170 insert Tidx");
-      //   });      
+      //   });
       // });
       //######################################################################################
     }

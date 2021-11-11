@@ -58,6 +58,10 @@
 </form>
 </table>
     <br/>
+    <br/>
+    <a href="javascript:jsfn_goto_main();">main</a>
+    <br/>
+
 <script>
   function jsfn_send(){
     var txt_my_addr     = $('#txt_my_addr').val();
@@ -77,6 +81,9 @@
       $('#sendForm').action = "/sendTr";
       $('#sendForm').submit();
     }
+  }
+  function jsfn_goto_main(){
+    document.location.href="/";
   }
 </script>
 
