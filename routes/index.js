@@ -21,6 +21,8 @@ var db_config = require(__dirname + '/database.js');// 2020-09-13
 var sync_mysql = require('sync-mysql'); //2020-01-28
 let sync_connection = new sync_mysql(db_config.constr());
 
+const mysql2 = require('mysql2/promise'); 
+const pool = mysql2.createPool(db_config.constr()); 
 
 router.get('/', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -128,6 +130,7 @@ router.post('/sendTr', function(req, res, next) {
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       console.log('C4EI 트랜잭션 수행');
+
       web3.eth.personal.unlockAccount(txt_my_addr, process.env.C4EI_ADDR_PWD, 500)
       .then(data => console.log(data))
       .catch(err => console.log(err));
@@ -160,22 +163,85 @@ router.post('/sendTr', function(req, res, next) {
       // var toAmt = getAmt(txt_to_address);
       // console.log(toAmt + " : toAmt 160");
       let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-      var fromAmt = web3.eth.getBalance(txt_my_addr, function(error, result1) {
-        var toAmt = web3.eth.getBalance(txt_to_address, function(error, result2) {
-          fromAmt = web3.utils.fromWei(result1, "ether");
-          toAmt = web3.utils.fromWei(result2, "ether");
-          var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,successYN ,regip)";
-          strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','"+successYN+"','" + user_ip + "')";
-          let result = sync_connection.query(strsql);
-          console.log(result +" :last insert Tidx");
-        });      
-      });
+      
+      let rs_tidx = save_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,successYN,user_ip);
+      console.log("############# " + rs_tidx +" : rs_tidx #############");
+      //######################################################################################
+      //######################################################################################
+      // sync save !!!!
+      //######################################################################################
+      // var fromAmt = web3.eth.getBalance(txt_my_addr, function(error, result1) {
+      //   var toAmt = web3.eth.getBalance(txt_to_address, function(error, result2) {
+      //     fromAmt = web3.utils.fromWei(result1, "ether");
+      //     toAmt = web3.utils.fromWei(result2, "ether");
+      //     var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,successYN ,regip)";
+      //     strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','"+successYN+"','" + user_ip + "')";
+      //     let result = sync_connection.query(strsql);
+      //     console.log(result +" :sendlog 170 insert Tidx");
+      //   });      
+      // });
+      //######################################################################################
     }
     /////////////////////////
     res.render('sendok', { title: 'easypay Send OK', my_email : txt_my_email, my_addr:txt_my_addr
             , my_balance:txt_my_balance, to_address:txt_to_address ,to_amt:txt_to_amt});
   }
 });
+
+async function save_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,successYN,user_ip){
+  //######################################################################################
+  // async save test !!!!
+  //######################################################################################
+  var rtn = 0;
+  var fromAmt = await getAmt(txt_my_addr);
+  fromAmt = await getAmtWei(fromAmt);
+  var toAmt = await getAmt(txt_to_address);
+  toAmt = await getAmtWei(toAmt);
+  var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,successYN ,regip)";
+  strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','"+successYN+"','" + user_ip + "')";
+  const connection = await pool.getConnection(async conn => conn); 
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_sendlog insert success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+
+    // sync
+    let result1 = sync_connection.query("select max(tidx) as maxtidx from sendlog where userIdx = '" + user_id + "'");
+    rtn = result1[0].maxtidx;
+    console.log("############# " + rtn +" : rtn #############");
+  }
+
+  // const connection2 = await pool.getConnection(async conn => conn); 
+  // var strsql2 = " select max(tidx) as maxtidx from sendlog where userIdx = '" + user_id + "'";
+  // let result2 = await connection.query(strsql2); 
+  // rtn = result2[0].maxtidx;
+  // console.log("############# " + rtn +" : rtn #############");
+  // connection2.release(); 
+
+  return rtn;
+}
+/*
+const mysql = require('mysql2/promise'); 
+const pool = mysql.createPool(...); 
+const connection = await pool.getConnection(async conn => conn); 
+try { 
+	await connection.beginTransaction(); 
+	await connection.query(...); 
+	await connection.commit(); 
+	console.log('success!'); 
+} catch (err) { 
+	await connection.rollback(); 
+	throw err; 
+} finally { 
+	connection.release(); 
+}
+*/
 
 async function getAmt(address){
   try {
