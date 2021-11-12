@@ -16,6 +16,44 @@ const { createUserSchema, updateUserSchema, validateLogin } = require('../app/mi
 const Web3 = require("web3");
 const web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.0.185:21004"));
 
+
+////////////////////////////////////////////////////////////////////////
+// add vchat --
+////////////////////////////////////////////////////////////////////////
+// const app = express();
+// const server = require('http').Server(app);
+// //npm install socket.io
+// const io = require('socket.io')(server);
+// const { v4: uuidV4 } = require('uuid');
+// // app.get('/', (req, res) => {
+// //   res.redirect(`/${uuidV4()}`);
+// // });
+
+// router.get('/:room', (req, res) => {
+//   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+//     res.sendFile(STATIC_PATH + '/ulogin.html')
+//     return;
+//   }
+//   else {
+//     // res.render('room', { roomId: req.params.room });
+//     res.render('room', { roomId: req.cookies.user_idx });
+//   }
+// });
+
+// io.on('connection', socket => {
+//   socket.on('join-room', (roomId, userId) => {
+//     socket.join(roomId);
+//     socket.to(roomId).broadcast.emit('user-connected', userId);
+
+//     socket.on('disconnect', () => {
+//       socket.to(roomId).broadcast.emit('user-disconnected', userId);
+//     });
+//   });
+// });
+////////////////////////////////////////////////////////////////////////
+// add vchat --
+////////////////////////////////////////////////////////////////////////
+
 // npm i sync-mysql
 var db_config = require(__dirname + '/database.js');// 2020-09-13
 var sync_mysql = require('sync-mysql'); //2020-01-28
@@ -60,7 +98,8 @@ router.get('/', function(req, res, next) {
     const msg = "https://easy.c4ei.net/rcv?rcv_email="+user_email+"&rcv_adr="+c4ei_addr+"&rcv_amt=0&tt="+getCurTimestamp();  //Date.now()
     console.log("msg :"+msg);
     QRCode.toDataURL(msg,function(err, url){
-      res.render('index', { title: 'easypay', c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email, dataUrl : url});
+      res.render('index', { title: 'easypay', c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email, dataUrl : url });
+      // , uuidV4:uuidV4()
     });
   }
 });
