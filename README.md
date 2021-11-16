@@ -40,20 +40,9 @@ pm2 logs --lines 200
 git config --global user.name "ggbbest"
 git config --global user.email www.ggb.best@gmail.com
 ssh -T www.ggb.best@gmail.com
-git remote set-url origin github.com/ggbbest/easypay.git
 git remote set-url origin git@github.com:ggbbest/easypay.git
-git config --system --unset credential.helper
-
 git config -l
-user.name=ggbbest
-user.email=www.ggb.best@gmail.com
-core.repositoryformatversion=0
-core.filemode=true
-core.bare=false
-core.logallrefupdates=true
-remote.upstream.url=git@github.com:ggbbest/easypay.git
-remote.upstream.fetch=+refs/heads/*:refs/remotes/upstream/*
-:
+git push origin main --force
 git remote set-url origin git@github.com:git@github.com:ggbbest/easypay.git
 
 pm2 restart node ./bin/www

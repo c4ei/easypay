@@ -120,11 +120,11 @@
 function jsfn_login_vaild(){
 	var _email = document.getElementById('email').value;
 	var _password = document.getElementById('password').value;
-	if( _email == "" || _email == 'undefinde' || (_email.length < 8) ){
+	if( _email == "" || _email == 'undefined' || (_email.length < 8) ){
 		alert('email at least 8 leter');
 		return
 	}
-	if( _password == "" || _password == 'undefinde' || (_password.length < 8) ){
+	if( _password == "" || _password == 'undefined' || (_password.length < 8) ){
 		alert('password at least 8 leter');
 		return
 	}
@@ -133,26 +133,26 @@ function jsfn_login_vaild(){
 	frm.submit();
 }
 function jsfn_reg_vaild(){
-	alert('jsfn_reg_vaild');
+	// alert('jsfn_reg_vaild');
 	var usernameReg 	= document.getElementById('usernameReg').value; //$('#usernameReg').val();
 	var emailReg 		= document.getElementById('emailReg').value; //$('#emailReg').val();
 	var passwordReg 	= document.getElementById('passwordReg').value; //$('#passwordReg').val();
 	var passwordRegconf = document.getElementById('passwordRegconf').value; //$('#passwordRegconf').val();
 	
-	if( usernameReg == "" || usernameReg == 'undefinde' || (usernameReg.length < 5) ){
-		alert('username at least 5 leter');
+	if( usernameReg == "" || usernameReg == 'undefined' || (usernameReg.length < 5) ){
+		alert('username at least 5 letter');
 		return
 	}
-	alert( emailReg.lengh + ' : emailReg.lengh ');
-	if( emailReg == "" || emailReg == 'undefinde' || (emailReg.length < 8) ){
-		alert('username at least 8 leter');
+	// alert( emailReg.length + ' : emailReg.length ');
+	if( emailReg == "" || emailReg == 'undefined' || (emailReg.length < 8) ){
+		alert('username at least 8 letter');
 		return
 	}
-	if( passwordReg == "" || passwordReg == 'undefinde' || (passwordReg.length < 8 )){
-		alert('password at least 8 leter');
+	if( passwordReg == "" || passwordReg == 'undefined' || (passwordReg.length < 8 )){
+		alert('password at least 8 letter');
 		return
 	}
-	if( passwordRegconf == "" || passwordRegconf == 'undefinde' || (passwordReg != passwordRegconf)){
+	if( passwordRegconf == "" || passwordRegconf == 'undefined' || (passwordReg != passwordRegconf)){
 		alert('password unmatched');
 		return
 	}
