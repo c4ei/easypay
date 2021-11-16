@@ -64,7 +64,8 @@ const pool = mysql2.createPool(db_config.constr());
 
 router.get('/', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
-    res.sendFile(STATIC_PATH + '/ulogin.html')
+    // res.sendFile(STATIC_PATH + '/ulogin.html')
+    res.sendFile(STATIC_PATH + '/main.html')
     return;
   }
   else {
@@ -82,7 +83,7 @@ router.get('/', function(req, res, next) {
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
         // console.log("[/home/dev/www]/easypay/routes/index.js 39] wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
-        // console.log("42 result :"+result);
+        console.log("86 result :"+result);
         wallet_balance = web3.utils.fromWei(result, "ether");
         // wallet_balance = getAmtWei(result);
         if (wallet_balance != c4ei_balance){
@@ -95,7 +96,7 @@ router.get('/', function(req, res, next) {
     }
     /////////////////////////
     /////////////////////////
-    const msg = "https://easy.c4ei.net/rcv?rcv_email="+user_email+"&rcv_adr="+c4ei_addr+"&rcv_amt=0&tt="+getCurTimestamp();  //Date.now()
+    const msg = "https://c4ei.net/rcv?rcv_email="+user_email+"&rcv_adr="+c4ei_addr+"&rcv_amt=0&tt="+getCurTimestamp();  //Date.now()
     console.log("msg :"+msg);
     QRCode.toDataURL(msg,function(err, url){
       res.render('index', { title: 'easypay', c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email, dataUrl : url });
@@ -103,6 +104,14 @@ router.get('/', function(req, res, next) {
     });
   }
 });
+
+router.get('/htmlLogin', function(req, res, next) {
+  // if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  // }
+});
+
 
 router.get('/syncbalance', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
