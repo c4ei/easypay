@@ -1,3 +1,37 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>easypay</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/js/jquery.min.js"></script>
+  </head>
+  <body>
+<!-- /easypay/routes/index.js  -->
+    <h1><%= title %></h1>
+
+<table width="100%" border="0">
+  <tr>
+    <td style="height: 500px;">
+        <h1><%= message %></h1>
+        <h2><%= error.status %></h2>
+        <pre><%= error.stack %></pre>
+    </td>
+  </tr>
+</table>
+<br/>
+<a href="javascript:jsfn_ok();">main</a>
+
+<script>
+  function jsfn_ok(){
+    document.location.href="/";
+  }
+</script>
+
+  </body>
+</html>
+

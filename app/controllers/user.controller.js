@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
-
 var db_config = require('../../routes/database.js');// 2020-09-13
 const mysql2 = require('mysql2/promise'); 
 const pool = mysql2.createPool(db_config.constr()); 
@@ -20,12 +19,10 @@ class UserController {
         if (!userList.length) {
             throw new HttpException(404, 'Users not found');
         }
-
         userList = userList.map(user => {
             const { password, ...userWithoutPassword } = user;
             return userWithoutPassword;
         });
-
         res.send(userList);
     };
 
@@ -34,9 +31,7 @@ class UserController {
         if (!user) {
             throw new HttpException(404, 'User not found');
         }
-
         const { password, ...userWithoutPassword } = user;
-
         res.send(userWithoutPassword);
     };
 
@@ -45,15 +40,12 @@ class UserController {
         if (!user) {
             throw new HttpException(404, 'User not found');
         }
-
         const { password, ...userWithoutPassword } = user;
-
         res.send(userWithoutPassword);
     };
 
     getCurrentUser = async (req, res, next) => {
         const { password, ...userWithoutPassword } = req.currentUser;
-
         res.send(userWithoutPassword);
     };
 
@@ -114,6 +106,7 @@ class UserController {
         const result = await UserModel.update(restOfUpdates, req.params.id);
 
         if (!result) {
+            res.render('msgpage', { title: 'easypay Message', msg : '404 Something went wrong'});
             throw new HttpException(404, 'Something went wrong');
         }
 
@@ -128,6 +121,7 @@ class UserController {
     deleteUser = async (req, res, next) => {
         const result = await UserModel.delete(req.params.id);
         if (!result) {
+            res.render('msgpage', { title: 'easypay Message', msg : '404 User not found!'});
             throw new HttpException(404, 'User not found');
         }
         res.send('User has been deleted');
@@ -140,6 +134,7 @@ class UserController {
         const user = await UserModel.findOne({ email });
         // console.log("easypay/app/controllers/user.controller.js [136] userLogin ");
         if (!user) {
+            res.render('msgpage', { title: 'easypay Message', msg : '401 Unable to login!'});
             throw new HttpException(401, 'Unable to login!');
         }
         // var bcrypt = require('bcrypt');
@@ -147,6 +142,7 @@ class UserController {
         // if(bcrypt.compareSync(param_password, user_dbpwd)){
         const isMatch = await bcrypt.compare(pass, user.password);
         if (!isMatch) {
+            res.render('msgpage', { title: 'easypay Message', msg : '401 Incorrect password!'});
             throw new HttpException(401, 'Incorrect password!');
         }
         // console.log("easypay/app/controllers/user.controller.js [147] userLogin ");
@@ -178,9 +174,7 @@ class UserController {
         } finally { 
           connection.release();
         }
-
         res.redirect('/');
-
         // res.send({ ...userWithoutPassword, token });
     };
 
@@ -212,10 +206,7 @@ class UserController {
             req.body.regip = user_ip;
         }
     }
-
 }
-
-
 
 /******************************************************************************
  *                               Export
