@@ -25,6 +25,17 @@ app.use(cors());
 // Enable pre-flight
 app.options("*", cors());
 //###########################
+//npm install --save express-session
+// npm install --save session-file-store
+const session = require('express-session');
+const FileStore = require('session-file-store')(session); // 1
+app.use(session({  // 2
+  secret: process.env.SessionSecret,  // 암호화
+  resave: false,
+  saveUninitialized: true,
+  store: new FileStore()
+}));
+
 // var bodyParser = require('body-parser');
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
@@ -74,6 +85,7 @@ app.use('/users', usersRouter);
 app.use(`/api/v1/users`, userRouter);
 // Error middleware
 app.use(errorMiddleware);
+
 
 // // // post 로 넘어 오면 !!! 게임
 // app.use('/ulogin', cookieParser(process.env.COOKIE_SECRET));

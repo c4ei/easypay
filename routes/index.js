@@ -14,8 +14,7 @@ const { createUserSchema, updateUserSchema, validateLogin } = require('../app/mi
 // add web3 2021-11-08
 //npm install web3
 const Web3 = require("web3");
-const web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.0.185:21004"));
-
+const web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.185:21004"));
 
 ////////////////////////////////////////////////////////////////////////
 // add vchat --
@@ -62,6 +61,22 @@ let sync_connection = new sync_mysql(db_config.constr());
 const mysql2 = require('mysql2/promise'); 
 const pool = mysql2.createPool(db_config.constr()); 
 
+router.get('/session2cookie', function(req, res, next) {
+  //# added ggoogle auth
+  // console.log(req.session.user_idx +" / "+req.session.user_email); 
+  let tem_user_idx = req.session.user_idx;
+  let tem_user_email = req.session.user_email;
+  if (tem_user_idx !="" && tem_user_email !="" ){
+    // console.log(tem_user_idx +" / "+tem_user_email); 
+    res.cookie('user_idx', tem_user_idx);
+    res.cookie('user_email', tem_user_email);
+
+    req.session.user_idx = null;
+    req.session.user_email = null;
+  }
+  res.redirect('/');
+});
+
 router.get('/', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
     // res.sendFile(STATIC_PATH + '/ulogin.html')
@@ -71,13 +86,18 @@ router.get('/', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
-    // console.log("49 c4ei_addr :"+c4ei_addr);
+    let pot_balance = result[0].pot;
+    // 
     // fn_ChkC4eiNetAlive();
     /////////////////////////
+    // console.log("97 c4ei_addr :"+c4ei_addr);
+    if(c4ei_addr=="" || c4ei_addr==null){
+      res.redirect('/address_generator');
+    }
     /// c4ei_block_bal balance update 
     /////////////////////////
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
@@ -99,7 +119,7 @@ router.get('/', function(req, res, next) {
     const msg = "https://c4ei.net/rcv?rcv_email="+user_email+"&rcv_adr="+c4ei_addr+"&rcv_amt=0&tt="+getCurTimestamp();  //Date.now()
     console.log("msg :"+msg);
     QRCode.toDataURL(msg,function(err, url){
-      res.render('index', { title: 'easypay', c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email, dataUrl : url });
+      res.render('index', { title: 'easypay', c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email, pot:pot_balance, dataUrl : url });
       // , uuidV4:uuidV4()
     });
   }
@@ -112,7 +132,6 @@ router.get('/htmlLogin', function(req, res, next) {
   // }
 });
 
-
 router.get('/syncbalance', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
     res.sendFile(STATIC_PATH + '/ulogin.html')
@@ -121,7 +140,7 @@ router.get('/syncbalance', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -152,7 +171,7 @@ router.get('/rcv', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -179,7 +198,7 @@ router.get('/rcv', function(req, res, next) {
   }
 });
 
-//https://easy.c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
+//https://c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
 //sendTr
 router.post('/sendTr', function(req, res, next) {
   console.log('sendTr');
@@ -196,10 +215,11 @@ router.post('/sendTr', function(req, res, next) {
     var txt_to_amt      = req.body.txt_to_amt;
 
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
     if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
     if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
     // balance changed ... 
@@ -215,8 +235,10 @@ router.post('/sendTr', function(req, res, next) {
     }
 
     //발송 주소에 해당하는 회원이 없습니다.
-    let result1 = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance FROM user WHERE c4ei_addr='" + txt_to_address + "'");
+    let result1 = sync_connection.query("SELECT id, email, c4ei_addr, c4ei_balance FROM user WHERE c4ei_addr='" + txt_to_address + "'");
     let to_id = result1[0].id;
+    let to_email = result1[0].email;
+    
     if(to_id == undefined ||to_id==""){
       res.render('msgpage', { title: 'easypay Message', msg : '발송 주소에 해당하는 회원이 없습니다'});
       return; 
@@ -224,10 +246,11 @@ router.post('/sendTr', function(req, res, next) {
 
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
-      //https://easy.c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
+      //https://c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
       let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
       save_db_user_bal(user_id, txt_to_address, txt_to_amt, user_ip);
-      save_db_sendlog(user_id, txt_my_addr, txt_to_address, txt_to_amt, user_ip);
+      var txt_memo =txt_my_email +" : c4ei->"+to_email +":"+txt_to_amt;
+      save_db_sendlog(user_id, txt_my_addr, txt_to_address, txt_to_amt, user_ip, txt_memo);
       
       //######################################################################################
       //######################################################################################
@@ -250,6 +273,218 @@ router.post('/sendTr', function(req, res, next) {
             , my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
   }
 });
+
+///////
+router.get('/exPot2C4ei', function(req, res, next) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
+    // console.log("c4ei_addr :"+c4ei_addr);
+    if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+      var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
+        // console.log("wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
+        wallet_balance = web3.utils.fromWei(result, "ether");
+        // wallet_balance = getAmtWei(result);
+        if (wallet_balance != c4ei_balance){
+          let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
+          console.log(user_email +" wallet_balance :"+wallet_balance);
+          c4ei_balance = wallet_balance;
+        }
+      });
+    }
+    /////////////////////////
+    res.render('exPot2C4ei', { title: 'easypay Send', c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email, 
+      pot:pot_balance});
+  }
+});
+
+router.get('/exC4ei2Pot', function(req, res, next) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
+    // console.log("c4ei_addr :"+c4ei_addr);
+    if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+      var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
+        // console.log("wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
+        wallet_balance = web3.utils.fromWei(result, "ether");
+        // wallet_balance = getAmtWei(result);
+        if (wallet_balance != c4ei_balance){
+          let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
+          console.log(user_email +" wallet_balance :"+wallet_balance);
+          c4ei_balance = wallet_balance;
+        }
+      });
+    }
+    /////////////////////////
+    res.render('exC4ei2Pot', { title: 'easypay Send', c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email, 
+      pot:pot_balance});
+  }
+});
+
+router.post('/exTrCP', function(req, res, next) {
+  console.log('/exTrCP');
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    var txt_my_email    = req.body.txt_my_email;
+    var txt_my_addr     = req.body.txt_my_addr;
+    var txt_my_balance  = req.body.txt_my_balance;
+    var txt_pot_balance = req.body.txt_pot_balance;
+    var txt_chg_c4ei    = req.body.txt_chg_c4ei;
+    var txt_chg_pot     = req.body.txt_chg_pot;
+
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
+    if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
+    if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
+    // balance changed ... 
+    if(c4ei_balance!=txt_my_balance){ 
+      console.log('balance different so can`t send'); 
+      res.render('msgpage', { title: 'easypay Message', msg : 'balance different so can`t send'});
+      return; 
+    }
+    if((c4ei_balance-txt_chg_c4ei)<0){ 
+      console.log('not enough balance so can`t send'); 
+      res.render('msgpage', { title: 'easypay Message', msg : 'not enough balance so can`t send'});
+      return; 
+    }
+    if(pot_balance!=txt_pot_balance){ 
+      //
+    }
+    // console.log("c4ei_addr :"+c4ei_addr);
+    if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+      //https://c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
+      let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      save_db_c4ei2pot(user_id, txt_chg_c4ei, txt_chg_pot, user_ip);
+      var txt_to_address ="0x66ec272cf68967ff821db6fd5ab8ae2ed35014e4";
+      var txt_memo =txt_chg_c4ei +" c4ei -> "+txt_chg_pot+" pot self ";
+      save_db_sendlog(user_id, txt_my_addr, txt_to_address, txt_chg_c4ei, user_ip,txt_memo);
+    }
+    /////////////////////////
+    // res.render('exP0t2C4eiok', { title: 'easypay Send OK', my_email : txt_my_email, my_addr:txt_my_addr, my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
+    res.redirect('/');
+  }
+});
+
+router.post('/exTrPC', function(req, res, next) {
+  console.log('/exTrPC');
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    var txt_my_email    = req.body.txt_my_email;
+    var txt_my_addr     = req.body.txt_my_addr;
+    var txt_my_balance  = req.body.txt_my_balance;
+    var txt_pot_balance = req.body.txt_pot_balance;
+    var txt_chg_c4ei    = req.body.txt_chg_c4ei;
+    var txt_chg_pot     = req.body.txt_chg_pot;
+
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
+    if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
+    if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
+    // balance changed ... 
+    // if(c4ei_balance!=txt_my_balance){ 
+    //   console.log('balance different so can`t send'); 
+    //   res.render('msgpage', { title: 'easypay Message', msg : 'balance different so can`t send'});
+    //   return; 
+    // }
+    if((pot_balance-txt_chg_pot)<0){ 
+      console.log('not enough balance so can`t send'); 
+      res.render('msgpage', { title: 'easypay Message', msg : 'not enough balance so can`t send'});
+      return; 
+    }
+    if(pot_balance!=txt_pot_balance){ 
+      //
+    }
+    // console.log("c4ei_addr :"+c4ei_addr);
+    if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+      //https://c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
+      let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      save_db_pot2c4ei(user_id, txt_chg_c4ei, txt_chg_pot, user_ip);
+      var txt_to_address ="0x66ec272cf68967ff821db6fd5ab8ae2ed35014e4";
+      var txt_memo = txt_chg_pot + " : pot --> " + txt_chg_c4ei +" : c4ei ->  self ";
+      /////////////////////////
+      // save_db_sendlog(user_id, txt_my_addr, txt_to_address, txt_chg_c4ei, user_ip,txt_memo);
+      //username : bankC4ei
+      //id : 17
+      //email : wwwggbbest@gmail.com
+      //address : 0x014B0c7D9b22469fE13abf585b1E38676A4a136f
+      save_db_sendlog(17, "0x014B0c7D9b22469fE13abf585b1E38676A4a136f", c4ei_addr, txt_chg_c4ei, user_ip,txt_memo);
+      /////////////////////////
+    }
+    /////////////////////////
+    // res.render('exP0t2C4eiok', { title: 'easypay Send OK', my_email : txt_my_email, my_addr:txt_my_addr, my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
+    res.redirect('/');
+  }
+});
+
+async function save_db_pot2c4ei(user_id, txt_chg_c4ei, txt_chg_pot, user_ip){
+  console.log("save_db_c4ei2pot");
+  const connection = await pool.getConnection(async conn => conn); 
+  let strsql ="update user set c4ei_balance=c4ei_balance+'"+txt_chg_c4ei+"',pot=pot-'"+txt_chg_pot+"', last_reg=now(),last_ip='"+user_ip+"' where id = '" + user_id + "'";
+  console.log(strsql);
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_c4ei2pot update 1 success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+}
+
+async function save_db_c4ei2pot(user_id, txt_chg_c4ei, txt_chg_pot, user_ip){
+  console.log("save_db_c4ei2pot");
+  const connection = await pool.getConnection(async conn => conn); 
+  let strsql ="update user set c4ei_balance=c4ei_balance-'"+txt_chg_c4ei+"',pot=pot+'"+txt_chg_pot+"', last_reg=now(),last_ip='"+user_ip+"' where id = '" + user_id + "'";
+  console.log(strsql);
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_c4ei2pot update 1 success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+}
 
 async function save_db_user_bal(user_id, txt_to_address, txt_to_amt, user_ip){
   console.log("save_db_user_bal");
@@ -285,14 +520,14 @@ async function save_db_user_bal(user_id, txt_to_address, txt_to_amt, user_ip){
 
 }
 
-async function save_db_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip){
+async function save_db_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip,txt_memo){
   //######################################################################################
   // async save test !!!!
   //######################################################################################
   var fromAmt = await getAmt(txt_my_addr); fromAmt = await getAmtWei(fromAmt);
   var toAmt = await getAmt(txt_to_address); toAmt = await getAmtWei(toAmt);
-  var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,regip)";
-  strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','" + user_ip + "')";
+  var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,regip, memo)";
+  strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','" + user_ip + "','"+txt_memo+"')";
   const connection = await pool.getConnection(async conn => conn); 
   try { 
     await connection.beginTransaction(); 
@@ -408,7 +643,7 @@ router.get('/address_generator', function(req, res, next) {
     /////////////////////////
     console.log("address_generator ");
     let user_email = req.cookies.user_email;
-    let result1 = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result1 = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result1[0].id;
     let c4ei_addr = result1[0].c4ei_addr;
     // let c4ei_balance = result1[0].c4ei_balance;
@@ -442,10 +677,94 @@ router.post('/',
 ); // localhost:3000/api/v1/users
 router.patch('/id/:id', auth(Role.Admin), updateUserSchema, awaitHandlerFactory(userController.updateUser)); // localhost:3000/api/v1/users/id/1 , using patch for partial update
 router.delete('/id/:id', auth(Role.Admin), awaitHandlerFactory(userController.deleteUser)); // localhost:3000/api/v1/users/id/1
-
-
 router.post('/login', validateLogin, awaitHandlerFactory(userController.userLogin)); // localhost:3000/api/v1/users/login
 
+
+////////////////////////////////////////////////////////////////////////
+//https://stackoverflow.com/questions/63458440/save-google-authenticated-user-into-mysql-database-with-node-js-and-passport-js
+//npm install passport passport-google-oauth2
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
+const passport = require("passport");
+router.use(passport.initialize());
+
+passport.serializeUser((user, done) => { 
+  // console.log("passport.serializeUser"); 
+  done(null, user);
+  
+});
+
+passport.deserializeUser((req, user, done) => {
+  // console.log("passport.deserializeUser");
+  sync_connection.query("SELECT id, username, email, google_id, google_token FROM user WHERE google_id = ?", [user.google_id], (err, rows) => {
+      if (err) {
+          console.log(err);
+          return done(null, err);
+      }
+      done(null, user);
+  });
+});
+
+passport.use(new GoogleStrategy({
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CLIENT_CALLBACK,
+      passReqToCallback: true,
+      // profileFields: configAuth.googleAuth.profileFields
+  }, 
+  function (req, accessToken, refreshToken, profile, done) {
+    var user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+    process.nextTick(function () {
+      try{
+        let result1 = sync_connection.query("SELECT id, username, email, google_id, google_token FROM user WHERE google_id ='" + profile.id + "'");
+        let user_idx = result1[0].id;
+        let user_email = result1[0].email;
+        let google_id = result1[0].google_id;
+        let google_token = result1[0].google_token;
+        let google_name = result1[0].username;
+
+        //####################################
+        req.session.user_idx = user_idx;
+        req.session.user_email = user_email;
+        //####################################
+
+        let user = { google_id: google_id, google_token: google_token, google_email: user_email, google_name: google_name }
+        return done(null, user);
+      }catch (err){
+        console.log(err + ":err");
+        let newUser = {
+          google_id: profile.id,
+          google_token: accessToken,
+          google_email: profile.emails[0].value,
+          google_name: profile.name.givenName + ' ' + profile.name.familyName
+          }
+          save_db_googleid(newUser.google_name, newUser.google_email, newUser.google_id, newUser.google_token, user_ip);
+          return done(null, newUser);
+        }
+      });
+    }
+));
+
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+router.get('/auth/google/callback', passport.authenticate('google', {
+    successRedirect: '/session2cookie',
+    failureRedirect: '/htmlLogin'
+}));
+
+function save_db_googleid(username, email, google_id, google_token, user_ip){
+  //######################################################################################
+  // async save test !!!!
+  //######################################################################################
+  var strsql = "INSERT INTO user (username, email, google_id, google_token, password, regip) values ('" + username + "','" + email + "','" + google_id + "','" + google_token + "','$2a$08$kCv8ZIWU1pMiTm8BNJl.eeTYr2iopCY5YsuG1KGcB3D2qk6kiUv7a','"+user_ip+"')";
+  // console.log(strsql);
+  try { 
+    let result1 = sync_connection.query(strsql);
+    console.log("############# google insert success #############");
+  } catch (err) { 
+    console.log("############# google insert fail #############");
+  } 
+}
+////////////////////////////////////////////////////////////////////////
 
 function fn_ChkC4eiNetAlive(res){
   if(!chkNetwork()){

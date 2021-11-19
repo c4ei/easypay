@@ -3,6 +3,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>easypay</title>
 	<link rel="stylesheet" href="/css/main.css">
+	<style>
+		#google_login_btn {
+			background: url("/images/btn_google_signin.png")
+				no-repeat;
+			background-size: 100% 100%;
+			cursor: pointer;
+			width: 194px;
+			height: 46px;
+		}
+	</style>
 	<script src="/js/jquery.min.js"></script>
 </head>
 
@@ -91,6 +101,11 @@
 					<br />
 				</div>
 
+			</div>
+			<div id="lyGoogleAuth"  class="popup" style="display: block;">
+				<form method="GET" action="/auth/google">
+					<input id="google_login_btn" type="submit" name="GoogleAuth" value="" />
+				</form>
 			</div>
 			<div id="lySelfrom"  class="popup">
 				<script>
