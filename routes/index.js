@@ -16,6 +16,11 @@ const { createUserSchema, updateUserSchema, validateLogin } = require('../app/mi
 const Web3 = require("web3");
 const web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.185:21004"));
 
+// npm i caver-js
+const Caver = require('caver-js')
+const caver = new Caver('http://192.168.1.157:8217/')
+// const wallet = caver.klay.accounts.create(process.env.C4EI_ADDR_PWD);
+
 ////////////////////////////////////////////////////////////////////////
 // add vchat --
 ////////////////////////////////////////////////////////////////////////
@@ -389,26 +394,54 @@ router.get('/exCeik2Pot', function(req, res, next) {
     let klay_balance = result[0].klay_balance;
     let klay_ceik_addr = result[0].klay_ceik_addr;
     let klay_ceik_balance = result[0].klay_ceik_balance;
-    // console.log("c4ei_addr :"+c4ei_addr);
-    // if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
-    //   var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
-    //     // console.log("wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
-    //     wallet_balance = web3.utils.fromWei(result, "ether");
-    //     // wallet_balance = getAmtWei(result);
-    //     if (wallet_balance != c4ei_balance){
-    //       let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
-    //       console.log(user_email +" wallet_balance :"+wallet_balance);
-    //       c4ei_balance = wallet_balance;
-    //     }
-    //   });
-    // }
+    // console.log("klay_addr :"+klay_addr);
+    let err_msg = "";
+    if ((klay_addr!="" &&klay_addr!=null) && user_id > 0){
+      // let klay_balance_block =  getBalanceKlay(klay_addr);
+      // caver.rpc.klay.getBalance(address).then((response) => {
+      //   const klay_balance_block = caver.utils.convertFromPeb(caver.utils.hexToNumberString(response));
+      //   if (klay_balance_block != klay_balance){
+      //     let result = sync_connection.query("update user set klay_balance='"+klay_balance_block+"' WHERE id='" + user_id + "'");
+      //     console.log(user_email +" klay_balance_block :"+klay_balance_block);
+      //     klay_balance = klay_balance_block;
+      //   }
+      // });
+      //caver.rpc.klay.getBalance('0x0011A1cad2cA5d23Fde3cc0DefB10e1a8C3Df0c4').then(console.log)
+      var wallet_balance = caver.rpc.klay.getBalance(klay_addr, function(error, result) {
+        // if(result != "undefined" || result != undefined){
+        if(error == ""){
+          wallet_balance = caver.utils.convertFromPeb(caver.utils.hexToNumberString(result));
+          // wallet_balance = caver.utils.convertFromPeb(result, "KLAY");
+          if (wallet_balance != klay_balance){
+            let result = sync_connection.query("update user set klay_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
+            console.log(user_email +" wallet_balance :"+wallet_balance);
+            klay_balance = wallet_balance;
+          }
+        }else{
+          err_msg = "caver.rpc.klay.getBalance maybe wrong";
+          console.log(err_msg);
+        }
+        // console.log("klay_wallet_balance : "+ caver.rpc.utils.convertFromPeb(result, "KLAY")); //0x0011A1cad2cA5d23Fde3cc0DefB10e1a8C3Df0c4
+         //0x0011A1cad2cA5d23Fde3cc0DefB10e1a8C3Df0c4
+      });
+    }
     /////////////////////////
+    
     res.render('exCeik2Pot', { title: 'easypay Send Ceik2Pot', 
       c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email, 
-      pot:pot_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance
+      pot:pot_balance, klay_addr:klay_addr, klay_balance:klay_balance, klay_ceik_addr:klay_ceik_addr,
+      klay_ceik_balance:klay_ceik_balance, err_msg : err_msg
     });
   }
 });
+
+// const getBalanceKlay = (address) => {
+// 	return caver.rpc.klay.getBalance(address).then((response) => {
+// 		const _balance = caver.utils.convertFromPeb(caver.utils.hexToNumberString(response));
+// 		console.log(`BALANCE: ${_balance}`);
+// 		return _balance;
+// 	})
+// }
 
 router.post('/exTrCP', function(req, res, next) {
   console.log('/exTrCP');

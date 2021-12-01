@@ -1,5 +1,20 @@
 <%- include('./partials/head'); %>
-
+<% 
+if (err_msg!=""){ %>
+<div id="tempMsg" style="top:20px;left:20px;position: absolute;z-index: 1;">
+  <%=err_msg%> 
+</div>
+<script language="javascript">
+  function jsfn_show5s(){
+    setTimeout("jsfn_disap()",5000);
+  }
+  function jsfn_disap(){
+    var _tempMsg = document.getElementById("tempMsg");
+    _tempMsg.style.display = none;
+  }
+  jsfn_show5s();
+</script>
+<% } %>
 <table width="100%" border="0">
   <form id="sendForm" method="post" >
     <tr>
@@ -83,4 +98,4 @@
   // }
 </script>
 
-<%- include('./partials/bottom'); %>
+<%- include('./partials/bottomnoprj'); %>

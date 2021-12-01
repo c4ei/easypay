@@ -49,3 +49,7 @@ pm2 restart node ./bin/www
 
 pm2 start node ./bin/www
 
+// npm i caver-js
+const Caver = require('caver-js')
+const caver = new Caver('http://192.168.1.157:8217/')
+const wallet = caver.klay.accounts.create(process.env.C4EI_ADDR_PWD);
