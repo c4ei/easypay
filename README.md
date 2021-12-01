@@ -53,3 +53,9 @@ pm2 start node ./bin/www
 const Caver = require('caver-js')
 const caver = new Caver('http://192.168.1.157:8217/')
 const wallet = caver.klay.accounts.create(process.env.C4EI_ADDR_PWD);
+
+docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' c4ei2dbsrc_idx-database_1 
+
+web3.utils.toWei
+caver.utils.convertFromPeb(caver.utils.hexToNumberString(result));
+web3.utils.toWei(txt_to_amt,'ether')

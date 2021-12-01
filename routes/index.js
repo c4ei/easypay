@@ -376,6 +376,8 @@ router.get('/exC4ei2Pot', function(req, res, next) {
   }
 });
 
+//////////////////////////// klay ////////////////////////////
+
 //klay ceik
 router.get('/exCeik2Pot', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -435,6 +437,151 @@ router.get('/exCeik2Pot', function(req, res, next) {
   }
 });
 
+//klay ceik
+router.post('/exTrCeikToPot', function(req, res, next) {
+  console.log('/exTrCeikToPot');
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    var txt_my_email    = req.body.txt_my_email;
+    var txt_my_addr     = req.body.txt_my_addr;
+    var txt_my_balance  = req.body.txt_my_balance;
+    var txt_pot_balance = req.body.txt_pot_balance;
+    var txt_chg_ceik    = req.body.txt_chg_ceik;
+    var txt_chg_pot     = req.body.txt_chg_pot;
+
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
+    if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
+    if(klay_ceik_addr!=txt_my_addr){ console.log('klay_ceik_addr different so can`t send'); return; }
+    // balance changed ... 
+    if(klay_ceik_balance!=txt_my_balance){ 
+      console.log('balance different so can`t send'); 
+      res.render('msgpage', { title: 'oops', msg : 'klay_ceik balance different so can`t send'});
+      return; 
+    }
+    if((klay_ceik_balance-txt_chg_ceik)<0){ 
+      console.log('not enough balance so can`t send'); 
+      res.render('msgpage', { title: 'oops', msg : 'not enough balance so can`t send'});
+      return; 
+    }
+    if(pot_balance!=txt_pot_balance){ 
+      //
+    }
+    // console.log("c4ei_addr :"+c4ei_addr);
+    if ((klay_ceik_addr!="" &&klay_ceik_addr!=null) && user_id > 0){
+      let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      save_db_ceik2pot(user_id, txt_chg_ceik, txt_chg_pot, user_ip);
+      var txt_to_address ="0x7C720ca152B43fa72a24eCcd51ccDAFBF74A884e"; // clip klay
+      var txt_memo =txt_chg_ceik +" c4ei -> "+txt_chg_pot+" pot self ";
+      save_db_send_ceik_log(user_id, txt_my_addr, txt_to_address, txt_chg_ceik, user_ip,txt_memo);
+    }
+    /////////////////////////
+    // res.render('exP0t2C4eiok', { title: 'easypay Send OK', my_email : txt_my_email, my_addr:txt_my_addr, my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
+    res.redirect('/');
+  }
+});
+
+async function save_db_ceik2pot(user_id, txt_chg_ceik, txt_chg_pot, user_ip){
+  console.log("save_db_ceik2pot");
+  const connection = await pool.getConnection(async conn => conn); 
+  let strsql ="update user set klay_ceik_balance=klay_ceik_balance-'"+txt_chg_ceik+"',pot=pot+'"+txt_chg_pot+"', last_reg=now(),last_ip='"+user_ip+"' where id = '" + user_id + "'";
+  console.log(strsql);
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_ceik2pot update 1 success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+}
+
+async function save_db_send_ceik_log(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip,txt_memo){
+  //######################################################################################
+  // async save test !!!!
+  //######################################################################################
+  var fromAmt = await getAmt(txt_my_addr); fromAmt = await getAmtWei(fromAmt);
+  var toAmt = await getAmt(txt_to_address); toAmt = await getAmtWei(toAmt);
+  var strsql = "insert into sendlog_klay (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,regip, memo)";
+  strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','" + user_ip + "','"+txt_memo+"')";
+  const connection = await pool.getConnection(async conn => conn); 
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_send_ceik_log insert success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+
+    // sync
+    let result1 = sync_connection.query("select max(tidx) as maxtidx from sendlog_klay where userIdx = '" + user_id + "'");
+    let tidx = result1[0].maxtidx;
+    console.log("############# " + tidx +" : rtn #############");
+    sendTr_klay(txt_my_addr, txt_to_address, txt_to_amt, tidx);
+
+  }
+}
+
+async function sendTr_klay(txt_my_addr, txt_to_address, txt_to_amt, tidx){
+  console.log('CEIK 트랜잭션 수행');
+  await fn_unlockAccount_klay(txt_my_addr);
+
+  var log="";
+  caver.klay.sendTransaction({
+    from: txt_my_addr,
+    to: txt_to_address,
+    value: caver.utils.convertFromPeb(caver.utils.hexToNumberString(txt_to_amt)),
+    gas: 100000
+  }).
+  //on('confirmation', function(confNumber, receipt, latestBlockHash){ console.log('CONFIRMED'); })
+  once('sent', function(payload){ console.log('sent'); })
+  .then(function(receipt){
+    save_db_sendlog_ceik_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
+  });
+}
+
+async function fn_unlockAccount_klay(addr){
+  await caver.klay.personal.unlockAccount(addr, process.env.C4EI_ADDR_PWD, 500).then(function (result) {
+    console.log('fn_unlockAccount_klay result :' + result);
+  });
+}
+
+async function save_db_sendlog_ceik_end(tidx ,blockNumber,contractAddress,blockHash,transactionHash , successYN){
+  console.log("save_db_sendlog_ceik_end");
+  const connection = await pool.getConnection(async conn => conn); 
+  let strsql ="update sendlog_klay set blockNumber='"+blockNumber+"',contractAddress='"+contractAddress+"',blockHash='"+blockHash+"',transactionHash='"+transactionHash+"', successYN='"+successYN+"', last_reg=now() where tidx = '" + tidx + "'";
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_sendlog_ceik_end insert success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+}
+
 // const getBalanceKlay = (address) => {
 // 	return caver.rpc.klay.getBalance(address).then((response) => {
 // 		const _balance = caver.utils.convertFromPeb(caver.utils.hexToNumberString(response));
@@ -442,6 +589,8 @@ router.get('/exCeik2Pot', function(req, res, next) {
 // 		return _balance;
 // 	})
 // }
+
+//////////////////////////// klay ////////////////////////////
 
 router.post('/exTrCP', function(req, res, next) {
   console.log('/exTrCP');
@@ -565,7 +714,7 @@ router.post('/exTrPC', function(req, res, next) {
 });
 
 async function save_db_pot2c4ei(user_id, txt_chg_c4ei, txt_chg_pot, user_ip){
-  console.log("save_db_c4ei2pot");
+  console.log("save_db_pot2c4ei");
   const connection = await pool.getConnection(async conn => conn); 
   let strsql ="update user set c4ei_balance=c4ei_balance+'"+txt_chg_c4ei+"',pot=pot-'"+txt_chg_pot+"', last_reg=now(),last_ip='"+user_ip+"' where id = '" + user_id + "'";
   console.log(strsql);
@@ -573,7 +722,7 @@ async function save_db_pot2c4ei(user_id, txt_chg_c4ei, txt_chg_pot, user_ip){
     await connection.beginTransaction(); 
     await connection.query(strsql); 
     await connection.commit(); 
-    console.log('save_db_c4ei2pot update 1 success!'); 
+    console.log('save_db_pot2c4ei update 1 success!'); 
   } catch (err) { 
     await connection.rollback(); 
     throw err; 

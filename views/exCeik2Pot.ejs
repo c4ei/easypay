@@ -44,7 +44,7 @@ if (err_msg!=""){ %>
   </tr>
   <tr>
     <td>change amount</td>
-    <td style="text-align: left;"><input type="number" id="txt_chg_c4ei" name="txt_chg_c4ei" value="" maxlength="4" style="width: 100px;font-size: 11px;" 
+    <td style="text-align: left;"><input type="number" id="txt_chg_ceik" name="txt_chg_ceik" value="" maxlength="4" style="width: 100px;font-size: 11px;" 
       oninput="fn_maxLengthCheck(this);this.value = this.value.replaceAll(/\D/g, '');"
       onKeyup="setPOT();"
       > 
@@ -70,26 +70,26 @@ if (err_msg!=""){ %>
   }
 
   function setPOT() {
-    var txt_chg_c4ei  = document.getElementById("txt_chg_c4ei").value;
-        document.getElementById("txt_chg_pot").value = txt_chg_c4ei * 100;
+    var txt_chg_ceik  = document.getElementById("txt_chg_ceik").value;
+        document.getElementById("txt_chg_pot").value = txt_chg_ceik * 100;
   }
 
   function jsfn_send(){
     var txt_my_addr      = document.getElementById("txt_my_addr").value;
     var txt_my_balance   = document.getElementById("txt_my_balance").value;
     var txt_pot_balance  = document.getElementById("txt_pot_balance").value;
-    var txt_chg_c4ei     = document.getElementById("txt_chg_c4ei").value;
+    var txt_chg_ceik     = document.getElementById("txt_chg_ceik").value;
     var txt_chg_pot      = document.getElementById("txt_chg_pot").value;
     if(txt_my_addr==""||txt_my_addr==undefined){
       alert('generate ceik address first !');
       return;
     }
-    if( parseFloat(txt_my_balance)  < parseFloat(txt_chg_c4ei)){
+    if( parseFloat(txt_my_balance)  < parseFloat(txt_chg_ceik)){
       alert('can`t send your balance is small');
       return;
     }
     if(confirm('Are you sure? sended can`t stop proceed')){
-      document.getElementById("sendForm").action = "/exTrCP";
+      document.getElementById("sendForm").action = "/exTrCeikToPot";
       document.getElementById("sendForm").submit();
     }
   }
