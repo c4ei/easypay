@@ -12,8 +12,8 @@ function errorMiddleware(error, req, res, next) {
         message,
         ...(data) && data
     }
-
-    res.status(status).send(error);
+    res.render('msgpage', { title: 'oops', msg : '500 error '+data+''});
+    // res.status(status).send(error);
 }
 
 function getCurrentDayTimestamp() {

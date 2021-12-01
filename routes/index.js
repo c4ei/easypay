@@ -86,16 +86,23 @@ router.get('/', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
     let pot_balance = result[0].pot;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
     // 
     // fn_ChkC4eiNetAlive();
     /////////////////////////
     // console.log("97 c4ei_addr :"+c4ei_addr);
-    if(c4ei_addr=="" || c4ei_addr==null){
+    if( (c4ei_addr=="" || c4ei_addr==null) 
+    || (klay_addr=="" || klay_addr==null)
+    ){
       res.redirect('/address_generator');
     }
     /// c4ei_block_bal balance update 
@@ -140,10 +147,15 @@ router.get('/syncbalance', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
@@ -171,10 +183,15 @@ router.get('/rcv', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
@@ -215,22 +232,27 @@ router.post('/sendTr', function(req, res, next) {
     var txt_to_amt      = req.body.txt_to_amt;
 
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
     let pot_balance = result[0].pot;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
     if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
     if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
     // balance changed ... 
     if(c4ei_balance!=txt_my_balance){ 
       console.log('balance different so can`t send'); 
-      res.render('msgpage', { title: 'easypay Message', msg : 'balance different so can`t send'});
+      res.render('msgpage', { title: 'oops', msg : 'balance different so can`t send'});
       return; 
     }
     if((c4ei_balance-txt_to_amt)<0){ 
       console.log('not enough balance so can`t send'); 
-      res.render('msgpage', { title: 'easypay Message', msg : 'not enough balance so can`t send'});
+      res.render('msgpage', { title: 'oops', msg : 'not enough balance so can`t send'});
       return; 
     }
 
@@ -240,7 +262,7 @@ router.post('/sendTr', function(req, res, next) {
     let to_email = result1[0].email;
     
     if(to_id == undefined ||to_id==""){
-      res.render('msgpage', { title: 'easypay Message', msg : '발송 주소에 해당하는 회원이 없습니다'});
+      res.render('msgpage', { title: 'oops', msg : '발송 주소에 해당하는 회원이 없습니다'});
       return; 
     }
 
@@ -283,11 +305,16 @@ router.get('/exPot2C4ei', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
     let pot_balance = result[0].pot;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
@@ -315,11 +342,16 @@ router.get('/exC4ei2Pot', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
     let pot_balance = result[0].pot;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
@@ -339,6 +371,45 @@ router.get('/exC4ei2Pot', function(req, res, next) {
   }
 });
 
+//klay ceik
+router.get('/exCeik2Pot', function(req, res, next) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+    // console.log("c4ei_addr :"+c4ei_addr);
+    // if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+    //   var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
+    //     // console.log("wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
+    //     wallet_balance = web3.utils.fromWei(result, "ether");
+    //     // wallet_balance = getAmtWei(result);
+    //     if (wallet_balance != c4ei_balance){
+    //       let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
+    //       console.log(user_email +" wallet_balance :"+wallet_balance);
+    //       c4ei_balance = wallet_balance;
+    //     }
+    //   });
+    // }
+    /////////////////////////
+    res.render('exCeik2Pot', { title: 'easypay Send Ceik2Pot', 
+      c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email, 
+      pot:pot_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance
+    });
+  }
+});
+
 router.post('/exTrCP', function(req, res, next) {
   console.log('/exTrCP');
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -355,22 +426,27 @@ router.post('/exTrCP', function(req, res, next) {
     var txt_chg_pot     = req.body.txt_chg_pot;
 
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
     let pot_balance = result[0].pot;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
     if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
     if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
     // balance changed ... 
     if(c4ei_balance!=txt_my_balance){ 
       console.log('balance different so can`t send'); 
-      res.render('msgpage', { title: 'easypay Message', msg : 'balance different so can`t send'});
+      res.render('msgpage', { title: 'oops', msg : 'balance different so can`t send'});
       return; 
     }
     if((c4ei_balance-txt_chg_c4ei)<0){ 
       console.log('not enough balance so can`t send'); 
-      res.render('msgpage', { title: 'easypay Message', msg : 'not enough balance so can`t send'});
+      res.render('msgpage', { title: 'oops', msg : 'not enough balance so can`t send'});
       return; 
     }
     if(pot_balance!=txt_pot_balance){ 
@@ -407,22 +483,27 @@ router.post('/exTrPC', function(req, res, next) {
     var txt_chg_pot     = req.body.txt_chg_pot;
 
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
     let pot_balance = result[0].pot;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
     if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
     if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
     // balance changed ... 
     // if(c4ei_balance!=txt_my_balance){ 
     //   console.log('balance different so can`t send'); 
-    //   res.render('msgpage', { title: 'easypay Message', msg : 'balance different so can`t send'});
+    //   res.render('msgpage', { title: 'oops', msg : 'balance different so can`t send'});
     //   return; 
     // }
     if((pot_balance-txt_chg_pot)<0){ 
       console.log('not enough balance so can`t send'); 
-      res.render('msgpage', { title: 'easypay Message', msg : 'not enough balance so can`t send'});
+      res.render('msgpage', { title: 'oops', msg : 'not enough balance so can`t send'});
       return; 
     }
     if(pot_balance!=txt_pot_balance){ 
@@ -643,19 +724,34 @@ router.get('/address_generator', function(req, res, next) {
     /////////////////////////
     console.log("address_generator ");
     let user_email = req.cookies.user_email;
-    let result1 = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot FROM user a WHERE a.email='" + user_email + "'");
+    let result1 = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result1[0].id;
     let c4ei_addr = result1[0].c4ei_addr;
+    let klay_addr = result1[0].klay_addr;
+    let klay_balance = result1[0].klay_balance;
+    let klay_ceik_addr = result1[0].klay_ceik_addr;
+    let klay_ceik_balance = result1[0].klay_ceik_balance;
+    let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+
     // let c4ei_balance = result1[0].c4ei_balance;
     if ((c4ei_addr=="" ||c4ei_addr==null) && user_id > 0){
       let result2 = sync_connection.query("SELECT idx,address,cur_bal FROM address WHERE useYN='Y' and mappingYN='N' AND cur_bal=0 AND user_id=0 LIMIT 1");
       let new_address = result2[0].address;
       console.log("new_address :"+ new_address);
       let result3 = sync_connection.query("UPDATE address SET email='"+user_email+"',user_id='" + user_id + "',mappingYN='Y',last_reg=now() WHERE  address ='"+new_address+"'");
-      let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
       let result4 = sync_connection.query("UPDATE user SET c4ei_addr='"+new_address+"',regip='"+user_ip+"',last_reg=now() WHERE id='" + user_id + "'");
       console.log("result4 end");
     }
+    // klay
+    if ((klay_addr=="" ||klay_addr==null) && user_id > 0){
+      let result5 = sync_connection.query("SELECT idx,address,cur_bal FROM address_klay WHERE useYN='Y' and mappingYN='N' AND cur_bal=0 AND user_id=0 LIMIT 1");
+      let new_address_klay = result5[0].address;
+      console.log("new_address_klay :"+ new_address_klay);
+      let result6 = sync_connection.query("UPDATE address_klay SET email='"+user_email+"',user_id='" + user_id + "',mappingYN='Y',last_reg=now() WHERE  address ='"+new_address_klay+"'");
+      let result7 = sync_connection.query("UPDATE user SET klay_addr='"+new_address_klay+"', klay_ceik_addr='"+new_address_klay+"',regip='"+user_ip+"',last_reg=now() WHERE id='" + user_id + "'");
+      console.log("result7 end");
+    }
+
     res.redirect('/');
     /////////////////////////
   }

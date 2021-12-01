@@ -106,7 +106,7 @@ class UserController {
         const result = await UserModel.update(restOfUpdates, req.params.id);
 
         if (!result) {
-            res.render('msgpage', { title: 'easypay Message', msg : '404 Something went wrong'});
+            res.render('msgpage', { title: 'oops', msg : '404 Something went wrong'});
             throw new HttpException(404, 'Something went wrong');
         }
 
@@ -121,7 +121,7 @@ class UserController {
     deleteUser = async (req, res, next) => {
         const result = await UserModel.delete(req.params.id);
         if (!result) {
-            res.render('msgpage', { title: 'easypay Message', msg : '404 User not found!'});
+            res.render('msgpage', { title: 'oops', msg : '404 User not found!'});
             throw new HttpException(404, 'User not found');
         }
         res.send('User has been deleted');
@@ -134,7 +134,7 @@ class UserController {
         const user = await UserModel.findOne({ email });
         // console.log("easypay/app/controllers/user.controller.js [136] userLogin ");
         if (!user) {
-            res.render('msgpage', { title: 'easypay Message', msg : '401 Unable to login!'});
+            res.render('msgpage', { title: 'oops', msg : '401 Unable to login!'});
             throw new HttpException(401, 'Unable to login!');
         }
         // var bcrypt = require('bcrypt');
@@ -142,7 +142,7 @@ class UserController {
         // if(bcrypt.compareSync(param_password, user_dbpwd)){
         const isMatch = await bcrypt.compare(pass, user.password);
         if (!isMatch) {
-            res.render('msgpage', { title: 'easypay Message', msg : '401 Incorrect password!'});
+            res.render('msgpage', { title: 'oops', msg : '401 Incorrect password!'});
             throw new HttpException(401, 'Incorrect password!');
         }
         // console.log("easypay/app/controllers/user.controller.js [147] userLogin ");

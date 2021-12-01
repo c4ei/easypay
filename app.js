@@ -161,6 +161,7 @@ app.use(errorMiddleware);
 app.all('*', (req, res, next) => {
   const err = new HttpException(404, 'Endpoint Not Found');
   next(err);
+  res.render('msgpage', { title: 'oops', msg : '500 error '+err+''});
 });
 // Error middleware
 app.use(errorMiddleware);
@@ -174,7 +175,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  // res.render('error');
+  res.render('msgpage', { title: 'oops', msg : '500 error '+err+''});
 });
 
 // const port = Number(process.env.PORT || 3331);
