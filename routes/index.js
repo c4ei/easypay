@@ -144,6 +144,27 @@ router.get('/htmlLogin', function(req, res, next) {
   // }
 });
 
+router.get('/qr_reader', function(req, res, next) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+    res.render('qr_reader', { title: 'easypay qr reader', c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email});
+  }
+});
+
+
 router.get('/syncbalance', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
     res.sendFile(STATIC_PATH + '/ulogin.html')
