@@ -59,3 +59,6 @@ docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}
 web3.utils.toWei
 caver.utils.convertFromPeb(caver.utils.hexToNumberString(result));
 web3.utils.toWei(txt_to_amt,'ether')
+
+pm2 flush
+pm2 log
