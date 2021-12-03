@@ -116,7 +116,7 @@ router.get('/', function(req, res, next) {
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
         // console.log("[/home/dev/www]/easypay/routes/index.js 39] wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
-        console.log("86 result :"+result);
+        // console.log("86 result :"+result);
         wallet_balance = web3.utils.fromWei(result, "ether");
         // wallet_balance = getAmtWei(result);
         if (wallet_balance != c4ei_balance){
@@ -164,7 +164,7 @@ router.get('/mybal', function(req, res, next) {
     let klay_ceik_addr = result[0].klay_ceik_addr;
     let klay_ceik_balance = result[0].klay_ceik_balance;
 
-    getBalanceC4eiCont("BCK", c4ei_addr, user_email, bck_balance);
+    getBalanceC4eiToken("BCK", c4ei_addr, user_email, bck_balance);
 
     res.render('mybal', { title: 'easypay my bal', email: user_email, c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, 
       pot:pot_balance, bck_balance:bck_balance, klay_addr:klay_addr, klay_balance:klay_balance, klay_ceik_addr:klay_ceik_addr
@@ -172,7 +172,6 @@ router.get('/mybal', function(req, res, next) {
     });
   }
 });
-
 
 router.get('/syncbalance', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -275,12 +274,12 @@ router.post('/sendTr', function(req, res, next) {
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
-    let pot_balance = result[0].pot;
-    let bck_balance = result[0].bck_balance;
-    let klay_addr = result[0].klay_addr;
-    let klay_balance = result[0].klay_balance;
-    let klay_ceik_addr = result[0].klay_ceik_addr;
-    let klay_ceik_balance = result[0].klay_ceik_balance;
+    // let pot_balance = result[0].pot;
+    // let bck_balance = result[0].bck_balance;
+    // let klay_addr = result[0].klay_addr;
+    // let klay_balance = result[0].klay_balance;
+    // let klay_ceik_addr = result[0].klay_ceik_addr;
+    // let klay_ceik_balance = result[0].klay_ceik_balance;
 
     if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
     if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
@@ -313,25 +312,9 @@ router.post('/sendTr', function(req, res, next) {
       save_db_user_bal(user_id, txt_to_address, txt_to_amt, user_ip);
       var txt_memo =txt_my_email +" : c4ei->"+to_email +":"+txt_to_amt;
       save_db_sendlog(user_id, txt_my_addr, txt_to_address, txt_to_amt, user_ip, txt_memo);
-      
-      //######################################################################################
-      //######################################################################################
-      // sync save !!!!
-      //######################################################################################
-      // var fromAmt = web3.eth.getBalance(txt_my_addr, function(error, result1) {
-      //   var toAmt = web3.eth.getBalance(txt_to_address, function(error, result2) {
-      //     fromAmt = web3.utils.fromWei(result1, "ether");
-      //     toAmt = web3.utils.fromWei(result2, "ether");
-      //     var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,successYN ,regip)";
-      //     strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','"+successYN+"','" + user_ip + "')";
-      //     let result = sync_connection.query(strsql);
-      //     console.log(result +" :sendlog 170 insert Tidx");
-      //   });
-      // });
-      //######################################################################################
     }
     /////////////////////////
-    res.render('sendok', { title: 'easypay Send OK', my_email : txt_my_email, my_addr:txt_my_addr
+    res.render('sendok', { title: 'easypay Send OK',email:user_email, my_email : txt_my_email, my_addr:txt_my_addr
             , my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
   }
 });
@@ -413,7 +396,7 @@ router.get('/exC4ei2Pot', function(req, res, next) {
   }
 });
 
-//////////////////////////// klay ////////////////////////////
+//////////////////////////// start klay ////////////////////////////
 
 //klay ceik
 router.get('/exCeik2Pot', function(req, res, next) {
@@ -582,26 +565,30 @@ async function save_db_send_ceik_log(user_id,txt_my_addr,txt_to_address,txt_to_a
 
 async function sendTr_klay(txt_my_addr, txt_to_address, txt_to_amt, tidx){
   console.log('CEIK 트랜잭션 수행');
-  await fn_unlockAccount_klay(txt_my_addr);
-
-  var log="";
-  caver.klay.sendTransaction({
-    from: txt_my_addr,
-    to: txt_to_address,
-    value: caver.utils.convertFromPeb(caver.utils.hexToNumberString(txt_to_amt)),
-    gas: 100000
-  }).
-  //on('confirmation', function(confNumber, receipt, latestBlockHash){ console.log('CONFIRMED'); })
-  once('sent', function(payload){ console.log('sent'); })
-  .then(function(receipt){
-    save_db_sendlog_ceik_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
-  });
+  if (await fn_unlockAccount_klay(txt_my_addr))
+  {
+    var log="";
+    caver.klay.sendTransaction({
+      from: txt_my_addr,
+      to: txt_to_address,
+      value: caver.utils.convertFromPeb(caver.utils.hexToNumberString(txt_to_amt)),
+      gas: 100000
+    }).
+    //on('confirmation', function(confNumber, receipt, latestBlockHash){ console.log('CONFIRMED'); })
+    once('sent', function(payload){ console.log('sent'); })
+    .then(function(receipt){
+      save_db_sendlog_ceik_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
+    });
+  }
 }
 
 async function fn_unlockAccount_klay(addr){
+  let rtn_result = false;
   await caver.klay.personal.unlockAccount(addr, process.env.C4EI_ADDR_PWD, 500).then(function (result) {
+    rtn_result = result;
     console.log('fn_unlockAccount_klay result :' + result);
   });
+  return await rtn_result;
 }
 
 async function save_db_sendlog_ceik_end(tidx ,blockNumber,contractAddress,blockHash,transactionHash , successYN){
@@ -629,7 +616,7 @@ async function save_db_sendlog_ceik_end(tidx ,blockNumber,contractAddress,blockH
 // 	})
 // }
 
-//////////////////////////// klay ////////////////////////////
+//////////////////////////// end klay ////////////////////////////
 
 router.post('/exTrCP', function(req, res, next) {
   console.log('/exTrCP');
@@ -854,39 +841,43 @@ async function save_db_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,use
 }
 
 async function fn_unlockAccount(addr){
+  let rtn_result = false;
   await web3.eth.personal.unlockAccount(addr, process.env.C4EI_ADDR_PWD, 500).then(function (result) {
+    rtn_result = result;
     console.log('fn_unlockAccount result :' + result);
   });
+  return await rtn_result;
 }
 
 async function sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx){
   console.log('C4EI 트랜잭션 수행');
-  await fn_unlockAccount(txt_my_addr);
-  
-  // web3.eth.sendTransaction({from: '0x123...', data: '0x432...'})
-  // .once('sending', function(payload){ ... })
-  // .once('sent', function(payload){ ... })
-  // .once('transactionHash', function(hash){ ... })
-  // .once('receipt', function(receipt){ ... })
-  // .on('confirmation', function(confNumber, receipt, latestBlockHash){ ... })
-  // .on('error', function(error){ ... })
-  // .then(function(receipt){
-  //   // will be fired once the receipt is mined
-  // }); and it does not recognize .once, .on, or.then
-  // or.catch
+  if (await fn_unlockAccount(txt_my_addr))
+  {
+    // web3.eth.sendTransaction({from: '0x123...', data: '0x432...'})
+    // .once('sending', function(payload){ ... })
+    // .once('sent', function(payload){ ... })
+    // .once('transactionHash', function(hash){ ... })
+    // .once('receipt', function(receipt){ ... })
+    // .on('confirmation', function(confNumber, receipt, latestBlockHash){ ... })
+    // .on('error', function(error){ ... })
+    // .then(function(receipt){
+    //   // will be fired once the receipt is mined
+    // }); and it does not recognize .once, .on, or.then
+    // or.catch
 
-  var log="";
-  web3.eth.sendTransaction({
-    from: txt_my_addr,
-    to: txt_to_address,
-    value: web3.utils.toWei(txt_to_amt,'ether'),
-    gas: 100000
-  }).
-  //on('confirmation', function(confNumber, receipt, latestBlockHash){ console.log('CONFIRMED'); })
-  once('sent', function(payload){ console.log('sent'); })
-  .then(function(receipt){
-    save_db_sendlog_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
-  });
+    var log="";
+    web3.eth.sendTransaction({
+      from: txt_my_addr,
+      to: txt_to_address,
+      value: web3.utils.toWei(txt_to_amt,'ether'),
+      gas: 100000
+    }).
+    //on('confirmation', function(confNumber, receipt, latestBlockHash){ console.log('CONFIRMED'); })
+    once('sent', function(payload){ console.log('sent'); })
+    .then(function(receipt){
+      save_db_sendlog_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
+    });
+  }
 }
 
 async function save_db_sendlog_end(tidx ,blockNumber,contractAddress,blockHash,transactionHash , successYN){
@@ -1096,7 +1087,7 @@ const minABI = [
     type: "function",
   },
 ];
-async function getBalanceC4eiCont(tokenName, walletAddress , email, pre_bck_balance) {
+function getC4eiTokenNameToAddress(tokenName) {
   var  tokenAddress = "";
   switch (tokenName) {
     case "BCK": tokenAddress = "0x1d187BbeCeF8d7b1731339c301ab8354d4F0A50b"; // BCK (BlockChainKorea)
@@ -1106,13 +1097,17 @@ async function getBalanceC4eiCont(tokenName, walletAddress , email, pre_bck_bala
     default : tokenAddress = "0x1d187BbeCeF8d7b1731339c301ab8354d4F0A50b"; // BCK (BlockChainKorea)
     break;
   }
+  return tokenAddress;
+}
+async function getBalanceC4eiToken(tokenName, walletAddress, email, pre_bck_balance) {
+  var tokenAddress = getC4eiTokenNameToAddress(tokenName);
   const Web3 = require("web3");
   const provider = "http://192.168.1.185:21004"
   const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
   const contract = new Web3Client.eth.Contract(minABI, tokenAddress);
   const result = await contract.methods.balanceOf(walletAddress).call(); // 
   let tokenbal = Web3Client.utils.fromWei(result); // 10
-  console.log("getBalanceC4eiCont block bck bal : "+tokenbal + " / db bck bal : " + pre_bck_balance);
+  console.log("getBalanceC4eiToken block bck bal : "+tokenbal + " / db bck bal : " + pre_bck_balance);
   if (pre_bck_balance != tokenbal){
     const connection = await pool.getConnection(async conn => conn); 
     let strsql ="update user set bck_balance='"+tokenbal+"' WHERE email='" + email + "'";
@@ -1120,7 +1115,7 @@ async function getBalanceC4eiCont(tokenName, walletAddress , email, pre_bck_bala
       await connection.beginTransaction(); 
       await connection.query(strsql); 
       await connection.commit(); 
-      console.log('getBalanceC4eiCont update success!'); 
+      console.log('getBalanceC4eiToken update success!'); 
     } catch (err) { 
       await connection.rollback(); 
       throw err; 
@@ -1129,6 +1124,79 @@ async function getBalanceC4eiCont(tokenName, walletAddress , email, pre_bck_bala
     }
   }
 }
+
+//send
+async function fn_unlockAccount_C4eiToken(addr){
+  let rtn_result = false;
+  await web3.eth.personal.unlockAccount(addr, process.env.C4EI_ADDR_PWD, 500).then(function (result) {
+    rtn_result = result;
+    console.log('fn_unlockAccount_C4eiToken result :' + result);
+  });
+  return await rtn_result;
+}
+async function sendC4eiToken(tokenName, sendAddress, recvAddress, sendAmt, send_email){
+    const bckExchangeAbi = require("../app/abi/erc20abi.json");
+    var tokenAddress = getC4eiTokenNameToAddress(tokenName);
+    const TokenInstance = new web3.eth.Contract(bckExchangeAbi, tokenAddress)
+    TokenInstance.methods.transfer(recvAddress, web3.utils.toWei(sendAmt,'ether')).send({from: sendAddress})
+    .on('transactionHash', (hash) => { console.log("### transactionHash ###"); console.log(hash);})
+    .once('receipt', (receipt) => {
+      console.log(send_email +":send_email / "+"blockNumber " + receipt.blockNumber + " / contractAddress" + receipt.contractAddress + " / blockHash" + receipt.blockHash + " / transactionHash" + receipt.transactionHash);
+      save_db_sendlogC4eiToken_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
+    })
+    // .on('confirmation', (confirmationNumber, receipt) => { console.log("### confirmation ###" + confirmationNumber);})
+    .on('error', console.error);
+}
+async function sendC4eiTokenBCK(tokenName, sendAddress, recvAddress, sendAmt, send_email){
+  if (await fn_unlockAccount_C4eiToken(sendAddress)){
+    await sendC4eiToken(tokenName, sendAddress, recvAddress, sendAmt, send_email);
+  }
+}
+async function save_db_sendlogC4eiToken(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip,txt_memo){
+  //######################################################################################
+  // async save test !!!!
+  //######################################################################################
+  var fromAmt = await getAmt(txt_my_addr); fromAmt = await getAmtWei(fromAmt);
+  var toAmt = await getAmt(txt_to_address); toAmt = await getAmtWei(toAmt);
+  var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,regip, memo)";
+  strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','" + user_ip + "','"+txt_memo+"')";
+  const connection = await pool.getConnection(async conn => conn); 
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_sendlog insert success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+
+    // sync
+    let result1 = sync_connection.query("select max(tidx) as maxtidx from sendlog where userIdx = '" + user_id + "'");
+    let tidx = result1[0].maxtidx;
+    console.log("############# " + tidx +" : rtn #############");
+    sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx);
+
+  }
+}
+async function save_db_sendlogC4eiToken_end(tidx ,blockNumber,contractAddress,blockHash,transactionHash , successYN){
+  console.log("save_db_sendlogC4eiToken_end");
+  const connection = await pool.getConnection(async conn => conn); 
+  let strsql ="update sendlog set blockNumber='"+blockNumber+"',contractAddress='"+contractAddress+"',blockHash='"+blockHash+"',transactionHash='"+transactionHash+"', successYN='"+successYN+"', last_reg=now() where tidx = '" + tidx + "'";
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_sendlogC4eiToken_end update success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+}
+
 ////////////////////////// end erc token c4ei //////////////////////////
 
 function fn_ChkC4eiNetAlive(res){
