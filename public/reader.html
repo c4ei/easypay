@@ -146,7 +146,7 @@
   <!-- <a href="/logout"> logout </a> /  -->
   <a href="/mybal">balance</a> /
   <a href="/reader.html">Reader</a> / <a href="/syncbalance"> Sync balance</a> / 
-  <a href="https://vpoker.c4ei.net/?email=<%= email %>" target="_blank">Vpoker</a> 
+  <a href="javascript:goVpoker();" target="_blank">Vpoker</a> 
   <br/>
   <a href="https://nft.c4ei.net %>" target="_blank">NFT</a> 
   / <a href="/exC4ei2Pot"> C4EI▶POT</a>
@@ -154,7 +154,13 @@
   
   <!-- <br>/ preparing : <a href="/exCeik2Pot" > CEIK▶POT</a> -->
   <!-- / <a href="https://c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000">test</a> -->
-  </div>
+  <script>
+    function goVpoker(){
+        alert("접속시 에러 화면이 나오면 \n새로고침 해주시면 접속이 됩니다.\n아직 개발중인 사이트 인점 양해 부탁드립니다.");
+        window.open('https://vpoker.c4ei.net/?email=<%= email %>', 'pop_poker', 'width=100%, height=100%, menubar=no, status=no, toolbar=no');
+    }
+  </script>
+</div>
   
                     </div>
                 </div>
