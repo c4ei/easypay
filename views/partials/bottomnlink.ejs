@@ -4,20 +4,39 @@
 <!-- <a href="/logout"> logout </a> /  -->
 <a href="/mybal">balance</a> /
 <a href="/reader.html">Reader</a> / <a href="/syncbalance"> Sync balance</a> / 
-<a href="javascript:goVpoker();">Vpoker</a> 
+<a href="javascript:goVpoker();">Vpoker</a> /
+<a href="https://nft.c4ei.net %>" target="_blank">NFT</a> /
 <br/>
-<a href="https://nft.c4ei.net %>" target="_blank">NFT</a> 
-/ <a href="/exC4ei2Pot"> C4EI▶POT</a>
-/ <a href="/exPot2C4ei"> POT▶C4EI</a>
+<a href="/exC4ei2Pot"> C4EI▶POT</a> / <a href="/exPot2C4ei"> POT▶C4EI</a>
 
 <!-- <br>/ preparing : <a href="/exCeik2Pot" > CEIK▶POT</a> -->
 <!-- / <a href="https://c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000">test</a> -->
-<script>
+<script type="text/javascript">
     function goVpoker(){
-        alert("접속시 에러 화면이 나오면 \n새로고침 해주시면 접속이 됩니다.\n아직 개발중인 사이트 인점 양해 부탁드립니다.");
+        alert("최초 접속시 에러 화면이 나오면 \n새로고침 해주시면 접속이 됩니다.");
         window.open('https://vpoker.c4ei.net/?email=<%= email %>', 'pop_poker', 'top=0,left=0,width=1024,height=800,menubar=no,status=no,toolbar=no');
+        // jsfn_post_to_url('https://vpoker.c4ei.net',{'email':'<%= email %>','sec2':'sec'});
+    }
+    function jsfn_post_to_url(path, params, method) {
+        window.open('https://vpoker.c4ei.net/', 'pop_poker', 'top=0,left=0,width=1024,height=800,menubar=no,status=no,toolbar=no');
+        method = method || "post";
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+        form.setAttribute("target", "pop_poker");
+        for(var key in params) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+            form.appendChild(hiddenField);
+        }
+        document.body.appendChild(form);
+        form.submit();
     }
 </script>
+<!-- <a href="javascript:jsfn_post_to_url('https://vpoker.c4ei.net',{'email':'<%= email %>','sec2':'sec'})">Vpoker</a> -->
+
 </div>
                     </div>
                 </div>
