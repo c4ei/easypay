@@ -62,3 +62,9 @@ web3.utils.toWei(txt_to_amt,'ether')
 
 pm2 flush
 pm2 log
+c4ei2dbsrc_idx-database_1 (5589e286f195)
+
+docker rename c4ei2dbsrc_idx-database_1 c4eiMysql
+Docker run - 자동 재시작하기
+sudo docker run -it --restart=always --name "c4eiMysql"
+docker run --name c4eiMysql --restart unless-stopped -d -p 3306:3306 mysql:5.7
