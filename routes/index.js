@@ -253,6 +253,114 @@ router.get('/rcv', function(req, res, next) {
   }
 });
 
+router.get('/sendC4ei', function(req, res, next) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
+    let bck_balance = result[0].bck_balance;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
+    // console.log("c4ei_addr :"+c4ei_addr);
+    if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+      var wallet_balance = web3.eth.getBalance(c4ei_addr, function(error, result) {
+        // console.log("wallet_balance : "+ web3.utils.fromWei(result, "ether")); //0x21725F3b26F74C8E451d851e040e717Fbcf19E5b
+        wallet_balance = web3.utils.fromWei(result, "ether");
+        // wallet_balance = getAmtWei(result);
+        if (wallet_balance != c4ei_balance){
+          let result = sync_connection.query("update user set c4ei_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
+          console.log("wallet_balance :"+wallet_balance);
+          c4ei_balance = wallet_balance;
+        }
+      });
+    }
+    /////////////////////////
+    // var rcv_email = req.query.rcv_email;
+    // var rcv_adr = req.query.rcv_adr;
+    // var rcv_amt = req.query.rcv_amt;
+    res.render('sendC4ei', { title: 'easypay Send', c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, email: user_email
+    // , rcv_email :rcv_email,rcv_adr:rcv_adr,rcv_amt:rcv_amt
+    });
+  }
+});
+//sendTrC4eiToAddr
+router.post('/sendTrC4eiToAddr', function(req, res, next) {
+  console.log('sendTrC4eiToAddr');
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    var txt_my_email    = req.body.txt_my_email;
+    var txt_my_addr     = req.body.txt_my_addr;
+    var txt_my_balance  = req.body.txt_my_balance;
+    var txt_to_address  = req.body.txt_to_address;
+    var txt_to_amt      = req.body.txt_to_amt;
+
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    // let pot_balance = result[0].pot;
+    // let bck_balance = result[0].bck_balance;
+    // let klay_addr = result[0].klay_addr;
+    // let klay_balance = result[0].klay_balance;
+    // let klay_ceik_addr = result[0].klay_ceik_addr;
+    // let klay_ceik_balance = result[0].klay_ceik_balance;
+
+    if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
+    if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
+    // balance changed ... 
+    if(c4ei_balance!=txt_my_balance){ 
+      console.log('balance different so can`t send'); 
+      res.render('msgpage', { title: 'oops', msg : 'balance different so can`t send'});
+      return; 
+    }
+    if((c4ei_balance-txt_to_amt)<0){ 
+      console.log('not enough balance so can`t send'); 
+      res.render('msgpage', { title: 'oops', msg : 'not enough balance so can`t send'});
+      return; 
+    }
+
+    // //발송 주소에 해당하는 회원이 없습니다.
+    // let result1 = sync_connection.query("SELECT id, email, c4ei_addr, c4ei_balance FROM user WHERE c4ei_addr='" + txt_to_address + "'");
+    // let to_id = result1[0].id;
+    // let to_email = result1[0].email;
+    let to_id = 15;
+    let to_email = "no@member.com";
+
+    if(to_id == undefined ||to_id==""){
+      res.render('msgpage', { title: 'oops', msg : '발송 주소에 해당하는 회원이 없습니다'});
+      return; 
+    }
+
+    // console.log("c4ei_addr :"+c4ei_addr);
+    if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+      //https://c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
+      let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      save_db_user_bal(user_id, txt_to_address, txt_to_amt, user_ip);
+      var txt_memo =txt_my_email +" : c4ei->"+to_email +":"+txt_to_amt;
+      save_db_sendlog(user_id, txt_my_addr, txt_to_address, txt_to_amt, user_ip, txt_memo);
+    }
+    /////////////////////////
+    res.render('sendok', { title: 'easypay Send OK',email:user_email, my_email : txt_my_email, my_addr:txt_my_addr
+            , my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
+  }
+});
+
 //https://c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
 //sendTr
 router.post('/sendTr', function(req, res, next) {

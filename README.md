@@ -45,6 +45,7 @@ git config -l
 git push origin main --force
 git remote set-url origin git@github.com:git@github.com:ggbbest/easypay.git
 
+cd /home/dev/www/easypay
 pm2 restart node ./bin/www
 
 pm2 start node ./bin/www
