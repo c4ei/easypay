@@ -69,21 +69,31 @@ const pool = mysql2.createPool(db_config.constr());
 router.get('/session2cookie', function(req, res, next) {
   //# added ggoogle auth
   // console.log(req.session.user_idx +" / "+req.session.user_email); 
-  let tem_user_idx = req.session.user_idx;
   let tem_user_email = req.session.user_email;
-  if (tem_user_idx !="" && tem_user_email !="" ){
-    // console.log(tem_user_idx +" / "+tem_user_email); 
-    res.cookie('user_idx', tem_user_idx);
+  //case only email exist
+  if (tem_user_email !="" ){
+    console.log("###75### /session2cookie [tem_user_email : "+tem_user_email+"]"); 
     res.cookie('user_email', tem_user_email);
-
-    req.session.user_idx = null;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + tem_user_email + "'");
+    let user_id = result[0].id;
+    res.cookie('user_idx', user_id);
+    
     req.session.user_email = null;
+    req.session.user_idx = null;
   }
+  // try{
+  //   let tem_user_idx = req.session.user_idx;
+  //   if (tem_user_idx !=""  ){
+  //     console.log("###82### /session2cookie"+tem_user_idx); 
+  //     res.cookie('user_idx', tem_user_idx);
+  //     req.session.user_idx = null;
+  //   }
+  // }catch(e){}
   res.redirect('/');
 });
 
 router.get('/', function(req, res, next) {
-  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined ) {
     // res.sendFile(STATIC_PATH + '/ulogin.html')
     res.sendFile(STATIC_PATH + '/main.html')
     return;
@@ -91,6 +101,11 @@ router.get('/', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
+    // if (user_email == "" || user_email === undefined) {
+    //   res.sendFile(STATIC_PATH + '/ulogin.html')
+    //   return;
+    // }
+    console.log("///////////////////////// 94 user_email :"+user_email +"/////////////////////////");
     let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
@@ -1143,6 +1158,7 @@ passport.use(new GoogleStrategy({
         //####################################
         req.session.user_idx = user_idx;
         req.session.user_email = user_email;
+        console.log("####1152#### user_idx : "+req.session.user_idx +" / user_email : "+req.session.user_email); 
         //####################################
 
         let user = { google_id: google_id, google_token: google_token, google_email: user_email, google_name: google_name }
@@ -1156,6 +1172,7 @@ passport.use(new GoogleStrategy({
           google_name: profile.name.givenName + ' ' + profile.name.familyName
           }
           save_db_googleid(newUser.google_name, newUser.google_email, newUser.google_id, newUser.google_token, user_ip);
+          req.session.user_email = newUser.google_email;
           return done(null, newUser);
         }
       });
