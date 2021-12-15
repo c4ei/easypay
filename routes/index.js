@@ -14,11 +14,11 @@ const { createUserSchema, updateUserSchema, validateLogin } = require('../app/mi
 // add web3 2021-11-08
 //npm install web3
 const Web3 = require("web3");
-const web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.185:21004"));
+const web3 = new Web3(new Web3.providers.HttpProvider(process.env.C4EI_RPC));
 
 // npm i caver-js
 const Caver = require('caver-js')
-const caver = new Caver('http://192.168.1.157:8217/')
+const caver = new Caver(process.env.CEIK_RPC)
 // const wallet = caver.klay.accounts.create(process.env.C4EI_ADDR_PWD);
 
 ////////////////////////////////////////////////////////////////////////
@@ -180,6 +180,8 @@ router.get('/mybal', function(req, res, next) {
     let klay_ceik_balance = result[0].klay_ceik_balance;
 
     getBalanceC4eiToken("BCK", c4ei_addr, user_email, bck_balance);
+    getBalanceKlay(klay_addr, user_email, klay_balance);
+    getBalanceKlayToken("CEIK", klay_addr, user_email, klay_ceik_balance);
 
     res.render('mybal', { title: 'easypay my bal', email: user_email, c4ei_addr : c4ei_addr, c4ei_balance : c4ei_balance, 
       pot:pot_balance, bck_balance:bck_balance, klay_addr:klay_addr, klay_balance:klay_balance, klay_ceik_addr:klay_ceik_addr
@@ -1227,8 +1229,7 @@ function getC4eiTokenNameToAddress(tokenName) {
 async function getBalanceC4eiToken(tokenName, walletAddress, email, pre_bck_balance) {
   var tokenAddress = getC4eiTokenNameToAddress(tokenName);
   const Web3 = require("web3");
-  const provider = "http://192.168.1.185:21004"
-  const Web3Client = new Web3(new Web3.providers.HttpProvider(provider));
+  const Web3Client = new Web3(new Web3.providers.HttpProvider(process.env.C4EI_RPC));
   const contract = new Web3Client.eth.Contract(minABI, tokenAddress);
   const result = await contract.methods.balanceOf(walletAddress).call(); // 
   let tokenbal = Web3Client.utils.fromWei(result); // 10
@@ -1249,6 +1250,68 @@ async function getBalanceC4eiToken(tokenName, walletAddress, email, pre_bck_bala
     }
   }
 }
+
+function getKlayTokenNameToAddress(tokenName) {
+  var  tokenAddress = "";
+  switch (tokenName) {
+    case "CEIK": tokenAddress = "0x18814b01b5cc76f7043e10fd268cc4364df47da0"; // CEIK
+    break;
+    // case "RNT": tokenAddress = "0x7E6af705dB981D0E391B4e063E39a6bbDF60e66f"; // RNT (RENTAL)
+    // break;
+    default : tokenAddress = "0x18814b01b5cc76f7043e10fd268cc4364df47da0"; // CEIK
+    break;
+  }
+  return tokenAddress;
+}
+async function getBalanceKlayToken(tokenName, walletAddress, email, pre_ceik_balance) {
+  var tokenAddress = getKlayTokenNameToAddress(tokenName);
+  const Web3 = require("web3");
+  const Web3Client = new Web3(new Web3.providers.HttpProvider(process.env.CEIK_RPC));
+  const contract = new Web3Client.eth.Contract(minABI, tokenAddress);
+  const result = await contract.methods.balanceOf(walletAddress).call(); // 
+  let tokenbal = Web3Client.utils.fromWei(result); // 10
+  console.log("getBalanceKlayToken block ceik bal : "+tokenbal + " / db ceik bal : " + pre_ceik_balance);
+  if (pre_ceik_balance != tokenbal){
+    const connection = await pool.getConnection(async conn => conn); 
+    let strsql ="update user set klay_ceik_balance='"+tokenbal+"' WHERE email='" + email + "'";
+    try { 
+      await connection.beginTransaction(); 
+      await connection.query(strsql); 
+      await connection.commit(); 
+      console.log('getBalanceKlayToken update success!'); 
+    } catch (err) { 
+      await connection.rollback(); 
+      throw err; 
+    } finally { 
+      connection.release();
+    }
+  }
+}
+
+async function getBalanceKlay(walletAddress, email, pre_klay_balance) {
+  var tokenbal = caver.klay.getBalance(walletAddress, function(error, result) {
+    tokenbal = caver.utils.convertFromPeb(caver.utils.hexToNumberString(result));
+
+    console.log("getBalanceKlay block KLAY bal : "+tokenbal + " / db KLAY bal : " + pre_klay_balance);
+    if (pre_klay_balance != tokenbal){
+      let result = sync_connection.query("update user set klay_balance='"+tokenbal+"' WHERE email='" + email + "'");
+      // const connection = await pool.getConnection(async conn => conn); 
+      // let strsql ="update user set klay_balance='"+tokenbal+"' WHERE email='" + email + "'";
+      // try { 
+      //   await connection.beginTransaction(); 
+      //   await connection.query(strsql); 
+      //   await connection.commit(); 
+      //   console.log('getBalanceKlay update success!'); 
+      // } catch (err) { 
+      //   await connection.rollback(); 
+      //   throw err; 
+      // } finally { 
+      //   connection.release();
+      // }
+    }
+  });
+}
+
 
 //send
 async function fn_unlockAccount_C4eiToken(addr){
