@@ -523,6 +523,97 @@ router.get('/exC4ei2Pot', function(req, res, next) {
 
 //////////////////////////// start klay ////////////////////////////
 
+router.get('/sendCeik', function(req, res, next) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
+    let bck_balance = result[0].bck_balance;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
+    if ((klay_ceik_addr!="" &&klay_ceik_addr!=null) && user_id > 0){
+      getBalanceKlayToken("CEIK", klay_ceik_addr, user_email, klay_ceik_balance);
+      // var wallet_balance = web3.eth.getBalance(klay_ceik_addr, function(error, result) {
+      //   wallet_balance = web3.utils.fromWei(result, "ether");
+      //   if (wallet_balance != klay_ceik_balance){
+      //     let result = sync_connection.query("update user set klay_ceik_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
+      //     console.log("wallet_balance :"+wallet_balance);
+      //     klay_ceik_balance = wallet_balance;
+      //   }
+      // });
+    }
+    /////////////////////////
+    res.render('sendCeik', { title: 'easypay Send', klay_ceik_addr : klay_ceik_addr, klay_ceik_balance : klay_ceik_balance, email: user_email
+    });
+  }
+});
+
+//sendTrCeikToAddr
+router.post('/sendTrCeikToAddr', function(req, res, next) {
+  console.log('sendTrCeikToAddr');
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    var txt_my_email    = req.body.txt_my_email;
+    var txt_my_addr     = req.body.txt_my_addr;
+    var txt_my_balance  = req.body.txt_my_balance;
+    var txt_to_address  = req.body.txt_to_address;
+    var txt_to_amt      = req.body.txt_to_amt;
+
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
+    let bck_balance = result[0].bck_balance;
+    let klay_addr = result[0].klay_addr;
+    let klay_balance = result[0].klay_balance;
+    let klay_ceik_addr = result[0].klay_ceik_addr;
+    let klay_ceik_balance = result[0].klay_ceik_balance;
+
+    if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
+    if(klay_ceik_addr!=txt_my_addr){ console.log('klay_ceik_addr different so can`t send'); return; }
+    // balance changed ... 
+    if(klay_ceik_balance!=txt_my_balance){ 
+      console.log('balance different so can`t send'); 
+      res.render('msgpage', { title: 'oops', msg : 'balance different so can`t send'});
+      return; 
+    }
+    if((klay_ceik_balance-txt_to_amt)<0){ 
+      console.log('not enough balance so can`t send'); 
+      res.render('msgpage', { title: 'oops', msg : 'not enough balance so can`t send'});
+      return; 
+    }
+    // //발송 주소에 해당하는 회원이 없습니다.
+    let to_id = 15; let to_email = "no@member.com";if(to_id == undefined ||to_id==""){ res.render('msgpage', { title: 'oops', msg : '발송 주소에 해당하는 회원이 없습니다'}); return; }
+    if ((klay_ceik_addr!="" &&klay_ceik_addr!=null) && user_id > 0){
+      let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      save_db_ceik_user_bal(user_id, txt_to_amt, user_ip);
+      var txt_memo =txt_my_email +" : ceik->"+txt_to_address +":"+txt_to_amt;
+      save_db_sendlog_CEIK(user_id, txt_my_addr, txt_to_address, txt_to_amt, user_ip, txt_memo);
+    }
+    /////////////////////////
+    res.render('sendok', { title: 'easypay Send OK',email:user_email, my_email : txt_my_email, my_addr:txt_my_addr
+            , my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
+  }
+});
+
+
 //klay ceik
 router.get('/exCeik2Pot', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -936,6 +1027,22 @@ async function save_db_user_bal(user_id, txt_to_address, txt_to_amt, user_ip){
 
 }
 
+async function save_db_ceik_user_bal(user_id, txt_to_amt, user_ip){
+  const connection = await pool.getConnection(async conn => conn); 
+  let strsql ="update user set klay_ceik_balance=klay_ceik_balance-'"+txt_to_amt+"', last_reg=now(),last_ip='"+user_ip+"' where id = '" + user_id + "'";
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_ceik_user_bal update 1 success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+}
+
 async function save_db_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip,txt_memo){
   //######################################################################################
   // async save test !!!!
@@ -962,6 +1069,75 @@ async function save_db_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,use
     console.log("############# " + tidx +" : rtn #############");
     sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx);
 
+  }
+}
+
+async function save_db_sendlog_CEIK(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip,txt_memo){
+  console.log('save_db_sendlog_CEIK'); 
+  //######################################################################################
+  // async save test !!!!
+  //######################################################################################
+  var fromAmt = await getAmt(txt_my_addr); fromAmt = await getAmtWei(fromAmt);
+  var toAmt = await getAmt(txt_to_address); toAmt = await getAmtWei(toAmt);
+  var strsql = "insert into sendlog_klay (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,regip, memo)";
+  strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','" + user_ip + "','"+txt_memo+"')";
+  const connection = await pool.getConnection(async conn => conn); 
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_sendlog_CEIK insert success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+
+    // sync
+    let result1 = sync_connection.query("select max(tidx) as maxtidx from sendlog_klay where userIdx = '" + user_id + "'");
+    let tidx = result1[0].maxtidx;
+    console.log("############# " + tidx +" : rtn ############# next step sendTrCEIK");
+    sendTrCEIK(txt_my_addr, txt_to_address, txt_to_amt, tidx);
+  }
+}
+
+async function sendTrCEIK(txt_my_addr, txt_to_address, txt_to_amt, tidx){
+  console.log('sendTrCEIK 트랜잭션 수행');
+  if (await fn_unlockAccount_klay(txt_my_addr))
+  {
+    const ceik_contract_abi = require("../app/abi/ceikABI.json");
+    const ceik_tokenAddress = "0x18814b01b5cc76f7043e10fd268cc4364df47da0";  // ceik
+    // const TokenInstance = new caver.klay.Contract(ceik_contract_abi, ceik_tokenAddress);
+    // TokenInstance.methods.transfer(txt_to_address, txt_to_amt)
+    // .send({from: txt_my_addr,gas: 100000})
+    // .on('transactionHash', (hash) => { console.log("### transactionHash ###"); console.log(hash);})
+    // .once('receipt', (receipt) => {
+    //   console.log("blockNumber " + receipt.blockNumber + " / contractAddress" + receipt.contractAddress + " / blockHash" + receipt.blockHash + " / transactionHash" + receipt.transactionHash);
+    //   save_db_sendlog_ceik_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
+    // })
+    // // .on('confirmation', (confirmationNumber, receipt) => { console.log("### confirmation ###" + confirmationNumber);})
+    // .on('error', console.error);
+    
+    var log="";
+    // web3.eth.sendTransaction({
+    // caver.klay.sendTransaction({
+    // const caverContract = new caver.klay.Contract(ceik_contract_abi, ceik_tokenAddress);
+    // caverContract.klay.sendTransaction({
+      // * 10000000000
+      console.log('value :' +caver.utils.toPeb(txt_to_amt, 'KLAY') *0.0000000001 );
+    caver.klay.sendTransaction({
+      type: 'SMART_CONTRACT_EXECUTION',
+      from: txt_my_addr,
+      to: txt_to_address,
+      value: (caver.utils.toPeb(txt_to_amt, 'KLAY') *0.0000000001),
+      data: ceik_tokenAddress,
+      gas: 100000
+    }).
+    //on('confirmation', function(confNumber, receipt, latestBlockHash){ console.log('CONFIRMED'); })
+    once('sent', function(payload){ console.log('sendTrCEIK'); })
+    .then(function(receipt){
+      save_db_sendlog_ceik_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
+    });
   }
 }
 
@@ -1160,7 +1336,7 @@ passport.use(new GoogleStrategy({
         //####################################
         req.session.user_idx = user_idx;
         req.session.user_email = user_email;
-        console.log("####1152#### user_idx : "+req.session.user_idx +" / user_email : "+req.session.user_email); 
+        console.log("####1163#### user_idx : "+req.session.user_idx +" / user_email : "+req.session.user_email); 
         //####################################
 
         let user = { google_id: google_id, google_token: google_token, google_email: user_email, google_name: google_name }
@@ -1250,11 +1426,11 @@ async function getBalanceC4eiToken(tokenName, walletAddress, email, pre_bck_bala
     }
   }
 }
-
 function getKlayTokenNameToAddress(tokenName) {
   var  tokenAddress = "";
   switch (tokenName) {
     case "CEIK": tokenAddress = "0x18814b01b5cc76f7043e10fd268cc4364df47da0"; // CEIK
+    //* 10000000000;
     break;
     // case "RNT": tokenAddress = "0x7E6af705dB981D0E391B4e063E39a6bbDF60e66f"; // RNT (RENTAL)
     // break;
@@ -1270,6 +1446,7 @@ async function getBalanceKlayToken(tokenName, walletAddress, email, pre_ceik_bal
   const contract = new Web3Client.eth.Contract(minABI, tokenAddress);
   const result = await contract.methods.balanceOf(walletAddress).call(); // 
   let tokenbal = Web3Client.utils.fromWei(result); // 10
+  if (tokenName=="ceik"||tokenName=="CEIK"){ tokenbal = tokenbal * 10000000000; } // ############
   console.log("getBalanceKlayToken block ceik bal : "+tokenbal + " / db ceik bal : " + pre_ceik_balance);
   if (pre_ceik_balance != tokenbal){
     const connection = await pool.getConnection(async conn => conn); 
@@ -1287,7 +1464,6 @@ async function getBalanceKlayToken(tokenName, walletAddress, email, pre_ceik_bal
     }
   }
 }
-
 async function getBalanceKlay(walletAddress, email, pre_klay_balance) {
   var tokenbal = caver.klay.getBalance(walletAddress, function(error, result) {
     tokenbal = caver.utils.convertFromPeb(caver.utils.hexToNumberString(result));
@@ -1311,7 +1487,6 @@ async function getBalanceKlay(walletAddress, email, pre_klay_balance) {
     }
   });
 }
-
 
 //send
 async function fn_unlockAccount_C4eiToken(addr){

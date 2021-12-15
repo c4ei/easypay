@@ -142,7 +142,9 @@ class UserController {
         // if(bcrypt.compareSync(param_password, user_dbpwd)){
         const isMatch = await bcrypt.compare(pass, user.password);
         if (!isMatch) {
-            res.render('msgpage', { title: 'oops', msg : '401 Incorrect password!'});
+            // res.render('msgpage', { title: 'oops', msg : '401 Incorrect password!'});
+            // res.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
+            // res.end("<script>alert('401 Incorrect password!');document.location.href='/';</script>");
             throw new HttpException(401, 'Incorrect password!');
         }
         // console.log("easypay/app/controllers/user.controller.js [147] userLogin ");
