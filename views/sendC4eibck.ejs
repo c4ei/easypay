@@ -1,7 +1,7 @@
 <%- include('./partials/head'); %>
 
 <table width="100%" border="0"  style="font-size: 10px;">
-  <form id="sendForm" method="post" action="/sendTrCeikToAddr">
+  <form id="sendForm" method="post" action="/sendTrC4eiBCKToAddr">
     <tr>
       <td  style="text-align: left;width:90px">email</td>
       <td align="left"><%=email%> 
@@ -9,14 +9,14 @@
     </tr>
     <tr>
     <td  style="text-align: left;width:90px">address</td>
-    <td align="left"><input type="text"  id="txt_my_addr" name="txt_my_addr" value="<%=klay_ceik_addr%>" style="width: 250px;font-size: 9px;" readonly > </td>
+    <td align="left"><input type="text"  id="txt_my_addr" name="txt_my_addr" value="<%=c4ei_addr%>" style="width: 230px;font-size: 9px;" readonly > </td>
   </tr>
   <tr>
-    <td  style="text-align: left;width:90px">ceik </td>
-    <td align="left"><input type="text"  id="txt_my_balance" name="txt_my_balance" value="<%=klay_ceik_balance%>" style="width: 230px;font-size: 9px;" readonly > </td>
+    <td  style="text-align: left;width:90px">bck </td>
+    <td align="left"><input type="text"  id="txt_my_balance" name="txt_my_balance" value="<%=bck_balance%>" style="width: 230px;font-size: 9px;" readonly > </td>
   </tr>
   <tr>
-    <td style="height: 15px;" colspan="2"> klay : <%=klay_balance%> <br/>(To send ceik, you must have klay to send.) </td>
+    <td style="height: 15px;" colspan="2"> C4EI : <%=c4ei_balance%> <br/>(To send BCK, you must have C4EI to send.) </td>
   </tr>
 
   <tr>
@@ -48,9 +48,9 @@
     var txt_my_balance  = document.getElementById("txt_my_balance").value;
     var txt_to_address = document.getElementById("txt_to_address").value;
     var txt_to_amt     = document.getElementById("txt_to_amt").value;
-    var txt_klay_balance = "<%=klay_balance%>";
-    if( Number(txt_klay_balance) < 0.001 ){
-      alert('can`t send your klay balance is small at least 0.001 klay' );
+    var txt_c4ei_balance = "<%=c4ei_balance%>";
+    if( Number(txt_c4ei_balance) < 0.001 ){
+      alert('can`t send your C4EI balance is small at least 0.001 C4EI' );
       return;
     }
 
@@ -71,13 +71,12 @@
       alert('can`t send your self');
       return;
     }
-    if( Number(txt_my_balance) < Number(txt_to_amt)){
-      alert('can`t send your balance is small' );
+    if(Number(txt_my_balance) < Number(txt_to_amt)){
+      alert('can`t send your balance is small');
       return;
     }
-    
     if(confirm('Are you sure? sended can`t stop proceed')){
-      document.getElementById("sendForm").action = "/sendTrCeikToAddr";
+      document.getElementById("sendForm").action = "/sendTrC4eiBCKToAddr";
       document.getElementById("sendForm").submit();
     }
   }

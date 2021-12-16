@@ -22,7 +22,9 @@
   </tr>
   <tr>
     <td  style="text-align: right;width:70px"> <%=bck_balance%> </td>
-    <td  style="text-align: left;">BCK (Block Chain Korea)</td>
+    <td  style="text-align: left;">BCK (Block Chain Korea)
+      <a href="/sendC4eibck">send</a>
+    </td>
   </tr>
   <tr><td style="text-align: center;height:1px;background-color: aliceblue;" colspan="2"></td></tr>
   <tr><td style="text-align: center;height:10px;">  </td></tr>
@@ -48,5 +50,9 @@
   <tr><td style="text-align: center;height:1px;background-color: aliceblue;" colspan="2"></td></tr>
   <tr><td style="text-align: center;height:10px;">  </td></tr>
 </table>
-
+<script>
+  function jsfn_show4cut(x) {
+   return Number.parseFloat(x).toFixed(4);
+  }
+</script>
 <%- include('./partials/bottomnoprj'); %>

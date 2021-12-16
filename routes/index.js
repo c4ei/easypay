@@ -74,7 +74,7 @@ router.get('/session2cookie', function(req, res, next) {
   if (tem_user_email !="" ){
     console.log("###75### /session2cookie [tem_user_email : "+tem_user_email+"]"); 
     res.cookie('user_email', tem_user_email);
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + tem_user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + tem_user_email + "'");
     let user_id = result[0].id;
     res.cookie('user_idx', user_id);
     
@@ -106,7 +106,7 @@ router.get('/', function(req, res, next) {
     //   return;
     // }
     console.log("///////////////////////// 94 user_email :"+user_email +"/////////////////////////");
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -168,7 +168,7 @@ router.get('/mybal', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -198,7 +198,7 @@ router.get('/syncbalance', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -236,7 +236,7 @@ router.get('/rcv', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -278,7 +278,7 @@ router.get('/sendC4ei', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -311,6 +311,55 @@ router.get('/sendC4ei', function(req, res, next) {
     });
   }
 });
+
+//sendTrC4eiBCKToAddr
+router.post('/sendTrC4eiBCKToAddr', function(req, res, next) {
+  console.log('sendTrC4eiBCKToAddr');
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    var txt_my_email    = req.body.txt_my_email;
+    var txt_my_addr     = req.body.txt_my_addr;
+    var txt_my_balance  = req.body.txt_my_balance;
+    var txt_to_address  = req.body.txt_to_address;
+    var txt_to_amt      = req.body.txt_to_amt;
+
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    // let pot_balance = result[0].pot;
+    let bck_balance = result[0].bck_balance;
+    if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
+    if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
+    // balance changed ... 
+    if(bck_balance!=txt_my_balance){ 
+      console.log('balance different so can`t send'); 
+      res.render('msgpage', { title: 'oops', msg : 'balance different so can`t send'});
+      return; 
+    }
+    if((bck_balance-txt_to_amt)<0){ 
+      console.log('not enough balance so can`t send'); 
+      res.render('msgpage', { title: 'oops', msg : 'not enough balance so can`t send'});
+      return; 
+    }
+    let to_id = 15;let to_email = "no@member.com";if(to_id == undefined ||to_id==""){ res.render('msgpage', { title: 'oops', msg : '발송 주소에 해당하는 회원이 없습니다'}); return; }
+    if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+      let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      save_db_bck_user_bal(user_id, txt_to_address, txt_to_amt, user_ip);
+      var txt_memo =txt_my_email +" : c4ei_BCK->"+to_email +":"+txt_to_amt;
+      save_db_sendlogC4eiToken(user_id, txt_my_addr, txt_to_address, txt_to_amt, user_ip, txt_memo);
+    }
+    /////////////////////////
+    res.render('sendokbck', { title: 'easypay Send OK',email:user_email, my_email : txt_my_email, my_addr:txt_my_addr
+            , my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
+  }
+});
+
 //sendTrC4eiToAddr
 router.post('/sendTrC4eiToAddr', function(req, res, next) {
   console.log('sendTrC4eiToAddr');
@@ -327,7 +376,7 @@ router.post('/sendTrC4eiToAddr', function(req, res, next) {
     var txt_to_amt      = req.body.txt_to_amt;
 
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -395,7 +444,7 @@ router.post('/sendTr', function(req, res, next) {
     var txt_to_amt      = req.body.txt_to_amt;
 
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -453,7 +502,7 @@ router.get('/exPot2C4ei', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -491,7 +540,7 @@ router.get('/exC4ei2Pot', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -521,6 +570,33 @@ router.get('/exC4ei2Pot', function(req, res, next) {
   }
 });
 
+router.get('/sendC4eibck', function(req, res, next) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    let user_email = req.cookies.user_email;
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let user_id = result[0].id;
+    let c4ei_addr = result[0].c4ei_addr;
+    let c4ei_balance = result[0].c4ei_balance;
+    let pot_balance = result[0].pot;
+    let bck_balance = result[0].bck_balance;
+    // let klay_addr = result[0].klay_addr;
+    // let klay_balance = result[0].klay_balance;
+    // let klay_ceik_addr = result[0].klay_ceik_addr;
+    // let klay_ceik_balance = result[0].klay_ceik_balance;
+
+    if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+      getBalanceC4eiToken("BCK", c4ei_addr, user_email, bck_balance);
+    }
+    /////////////////////////
+    res.render('sendC4eibck', { title: 'easypay Send', c4ei_addr:c4ei_addr, c4ei_balance : c4ei_balance, bck_balance : bck_balance, email: user_email });
+  }
+});
+
 //////////////////////////// start klay ////////////////////////////
 
 router.get('/sendCeik', function(req, res, next) {
@@ -531,7 +607,7 @@ router.get('/sendCeik', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -574,7 +650,7 @@ router.post('/sendTrCeikToAddr', function(req, res, next) {
     var txt_to_amt      = req.body.txt_to_amt;
 
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -622,7 +698,7 @@ router.get('/exCeik2Pot', function(req, res, next) {
   else {
     /////////////////////////
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -690,7 +766,7 @@ router.post('/exTrCeikToPot', function(req, res, next) {
     var txt_chg_pot     = req.body.txt_chg_pot;
 
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -849,7 +925,7 @@ router.post('/exTrCP', function(req, res, next) {
     var txt_chg_pot     = req.body.txt_chg_pot;
 
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -907,7 +983,7 @@ router.post('/exTrPC', function(req, res, next) {
     var txt_chg_pot     = req.body.txt_chg_pot;
 
     let user_email = req.cookies.user_email;
-    let result = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
@@ -1017,6 +1093,40 @@ async function save_db_user_bal(user_id, txt_to_address, txt_to_amt, user_ip){
     await connection.query(strsql2); 
     await connection.commit(); 
     console.log('save_db_user_bal update 2 success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+
+}
+
+async function save_db_bck_user_bal(user_id, txt_to_address, txt_to_amt, user_ip){
+  console.log("save_db_bck_user_bal");
+
+  let result1 = sync_connection.query("SELECT id, c4ei_addr, bck_balance FROM user WHERE c4ei_addr='" + txt_to_address + "'");
+  let to_id = result1[0].id;
+
+  const connection = await pool.getConnection(async conn => conn); 
+  let strsql ="update user set bck_balance=bck_balance-'"+txt_to_amt+"', last_reg=now(),last_ip='"+user_ip+"' where id = '" + user_id + "'";
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('save_db_bck_user_bal update 1 success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+  }
+  let strsql2 ="update user set bck_balance=bck_balance+'"+txt_to_amt+"', last_reg=now() where id = '" + to_id + "'";
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql2); 
+    await connection.commit(); 
+    console.log('save_db_bck_user_bal update 2 success!'); 
   } catch (err) { 
     await connection.rollback(); 
     throw err; 
@@ -1216,7 +1326,7 @@ router.get('/address_generator', function(req, res, next) {
     /////////////////////////
     console.log("address_generator ");
     let user_email = req.cookies.user_email;
-    let result1 = sync_connection.query("SELECT id, c4ei_addr, c4ei_balance, pot, bck_balance, klay_addr, klay_balance, klay_ceik_addr, klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+    let result1 = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result1[0].id;
     let c4ei_addr = result1[0].c4ei_addr;
     let klay_addr = result1[0].klay_addr;
@@ -1505,7 +1615,7 @@ async function save_db_sendlogC4eiToken(user_id,txt_my_addr,txt_to_address,txt_t
     await connection.beginTransaction(); 
     await connection.query(strsql); 
     await connection.commit(); 
-    console.log('save_db_sendlog insert success!'); 
+    console.log('save_db_sendlogC4eiToken insert success!'); 
   } catch (err) { 
     await connection.rollback(); 
     throw err; 
@@ -1516,8 +1626,7 @@ async function save_db_sendlogC4eiToken(user_id,txt_my_addr,txt_to_address,txt_t
     let result1 = sync_connection.query("select max(tidx) as maxtidx from sendlog where userIdx = '" + user_id + "'");
     let tidx = result1[0].maxtidx;
     console.log("############# " + tidx +" : rtn #############");
-    sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx);
-
+    sendC4eiTokenBCK("BCK",txt_my_addr, txt_to_address, txt_to_amt, tidx);
   }
 }
 async function save_db_sendlogC4eiToken_end(tidx ,blockNumber,contractAddress,blockHash,transactionHash , successYN){
@@ -1536,6 +1645,66 @@ async function save_db_sendlogC4eiToken_end(tidx ,blockNumber,contractAddress,bl
     connection.release();
   }
 }
+// // sendTrBCK
+// router.post('/sendTrBCK', function(req, res, next) {
+//   console.log('sendTrBCK');
+//   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+//     res.sendFile(STATIC_PATH + '/ulogin.html')
+//     return;
+//   }
+//   else {
+//     /////////////////////////
+//     var txt_my_email    = req.body.txt_my_email;
+//     var txt_my_addr     = req.body.txt_my_addr;
+//     var txt_my_balance  = req.body.txt_my_balance;
+//     var txt_to_address  = req.body.txt_to_address;
+//     var txt_to_amt      = req.body.txt_to_amt;
+
+//     let user_email = req.cookies.user_email;
+//     let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , pot, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+//     let user_id = result[0].id;
+//     let c4ei_addr = result[0].c4ei_addr;
+//     let c4ei_balance = result[0].c4ei_balance;
+//     // let pot_balance = result[0].pot;
+//     let bck_balance = result[0].bck_balance;
+//     if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
+//     if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
+//     // balance changed ... 
+//     if(bck_balance!=txt_my_balance){ 
+//       console.log('balance different so can`t send'); 
+//       res.render('msgpage', { title: 'oops', msg : 'balance different so can`t send'});
+//       return; 
+//     }
+//     if((bck_balance-txt_to_amt)<0){ 
+//       console.log('not enough balance so can`t send'); 
+//       res.render('msgpage', { title: 'oops', msg : 'not enough balance so can`t send'});
+//       return; 
+//     }
+
+//     //발송 주소에 해당하는 회원이 없습니다.
+//     // let result1 = sync_connection.query("SELECT id, email, c4ei_addr, c4ei_balance FROM user WHERE c4ei_addr='" + txt_to_address + "'");
+//     // let to_id = result1[0].id;
+//     // let to_email = result1[0].email;
+//     let to_id = 15;
+//     let to_email = "no@member.com";    
+//     if(to_id == undefined ||to_id==""){
+//       res.render('msgpage', { title: 'oops', msg : '발송 주소에 해당하는 회원이 없습니다'});
+//       return; 
+//     }
+
+//     // console.log("c4ei_addr :"+c4ei_addr);
+//     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
+//       //https://c4ei.net/rcv?rcv_email=his001@nate.com&rcv_adr=0x0077b5723B4017b38471F80725f7e3c3347FfB03&rcv_amt=10&tt=2021-11-09_10:19:19.000
+//       let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+//       save_db_bck_user_bal(user_id, txt_to_address, txt_to_amt, user_ip);
+//       var txt_memo =txt_my_email +" : c4ei->"+to_email +":"+txt_to_amt;
+//       save_db_sendlog(user_id, txt_my_addr, txt_to_address, txt_to_amt, user_ip, txt_memo);
+//     }
+//     /////////////////////////
+//     res.render('sendok', { title: 'easypay Send OK',email:user_email, my_email : txt_my_email, my_addr:txt_my_addr
+//             , my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
+//   }
+// });
 
 ////////////////////////// end erc token c4ei //////////////////////////
 
