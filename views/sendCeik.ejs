@@ -52,6 +52,7 @@
       alert('can`t send receive address empty');
       return;
     }
+    txt_to_address=txt_to_address.replace(/[^a-z|A-Z|0-9]/g, "");
     if(txt_to_amt==""||txt_to_amt=="0"){
       alert('can`t send amt empty or 0');
       return;
@@ -60,12 +61,10 @@
       alert('can`t send minus amt');
       return;
     }
-    
     if(txt_my_addr==txt_to_address){
       alert('can`t send your self');
       return;
     }
-    
     if( Number(txt_my_balance) < Number(txt_to_amt)){
       alert('can`t send your balance is small' );
       return;
