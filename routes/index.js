@@ -554,8 +554,7 @@ router.get('/sendCeik', function(req, res, next) {
       // });
     }
     /////////////////////////
-    res.render('sendCeik', { title: 'easypay Send', klay_ceik_addr : klay_ceik_addr, klay_ceik_balance : klay_ceik_balance, email: user_email
-    });
+    res.render('sendCeik', { title: 'easypay Send', klay_addr:klay_addr, klay_balance:klay_balance, klay_ceik_addr : klay_ceik_addr, klay_ceik_balance : klay_ceik_balance, email: user_email });
   }
 });
 
@@ -608,7 +607,7 @@ router.post('/sendTrCeikToAddr', function(req, res, next) {
       save_db_sendlog_CEIK(user_id, txt_my_addr, txt_to_address, txt_to_amt, user_ip, txt_memo);
     }
     /////////////////////////
-    res.render('sendok', { title: 'easypay Send OK',email:user_email, my_email : txt_my_email, my_addr:txt_my_addr
+    res.render('sendokceik', { title: 'easypay Send OK',email:user_email, my_email : txt_my_email, my_addr:txt_my_addr
             , my_balance:txt_my_balance-txt_to_amt, to_address:txt_to_address ,to_amt:txt_to_amt});
   }
 });
@@ -1107,35 +1106,13 @@ async function sendTrCEIK(txt_my_addr, txt_to_address, txt_to_amt, tidx){
   {
     const ceik_contract_abi = require("../app/abi/ceikABI.json");
     const ceik_tokenAddress = "0x18814b01b5cc76f7043e10fd268cc4364df47da0";  // ceik
-    // const TokenInstance = new caver.klay.Contract(ceik_contract_abi, ceik_tokenAddress);
-    // TokenInstance.methods.transfer(txt_to_address, txt_to_amt)
-    // .send({from: txt_my_addr,gas: 100000})
-    // .on('transactionHash', (hash) => { console.log("### transactionHash ###"); console.log(hash);})
-    // .once('receipt', (receipt) => {
-    //   console.log("blockNumber " + receipt.blockNumber + " / contractAddress" + receipt.contractAddress + " / blockHash" + receipt.blockHash + " / transactionHash" + receipt.transactionHash);
-    //   save_db_sendlog_ceik_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
-    // })
-    // // .on('confirmation', (confirmationNumber, receipt) => { console.log("### confirmation ###" + confirmationNumber);})
-    // .on('error', console.error);
-    
-    var log="";
-    // web3.eth.sendTransaction({
-    // caver.klay.sendTransaction({
-    // const caverContract = new caver.klay.Contract(ceik_contract_abi, ceik_tokenAddress);
-    // caverContract.klay.sendTransaction({
-      // * 10000000000
-      console.log('value :' +caver.utils.toPeb(txt_to_amt, 'KLAY') *0.0000000001 );
-    caver.klay.sendTransaction({
-      type: 'SMART_CONTRACT_EXECUTION',
-      from: txt_my_addr,
-      to: txt_to_address,
-      value: (caver.utils.toPeb(txt_to_amt, 'KLAY') *0.0000000001),
-      data: ceik_tokenAddress,
-      gas: 100000
-    }).
-    //on('confirmation', function(confNumber, receipt, latestBlockHash){ console.log('CONFIRMED'); })
-    once('sent', function(payload){ console.log('sendTrCEIK'); })
+    // const ceik_tokenABI = "0x9166c8d72e513a9e3b8389c11481ec071da93e37370fc62bf99c51a7b869a7dd";
+    console.log('value :' + caver.utils.hexToNumberString(txt_to_amt* 100000000) );
+    const TokenInstance = new caver.klay.Contract(ceik_contract_abi, ceik_tokenAddress)
+    TokenInstance.methods.transfer(txt_to_address, caver.utils.hexToNumberString(txt_to_amt* 100000000) )
+    .send({from: txt_my_addr,gas: 200000})
     .then(function(receipt){
+      console.log("blockNumber " + receipt.blockNumber + " / contractAddress" + receipt.contractAddress + " / blockHash" + receipt.blockHash + " / transactionHash" + receipt.transactionHash);
       save_db_sendlog_ceik_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
     });
   }

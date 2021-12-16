@@ -16,6 +16,10 @@
     <td align="left"><input type="text"  id="txt_my_balance" name="txt_my_balance" value="<%=klay_ceik_balance%>" style="width: 230px;font-size: 9px;" readonly > </td>
   </tr>
   <tr>
+    <td style="height: 15px;" colspan="2"> klay : <%=klay_balance%> <br/>(To send ceik, you must have klay to send.) </td>
+  </tr>
+
+  <tr>
     <td style="height: 15px;"></td>
     <td></td>
   </tr>
@@ -61,8 +65,9 @@
       alert('can`t send your self');
       return;
     }
-    if(txt_my_balance < txt_to_amt){
-      alert('can`t send your balance is small');
+    
+    if( Number(txt_my_balance) < Number(txt_to_amt)){
+      alert('can`t send your balance is small' );
       return;
     }
     if(confirm('Are you sure? sended can`t stop proceed')){
