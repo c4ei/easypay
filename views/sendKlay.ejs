@@ -1,0 +1,87 @@
+<%- include('./partials/head'); %>
+
+<table width="100%" border="0"  style="font-size: 10px;">
+  <form id="sendForm" method="post" action="/sendTrKlayToAddr">
+    <tr>
+      <td  style="text-align: left;width:90px">email</td>
+      <td align="left"><%=email%> 
+        <input type="hidden"  id="txt_my_email" name="txt_my_email" value="<%=email%>" style="width: 230px;font-size: 9px;" readonly > </td>
+    </tr>
+    <tr>
+    <td  style="text-align: left;width:90px">address</td>
+    <td align="left"><input type="text"  id="txt_my_addr" name="txt_my_addr" value="<%=klay_addr%>" style="width: 250px;font-size: 9px;" readonly > </td>
+  </tr>
+  <tr>
+    <td  style="text-align: left;width:90px">klay </td>
+    <td align="left"><input type="text"  id="txt_my_balance" name="txt_my_balance" value="<%=klay_balance%>" style="width: 230px;font-size: 9px;" readonly > </td>
+  </tr>
+
+  <tr>
+    <td style="height: 15px;"></td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td  style="text-align: left;width:90px">receive address</td>
+    <td align="left"><input type="text"  id="txt_to_address" name="txt_to_address" value="" style="width: 350px;"> </td>
+  </tr>
+  <tr>
+    <td  style="text-align: left;width:90px">send amount</td>
+    <td align="left"><input type="number" id="txt_to_amt" name="txt_to_amt" value="" style="width: 250px;"> </td>
+  </tr>
+  <tr>
+    <td style="height: 15px;"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><input type="button" value="send" id="btn_send" onclick="jsfn_send();"></td>
+  </tr>
+</form>
+</table>
+    <br/>
+<script>
+  function jsfn_send(){
+    var txt_my_addr     = document.getElementById("txt_my_addr").value;
+    var txt_my_balance  = document.getElementById("txt_my_balance").value;
+    var txt_to_address = document.getElementById("txt_to_address").value;
+    var txt_to_amt     = document.getElementById("txt_to_amt").value;
+    var txt_klay_balance = "<%=klay_balance%>";
+    if( Number(txt_klay_balance) < 0.001 ){
+      alert('can`t send your klay balance is small at least 0.001 klay' );
+      return;
+    }
+
+    if(txt_to_address==""){
+      alert('can`t send receive address empty');
+      return;
+    }
+    txt_to_address=txt_to_address.replace(/[^a-z|A-Z|0-9]/g, "");
+    if(txt_to_amt==""||txt_to_amt=="0"){
+      alert('can`t send amt empty or 0');
+      return;
+    }
+    if(txt_to_amt<0){
+      alert('can`t send minus amt');
+      return;
+    }
+    if(txt_my_addr==txt_to_address){
+      alert('can`t send your self');
+      return;
+    }
+    if( Number(txt_my_balance) < Number(txt_to_amt)){
+      alert('can`t send your balance is small' );
+      return;
+    }
+    
+    if(confirm('Are you sure? sended can`t stop proceed')){
+      document.getElementById("sendForm").action = "/sendTrKlayToAddr";
+      document.getElementById("sendForm").submit();
+    }
+  }
+  // function jsfn_goto_main(){
+  //   document.location.href="/";
+  // }
+</script>
+
+
+<%- include('./partials/bottomnoprj'); %>
