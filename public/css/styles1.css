@@ -11548,7 +11548,7 @@ body {
 
 .btn {
   box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
-  padding: 1.25rem 2rem;
+  padding: 0.25rem 0.2rem;
   font-family: "Varela Round", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 80%;
   text-transform: uppercase;
@@ -11562,8 +11562,7 @@ body {
   height: auto;
   min-height: 35rem;
   padding: 15rem 0;
-  /*background-image: url("/public/images/main/background_top.jpg");  linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000 100%), */
-  background:url('images/main/background_top.jpg'); 
+  background:url('/images/main/background_top.jpg'); 
   background-position:50% 50%;  
   background-size:cover; 
   background-repeat: no-repeat; 
@@ -11619,7 +11618,7 @@ body {
 }
 
 .projects-section {
-  padding: 10rem 0;
+  /* padding: 10rem 0; */
 }
 .projects-section .featured-text {
   padding: 2rem;
@@ -11703,4 +11702,46 @@ body {
 
 .footer {
   padding: 5rem 0;
+}
+
+.btn-primary2 {
+    color: #000;
+    background-color: #fff;
+    border-color: #000;
+}
+.btn-primary2:hover {
+    color: #000;
+    background-color: #fff;
+    border-color: #000;
+}
+.btn-primary2, .btn-primary2:focus {
+    color: #000;
+    background-color: #fff;
+    border-color: #000;
+    box-shadow: 0 0 0 0.25rem rgba(123, 175, 172, 0.5);
+}
+
+@media (min-width: 400px) {
+    .abouttemp {padding-top: 180%;background-color: #000;}
+    .page-top {margin-left: 1px;margin-right: 1px;}
+}
+@media (min-width: 576px) {
+    .abouttemp {padding-top: 160%;background-color: #000;}
+    .page-top {margin-left: 1px;margin-right: 1px;}
+}
+@media (min-width: 768px) {
+    .abouttemp {padding-top: 120%;background-color: #000;}
+    .page-top {margin-left: 5px;margin-right: 5px;}
+}
+@media (min-width: 992px) {
+    .abouttemp {padding-top: 100%;background-color: #000;}
+    .page-top {margin-left: 5px;margin-right: 5px;}
+}
+@media (min-width: 1200px) {
+    .abouttemp {padding-top: 50%;background-color: #000;}
+    .page-top {margin-left: 5px;margin-right: 5px;}
+}
+@media (min-width: 1400px) {
+    .abouttemp {padding-top: 50%;background-color: #000;}
+    .page-top {margin-left: 5px;margin-right: 5px;}
 }
