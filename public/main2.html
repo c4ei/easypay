@@ -15,6 +15,13 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <style>
+        .fixed-top {
+            /* position: fixed; */
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
         .btn-primary2 {
             color: #000;
             background-color: #fff;
@@ -87,7 +94,8 @@
 </head>
 <body id="page-top">
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-dark2 fixed-top" id="mainNav" style="background-color: #000;height: 35px;">
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark2 fixed-top" id="mainNav" style="background-color: #000;height: 35px;"> -->
+        <nav class="navbar navbar-expand-lg navbar-dark2 fixed-top2" id="mainNav" style="background-color: #000;height: 35px;"></nav>
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand2" href="/">C4EI.NET</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,12 +123,12 @@
                         <h1 class="mx-auto my-0 text-uppercase" style="font-size: 56px;color: #fff;;"><b>C4EI.NET Meets Klaytn</b></h1>
                     </div>
                     <div style="margin: auto;width: 100%;height: 200px;padding-top: 110px;color: #fff;font-weight: bold;">
-                        <div style="float: left; width: 50%;font-size: 16px;font-weight: bold;">
+                        <div style="float: left; font-size: 16px;font-weight: bold;">
                             BUY<br><br>
                             <a href="https://klayswap.com/exchange/swap?output=0x18814b01b5cc76f7043e10fd268cc4364df47da0" target="_blank" class="btn btn-primary2">
                                 CEIK</a>
                         </div>
-                        <div style="float: left; width: 50%;font-size: 16px;font-weight: bold;">
+                        <div style="float: left; font-size: 16px;font-weight: bold;">
                             DEPOSIT<br><br>
                             <a href="https://klayswap.com/exchange/pool/detail/0x50e746edaa283365136ed86a4e5dfddc6cd3cf9e" target="_blank" class="btn btn-primary2">
                                 KLAY+CEIK</a> 
@@ -164,7 +172,7 @@
             alert('After logging in, click vpoker among the middle links.\n로그인 후 중간 링크중 vpoker 를 클릭하시면 됩니다.');
         }
         function jsfn_mainnet(){
-            alert('마타마스크 연결법');
+            alert('마타마스크로 연결 부탁드립니다.');
         }
     </script>
     <section id="projects" style="background-color: #000;color: #fff;">
@@ -175,7 +183,7 @@
                 </div>
             </div>
             <div style="margin: auto;width:100%;padding: 10px;color: #fff;">
-                <div style="float: left;width: 50%;font-size: medium;">
+                <div style="float: left;font-size: medium;">
 <div style="padding: 0 0 0 0;position: relative;top:300px;left:200px;width:220px;height:52px;font-size: 38px;background-color: #000;text-align: center;">
 <b onclick="jsfn_mainnet();" style="cursor: pointer;">MAIN NET</b>
 </div>
@@ -192,7 +200,7 @@
                         <a href="https://exp.c4ei.net" target="_blank" title="Before Access Metamask C4EI Network Choose First!!!!">explore</a>  
                     </div>
                 </div>
-                <div style="float: left;width: 50%;font-size: medium;">
+                <div style="float: left;font-size: medium;">
 <div style="padding: 0 0 0 0;position: relative;top:300px;left:200px;width:220px;height:52px;font-size: 38px;background-color: #000;text-align: center;">
 <b onclick="jsfn_easypay();" style="cursor: pointer;">EASYPAY</b>
 </div>
@@ -203,7 +211,7 @@ We will implement easypay by hybrid combination of blockchain and DB.
                 </div>
             </div>
             <div style="margin: auto;width:100%;padding: 10px;color: #fff;">
-                <div style="float: left;width: 50%;font-size: medium;">
+                <div style="float: left;font-size: medium;">
 <div style="padding: 0 0 0 0;position: relative;top:300px;left:180px;width:320px;height:52px;font-size: 38px;background-color: #000;text-align: center;">
 <b onclick="jsfn_linkBase();" style="cursor: pointer;">COIN MARKET</b>
 </div>
@@ -212,7 +220,7 @@ We will implement easypay by hybrid combination of blockchain and DB.
 coin market for c4ei will 2022 2Q open
 </pre>
                 </div>
-                <div style="float: left;width: 50%;font-size: medium;">
+                <div style="float: left;font-size: medium;">
                     <div style="padding: 0 0 0 0;position: relative;top:300px;left:200px;width:220px;height:52px;font-size: 38px;background-color: #000;text-align: center;">
                         <b onclick="jsfn_vpoker();" style="cursor: pointer;">GAMES</b>
                     </div>
@@ -224,7 +232,7 @@ We are preparing video poker using cryptocurrency.
                 </div>
             </div>
             <div style="margin: auto;width:100%;padding: 10px;color: #fff;">
-                <div style="float: left;width: 50%;font-size: medium;">
+                <div style="float: left;font-size: medium;">
                     <div style="padding: 0 0 0 0;position: relative;top:300px;left:200px;width:220px;height:52px;font-size: 38px;background-color: #000;text-align: center;">
                         <a href="https://play.google.com/store/apps/details?id=io.ggb.wallet&hl=ko&gl=US" target="_blank"><b>GGBwallet</b></a>
                     </div>
@@ -234,13 +242,14 @@ GGBWALLET will 2022 1Q open
 SEND / RECEIVE C4EI,BCK,KLAY,CEIK
 </pre>
                 </div>
-                <div style="float:clear;width: 50%;font-size: medium;">
+                <div style="float:clear;font-size: medium;">
                     <p></p>
                 </div>
             </div>
             <div style="margin: auto;width:100%;padding: 0px;color: #fff;clear:both;"></div>
         </div>
     </section>
+    
     <!-- roadmap -->
     <section class="about-section text-center" id="roadmap" style="clear;">
     <div class="container px-4 px-lg-5">
@@ -249,7 +258,7 @@ SEND / RECEIVE C4EI,BCK,KLAY,CEIK
                 <h1 class="text-white mb-4" style="font-size: 42px;">ROAD MAP </h1>
             </div>
             <div style="margin: auto;width: 100%;height: 400px;padding: 10px;color: #fff;">
-                <div style="float: left; width: 50%;font-size: medium;text-align:left;">
+                <div style="float: left; font-size: medium;text-align:left;">
                     <div style="font-size: 28px;">2021 4Q - C4EI MAIN NET OPEN
                         <ul>
                             <li>EasyPay 구축</li>
@@ -263,7 +272,7 @@ SEND / RECEIVE C4EI,BCK,KLAY,CEIK
                         </ul>
                     </div>
                 </div>
-                <div style="float: left; width: 50%;font-size: medium;text-align:left;">
+                <div style="float: left; font-size: medium;text-align:left;">
                     <div style="font-size: 28px;">2022 2~3Q
                         <ul>
                             <li>거래소 오픈,안정화</li>
