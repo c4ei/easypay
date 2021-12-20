@@ -11724,24 +11724,30 @@ body {
 @media (min-width: 400px) {
     .abouttemp {padding-top: 180%;background-color: #000;}
     .page-top {margin-left: 1px;margin-right: 1px;}
-}
+    .contact-section {padding-top: 20%;}
+  }
 @media (min-width: 576px) {
     .abouttemp {padding-top: 160%;background-color: #000;}
     .page-top {margin-left: 1px;margin-right: 1px;}
+    .contact-section {padding-top: 20%;}
 }
 @media (min-width: 768px) {
     .abouttemp {padding-top: 120%;background-color: #000;}
     .page-top {margin-left: 5px;margin-right: 5px;}
+    .contact-section {padding-top: 20%;}
 }
 @media (min-width: 992px) {
     .abouttemp {padding-top: 100%;background-color: #000;}
     .page-top {margin-left: 5px;margin-right: 5px;}
+    .contact-section {padding-top: 10%;}
 }
 @media (min-width: 1200px) {
     .abouttemp {padding-top: 50%;background-color: #000;}
     .page-top {margin-left: 5px;margin-right: 5px;}
+    .contact-section {padding-top: 10%;}
 }
 @media (min-width: 1400px) {
     .abouttemp {padding-top: 50%;background-color: #000;}
     .page-top {margin-left: 5px;margin-right: 5px;}
+    .contact-section {padding-top: 10%;}
 }
