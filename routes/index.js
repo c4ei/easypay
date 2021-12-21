@@ -48,7 +48,7 @@ const userInfo = {
   // print : function(){ console.log('user_email : ' + user_email + '); }
 }
 function getUserInfoByEmail(user_email){
-  let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , round(replace(pot,',','') ,4) pot_balance, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance, loginCnt, reffer_id, reffer_cnt, last_pot_reg, TIMESTAMPDIFF(HOUR, last_pot_reg, NOW() ) AS TMDiff FROM user a WHERE a.email='" + user_email + "'");
+  let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , round(replace(pot,',','') ,4) pot_balance, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance, loginCnt, reffer_id, reffer_cnt, last_pot_reg, TIMESTAMPDIFF(HOUR, last_pot_reg, NOW() ) AS TMDiff, pot_reg_cnt FROM user a WHERE a.email='" + user_email + "'");
 
   userInfo.user_email = user_email;
   userInfo.user_id = result[0].id;
@@ -65,6 +65,7 @@ function getUserInfoByEmail(user_email){
   userInfo.reffer_cnt = result[0].reffer_cnt;
   userInfo.last_pot_reg = result[0].last_pot_reg;
   userInfo.TMDiff =  result[0].TMDiff;
+  userInfo.pot_reg_cnt =  result[0].pot_reg_cnt;
   
   // console.log(userInfo.user_email + ":user_email");
   // console.log(userInfo.c4ei_addr + ":c4ei_addr");
@@ -94,14 +95,6 @@ router.get('/session2cookie', function(req, res, next) {
     req.session.user_email = null;
     req.session.user_idx = null;
   }
-  // try{
-  //   let tem_user_idx = req.session.user_idx;
-  //   if (tem_user_idx !=""  ){
-  //     console.log("###82### /session2cookie"+tem_user_idx); 
-  //     res.cookie('user_idx', tem_user_idx);
-  //     req.session.user_idx = null;
-  //   }
-  // }catch(e){}
   res.redirect('/');
 });
 
@@ -217,10 +210,43 @@ router.get('/mypoint', function(req, res, next) {
     res.render('mypoint', { title: 'easypay mypoint', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
       pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
       klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
-      reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff
+      reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
+      pot_reg_cnt:userInfo.pot_reg_cnt
     });
   }
 });
+
+router.get('/sendPoint', function(req, res, next) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    getUserInfoByEmail(req.cookies.user_email);
+    try{
+      var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      let result1 = sync_connection.query("update user set pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"' where id = '" + userInfo.user_id + "'");
+      let free_pot = 10;
+      let _memo = "click and get pot";
+      let strSQL = "insert into point_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userInfo.user_id+"','"+free_pot+"','"+userInfo.pot_balance+"','" + Number(free_pot) + Number(userInfo.pot_balance) + "','" + user_ip + "','" + _memo + "') ";
+      let result2 = sync_connection.query(strSQL);
+      console.log(strSQL);
+    }catch(e){
+      console.log(e);
+    }
+
+    res.render('mypointok', { title: 'easypay mypointok', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
+      pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
+      klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
+      reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
+      pot_reg_cnt:userInfo.pot_reg_cnt
+    });
+  }
+});
+
+
+
 //////////// 2021-12-21 make point e ////////////
 /////////////////////////////////////////////////
 

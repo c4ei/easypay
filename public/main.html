@@ -104,7 +104,7 @@
         alert('After logging in, click vpoker among the middle links.\n로그인 후 중간 링크중 vpoker 를 클릭하시면 됩니다.');
     }
     function jsfn_mainnet(){
-        alert('마타마스크로 연결 부탁드립니다.');
+        alert('메타마스크로 이용 가능 합니다. 메타마스크로 연동 부탁드립니다.');
     }
 </script>
 <section class="projects-section bg-light" id="projects">
@@ -112,7 +112,7 @@
     <div class="row gx-12 gx-lg-2">
         <div class="col-md-6 mb-6 mb-md-0">
             <div class="card py-4 h-100" style="padding-left: 5px;padding-right: 5px;">
-                <div ><b onclick="jsfn_mainnet();" style="cursor: pointer;">MAIN NET</b></div>
+                <div ><h2><b onclick="jsfn_mainnet();" style="cursor: pointer;">MAIN NET</b></h2></h2></div>
                 <img src="/images/main/project_01.png" style="width:100%;">
                 <br>
                 network: C4EI<br>
@@ -129,12 +129,10 @@
         </div>
         <div class="col-md-6 mb-6 mb-md-0">
             <div class="card py-4 h-100" style="padding-left: 5px;padding-right: 5px;">
-                <div class="card-body text-center">
-                    <div ><b onclick="jsfn_easypay();" style="cursor: pointer;">EASYPAY</b></div>
+                    <div ><h2><b onclick="jsfn_easypay();" style="cursor: pointer;">EASYPAY</b></h2></div>
                     <img src="/images/main/project_02.png" style="width:100%;">
 
                     We will implement easypay by hybrid combination of blockchain and DB.
-                </div>
             </div>
         </div>
     </div>
@@ -143,7 +141,7 @@
         <div class="col-md-6 mb-6 mb-md-0">
             <div class="card py-4 h-100" style="padding-left: 5px;padding-right: 5px;">
                 <div >
-                    <b onclick="jsfn_linkBase();" style="cursor: pointer;">COIN MARKET</b>
+                    <h2><b onclick="jsfn_linkBase();" style="cursor: pointer;">COIN MARKET</b></h2>
                 </div>
                 <img src="/images/main/project_03.png" style="width:100%;">
                 coin market for c4ei will 2022 2Q open
@@ -151,13 +149,11 @@
         </div>
         <div class="col-md-6 mb-6 mb-md-0">
             <div class="card py-4 h-100" style="padding-left: 5px;padding-right: 5px;">
-                <div class="card-body text-center">
-                    <div><b onclick="jsfn_vpoker();" style="cursor: pointer;">GAMES</b>
-                    </div>
-                    <img src="/images/main/project_04.png" style="width:100%;">
+                <div><h2><b onclick="jsfn_vpoker();" style="cursor: pointer;">GAMES</b></h2>
+                </div>
+                <img src="/images/main/project_04.png" style="width:100%;">
 We are testing the combination of c4ei and games.
 We are preparing video poker using cryptocurrency.
-                </div>
             </div>
         </div>
     </div>
@@ -166,7 +162,9 @@ We are preparing video poker using cryptocurrency.
     <div class="col-md-6 mb-6 mb-md-0">
         <div class="card py-4 h-100" style="padding-left: 5px;padding-right: 5px;">
             <div >
+            <h2>
                 <a href="https://play.google.com/store/apps/details?id=io.ggb.wallet&hl=ko&gl=US" target="_blank"><b>GGBwallet</b></a>
+            </h2>
             </div>
             <img src="/images/main/project_05.png" style="width:100%;">
 
@@ -192,15 +190,27 @@ SEND / RECEIVE C4EI,BCK,KLAY,CEIK
             <div class="col-md-5 mb-3 mb-md-0">
                 <div class="card py-5 h-100">
                     <div style="text-align: left;padding-left: 15px;padding-right: 5px;">
-                        2021 4Q - C4EI MAIN NET OPEN
-                        <ul><li>EasyPay 구축</li></ul>
-                        <br>
-                        2022 1Q - Android Wallet OPEN
+                        <b>2021 4Q - C4EI MAIN NET OPEN</b>
                         <ul>
-                            <li>EasyPay 고도화</li>
-                            <li>C4EI BRIDGE (KLAY)구축</li>
-                        </ul><br>
-
+                            <li>EasyPay 구축</li>
+                            <li>CEIK전송기능 추가</li>
+                            <li>KLAY전송기능 추가</li>
+                            <li>C4EI전송기능 추가</li>
+                            <li>BCK전송기능 추가</li>
+                        </ul>
+                        <br>
+                        <b>2022 1Q - Android Wallet OPEN</b>
+                        <ul>
+                            <li>EasyPay 고도화,안정화</li>
+                            <li>C4EI:CEIK BRIDGE (KLAY)구축</li>
+                            <li>- 교환비 1:1 매핑 예정</li>
+                            <li>- 교환된 CEIK 는 매주 특정일 소각예정</li>
+                            <li>C4EI매일받는 이자 서비스 오픈</li>
+                            <li>C4EI 채굴앱(ggbwallet 연동) 오픈</li>
+                            <li>-채굴앱 랜덤확률 서비스 추가 적용</li>
+                            <li>-채굴앱 아이템 서비스 추가 적용</li>
+                        </ul>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -208,14 +218,58 @@ SEND / RECEIVE C4EI,BCK,KLAY,CEIK
                 <div class="card py-4 h-100" style="padding-left: 5px;padding-right: 5px;">
                     <div class="card-body text-center">
                         <div style="text-align: left;">
-                            2022 2~3Q
+                            <b>2022 2~3Q</b>
                             <ul><li>거래소 오픈,안정화</li></ul>
-                            <br>2022 4Q
+                            <br>
+                            <b>2022 4Q</b>
                             <ul><li>C4ei 연동 GAME 구축</li></ul>
-                            <br>2023 1Q
+                            <br>
+                            <b>2023 1Q</b>
                             <ul><li>C4ei META World 구축</li></ul>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-10" style="text-align: left;margin-top: 15px;margin-bottom: 15px;">
+            <div class="col-md-10 mb-3 mb-md-0">
+                <div class="card py-5 h-100">
+                    <div style="text-align: left;padding-left: 15px;padding-right: 5px;">
+                        <b>코인현황</b><br>
+                        <hr>
+                        <br>코인 발행량 : 1000억개
+                        <br>https://scope.klaytn.com/token/0x18814b01b5cc76f7043e10fd268cc4364df47da0?tabId=tokenTransfer
+                    
+                        <br>에어드랍 준비 락업 수량 : 31.5%(315억개) <b>소유권없음</b>
+                        <br>https://scope.klaytn.com/account/0xfe91bBEd4089132235ff09024ffD4c065fc7B68e?tabId=tokenBalance
+                        <br>Token Balance 31,536,000,000.00000...CEIK
+                    
+                        <br>락업 수량 : 48.4%(484억개) <b>버닝 혹은 C4EI SWAP 후 버닝 예상, 스왑 안되면 100% 버닝예정</b>
+                        <br>https://scope.klaytn.com/account/0x286A6CE75d9f623FfbA96fC2175FD5fbE2690746?tabId=tokenBalance
+                        <br>Token Balance 48,461,599,489.87655...CEIK
+                    
+                        <br>https://scope.klaytn.com/tx/0xd567891c8e6bb8d40e62b00faa6c2540904f9dcbe5041cfe9598f5b13d06baf2?tabId=tokenTransfer
+                        <br>10,000,000,000.00000...CEIK 10%(초기 지갑이동 100억개 소유처 불분명 분실가능성 존재)
+                        <br>https://scope.klaytn.com/tx/0x7a777ccf30a3523fa7c35f9e11e177326e9242458f0dd57b7c00cabdd5b14ae2?tabId=tokenTransfer
+                        <br>10,000,000,000.00000...CEIK 10%(초기 지갑이동 100억개 소유처 불분명 분실가능성 존재)
+                        <br>
+                        LOCK UP OR DEAD : <b>91.9%</b>
+                        <br><br>
+                        <b>실제 유동량</b>
+                        <hr>
+                        <br>클레이스왑+세이크 POOL
+                        <br>https://scope.klaytn.com/account/0xcc81d437ffc161d349d6186b1a1f8dde515093d6?tabId=tokenBalance
+                        <br>3,552,285.314306 CEIK (계속변경되는자료)
+
+                        <br>클레이튼+세이크 POOL
+                        <br>https://scope.klaytn.com/account/0x50e746edaa283365136ed86a4e5dfddc6cd3cf9e?tabId=tokenBalance
+                        <br>97,739.925263 CEIK (계속변경되는자료)
+                        <br>
+                        <br>
+                        <br><b>서비스,개발,유지보수용 - 유통 가능 물량 대략 20.05억개 (분기별 최대 1억개 유통가능)</b>
+                        <br>https://scope.klaytn.com/account/0x7C720ca152B43fa72a24eCcd51ccDAFBF74A884e?tabId=tokenBalance
+                        <br>Token Balance 2,005,457,932.770335CEIK
                 </div>
             </div>
         </div>
