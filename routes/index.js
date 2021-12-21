@@ -27,7 +27,8 @@ var sync_mysql = require('sync-mysql'); //2020-01-28
 let sync_connection = new sync_mysql(db_config.constr());
 
 const mysql2 = require('mysql2/promise'); 
-const pool = mysql2.createPool(db_config.constr()); 
+const pool = mysql2.createPool(db_config.constr());
+////////////////////////
 const userInfo = {
 	user_email : '',
   user_id : '',
@@ -38,11 +39,17 @@ const userInfo = {
   klay_addr : '',
   klay_balance : '',
   klay_ceik_addr : '',
-  klay_ceik_balance : ''
+  klay_ceik_balance : '',
+  loginCnt : '',
+  reffer_id : '',
+  reffer_cnt : '',
+  last_pot_reg : '',
+  TMDiff : ''
   // print : function(){ console.log('user_email : ' + user_email + '); }
 }
 function getUserInfoByEmail(user_email){
-  let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , round(replace(pot,',','') ,4) pot_balance, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
+  let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , round(replace(pot,',','') ,4) pot_balance, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance, loginCnt, reffer_id, reffer_cnt, last_pot_reg, TIMESTAMPDIFF(HOUR, last_pot_reg, NOW() ) AS TMDiff FROM user a WHERE a.email='" + user_email + "'");
+
   userInfo.user_email = user_email;
   userInfo.user_id = result[0].id;
   userInfo.c4ei_addr = result[0].c4ei_addr;
@@ -53,6 +60,12 @@ function getUserInfoByEmail(user_email){
   userInfo.klay_balance = result[0].klay_balance;
   userInfo.klay_ceik_addr = result[0].klay_ceik_addr;
   userInfo.klay_ceik_balance = result[0].klay_ceik_balance;
+  userInfo.loginCnt = result[0].loginCnt;
+  userInfo.reffer_id = result[0].reffer_id;
+  userInfo.reffer_cnt = result[0].reffer_cnt;
+  userInfo.last_pot_reg = result[0].last_pot_reg;
+  userInfo.TMDiff =  result[0].TMDiff;
+  
   // console.log(userInfo.user_email + ":user_email");
   // console.log(userInfo.c4ei_addr + ":c4ei_addr");
   // console.log(userInfo.c4ei_balance + ":c4ei_balance");
@@ -60,7 +73,7 @@ function getUserInfoByEmail(user_email){
   // console.log(userInfo.klay_ceik_balance + ":klay_ceik_balance");
   return userInfo;
 }
-
+/////////////////////////
 router.get('/session2cookie', function(req, res, next) {
   //# added ggoogle auth
   // console.log(req.session.user_idx +" / "+req.session.user_email); 
@@ -69,10 +82,15 @@ router.get('/session2cookie', function(req, res, next) {
   if (tem_user_email !="" ){
     console.log("###75### /session2cookie [tem_user_email : "+tem_user_email+"]"); 
     res.cookie('user_email', tem_user_email);
-    let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , round(replace(pot,',','') ,4) pot_balance, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + tem_user_email + "'");
+    let result = sync_connection.query("SELECT id FROM user a WHERE a.email='" + tem_user_email + "'");
     let user_id = result[0].id;
     res.cookie('user_idx', user_id);
-    
+    try{
+      var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+      let result2 = sync_connection.query("update user set loginCnt=loginCnt+1, last_reg=now(),last_ip='"+user_ip+"' where id = '" + user_id + "'");
+    }catch(e){
+
+    }
     req.session.user_email = null;
     req.session.user_idx = null;
   }
@@ -198,7 +216,8 @@ router.get('/mypoint', function(req, res, next) {
     getUserInfoByEmail(req.cookies.user_email);
     res.render('mypoint', { title: 'easypay mypoint', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
       pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
-      klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance
+      klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
+      reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff
     });
   }
 });
