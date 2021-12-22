@@ -173,17 +173,6 @@ router.get('/mybal', function(req, res, next) {
   }
   else {
     /////////////////////////
-    // let user_email = req.cookies.user_email;
-    // let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , round(replace(pot,',','') ,4) pot_balance, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
-    // let user_id = result[0].id;
-    // let c4ei_addr = result[0].c4ei_addr;
-    // let c4ei_balance = result[0].c4ei_balance;
-    // let pot_balance = result[0].pot_balance;
-    // let bck_balance = result[0].bck_balance;
-    // let klay_addr = result[0].klay_addr;
-    // let klay_balance = result[0].klay_balance;
-    // let klay_ceik_addr = result[0].klay_ceik_addr;
-    // let klay_ceik_balance = result[0].klay_ceik_balance;
     getUserInfoByEmail(req.cookies.user_email);
     getBalanceC4eiToken("BCK", userInfo.c4ei_addr, userInfo.user_email, userInfo.bck_balance);
     getBalanceKlay(userInfo.klay_addr, userInfo.user_email, userInfo.klay_balance);
@@ -199,7 +188,7 @@ router.get('/mybal', function(req, res, next) {
 
 /////////////////////////////////////////////////
 //////////// 2021-12-21 make point s ////////////
-router.get('/mypoint', function(req, res, next) {
+router.get('/mining', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
     res.sendFile(STATIC_PATH + '/ulogin.html')
     return;
@@ -207,7 +196,7 @@ router.get('/mypoint', function(req, res, next) {
   else {
     /////////////////////////
     getUserInfoByEmail(req.cookies.user_email);
-    res.render('mypoint', { title: 'easypay mypoint', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
+    res.render('mining', { title: 'easypay mining', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
       pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
       klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
       reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
@@ -216,7 +205,8 @@ router.get('/mypoint', function(req, res, next) {
   }
 });
 
-router.get('/sendPoint', function(req, res, next) {
+router.post('/miningok', function(req, res, next) {
+  console.log('miningok');
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
     res.sendFile(STATIC_PATH + '/ulogin.html')
     return;
@@ -226,17 +216,19 @@ router.get('/sendPoint', function(req, res, next) {
     getUserInfoByEmail(req.cookies.user_email);
     try{
       var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-      let result1 = sync_connection.query("update user set pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"' where id = '" + userInfo.user_id + "'");
+      let strSQL1 = "update user set pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"' where id = '" + userInfo.user_id + "'";
+      let result1 = sync_connection.query(strSQL1);
+      console.log(strSQL1);
       let free_pot = 10;
       let _memo = "click and get pot";
-      let strSQL = "insert into point_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userInfo.user_id+"','"+free_pot+"','"+userInfo.pot_balance+"','" + Number(free_pot) + Number(userInfo.pot_balance) + "','" + user_ip + "','" + _memo + "') ";
-      let result2 = sync_connection.query(strSQL);
-      console.log(strSQL);
+      let strSQL2 = "insert into mining_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userInfo.user_id+"','"+free_pot+"','"+userInfo.pot_balance+"','" + Number(Number(free_pot) + Number(userInfo.pot_balance)) + "','" + user_ip + "','" + _memo + "') ";
+      let result2 = sync_connection.query(strSQL2);
+      console.log(strSQL2);
     }catch(e){
       console.log(e);
     }
-
-    res.render('mypointok', { title: 'easypay mypointok', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
+    getUserInfoByEmail(req.cookies.user_email); // 1 more
+    res.render('miningok', { title: 'easypay miningok', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
       pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
       klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
       reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
@@ -244,8 +236,6 @@ router.get('/sendPoint', function(req, res, next) {
     });
   }
 });
-
-
 
 //////////// 2021-12-21 make point e ////////////
 /////////////////////////////////////////////////
