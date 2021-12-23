@@ -48,7 +48,7 @@ const userInfo = {
   // print : function(){ console.log('user_email : ' + user_email + '); }
 }
 function getUserInfoByEmail(user_email){
-  let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , round(replace(pot,',','') ,4) pot_balance, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance, loginCnt, reffer_id, reffer_cnt, last_pot_reg, TIMESTAMPDIFF(HOUR, last_pot_reg, NOW() ) AS TMDiff, pot_reg_cnt FROM user a WHERE a.email='" + user_email + "'");
+  let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , round(replace(pot,',','') ,4) pot_balance, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance, loginCnt, reffer_id, reffer_cnt, last_pot_reg, TIMESTAMPDIFF(HOUR, last_pot_reg, NOW() ) AS TMDiff, pot_reg_cnt, TIMESTAMPDIFF(SECOND, last_pot_reg, NOW() ) AS TMDiffSec FROM user a WHERE a.email='" + user_email + "'");
 
   userInfo.user_email = user_email;
   userInfo.user_id = result[0].id;
@@ -66,6 +66,7 @@ function getUserInfoByEmail(user_email){
   userInfo.last_pot_reg = result[0].last_pot_reg;
   userInfo.TMDiff =  result[0].TMDiff;
   userInfo.pot_reg_cnt =  result[0].pot_reg_cnt;
+  userInfo.TMDiffSec =  result[0].TMDiffSec;
   
   // console.log(userInfo.user_email + ":user_email");
   // console.log(userInfo.c4ei_addr + ":c4ei_addr");
@@ -197,6 +198,60 @@ router.get('/mining', function(req, res, next) {
     /////////////////////////
     getUserInfoByEmail(req.cookies.user_email);
     res.render('mining', { title: 'easypay mining', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
+      pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
+      klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
+      reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
+      pot_reg_cnt:userInfo.pot_reg_cnt,TMDiffSec:userInfo.TMDiffSec
+    });
+  }
+});
+
+router.get('/mining2', function(req, res, next) {
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    getUserInfoByEmail(req.cookies.user_email);
+    res.render('mining2', { title: 'easypay mining', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
+      pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
+      klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
+      reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
+      pot_reg_cnt:userInfo.pot_reg_cnt,TMDiffSec:userInfo.TMDiffSec
+    });
+  }
+});
+
+router.post('/miningok2', function(req, res, next) {
+  console.log('miningok2');
+  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+    res.sendFile(STATIC_PATH + '/ulogin.html')
+    return;
+  }
+  else {
+    /////////////////////////
+    getUserInfoByEmail(req.cookies.user_email);
+    if(userInfo.TMDiff>7)  // check 8 hours
+    {
+      try{
+        var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+        let free_pot = 10;
+        let strSQL1 = "update user set pot=pot+ "+free_pot+",pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"' where id = '" + userInfo.user_id + "'";
+        let result1 = sync_connection.query(strSQL1);
+        console.log(strSQL1);
+        let _memo = "click and get pot";
+        let strSQL2 = "insert into mining_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userInfo.user_id+"','"+free_pot+"','"+userInfo.pot_balance+"','" + Number(Number(free_pot) + Number(userInfo.pot_balance)) + "','" + user_ip + "','" + _memo + "') ";
+        let result2 = sync_connection.query(strSQL2);
+        console.log(strSQL2);
+      }catch(e){
+        console.log(e);
+      }
+    }else{
+      console.log("8 hours not pass");
+    }
+    getUserInfoByEmail(req.cookies.user_email); // 1 more
+    res.render('miningok2', { title: 'easypay miningok', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
       pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
       klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
       reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
