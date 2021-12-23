@@ -57,7 +57,7 @@
             <!-- Reset Button -->
             <ul class="reset-btn">
                 <li>
-                    <button id="reset">mybal</button>
+                    <button id="reset">exit</button>
                 </li>
             </ul>
         </section>
@@ -169,7 +169,7 @@ function jsfn_send(){
     if(parseInt(txt_TMDiff)<8){  // alert('can`t start every 8 hour end ');
       return;
     }else{
-        document.getElementById("sendForm").action = "/miningok";
+        document.getElementById("sendForm").action = "/miningok2";
         document.getElementById("sendForm").submit();
     }
 }
@@ -719,9 +719,12 @@ function drawScore() {
   } else {
     ctx.font = "2vw Orbitron, sans-serif";
   }
-  ctx.strokeText("POT: <%=pot%> " , 10, cnvsHeight - 90);
-  ctx.strokeText("REF: <%=reffer_cnt%> " , 10, cnvsHeight - 50);
-  ctx.strokeText("ENERGY:" + score , 10, cnvsHeight - 10);
+
+  ctx.strokeText("REF: <%=reffer_cnt%> " , 10, cnvsHeight - 170);
+  ctx.strokeText("POT: <%=pot%> " , 10, cnvsHeight - 130);
+  ctx.strokeText("ENERGY:" + score , 10, cnvsHeight - 90);
+  ctx.strokeText("Total Mining User: <%=TotMiningCnt%> " , 10, cnvsHeight - 50);
+  ctx.strokeText("Total Hash Power: <%=TotMiningMHZ%> " , 10, cnvsHeight - 10);
   ctx.strokeStyle = "rgba(252, 252, 252, 0.486)";
 }
 

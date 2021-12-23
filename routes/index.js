@@ -189,22 +189,22 @@ router.get('/mybal', function(req, res, next) {
 
 /////////////////////////////////////////////////
 //////////// 2021-12-21 make point s ////////////
-router.get('/mining', function(req, res, next) {
-  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
-    res.sendFile(STATIC_PATH + '/ulogin.html')
-    return;
-  }
-  else {
-    /////////////////////////
-    getUserInfoByEmail(req.cookies.user_email);
-    res.render('mining', { title: 'easypay mining', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
-      pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
-      klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
-      reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
-      pot_reg_cnt:userInfo.pot_reg_cnt,TMDiffSec:userInfo.TMDiffSec
-    });
-  }
-});
+// router.get('/mining', function(req, res, next) {
+//   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+//     res.sendFile(STATIC_PATH + '/ulogin.html')
+//     return;
+//   }
+//   else {
+//     /////////////////////////
+//     getUserInfoByEmail(req.cookies.user_email);
+//     res.render('mining', { title: 'easypay mining', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
+//       pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
+//       klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
+//       reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
+//       pot_reg_cnt:userInfo.pot_reg_cnt,TMDiffSec:userInfo.TMDiffSec
+//     });
+//   }
+// });
 
 router.get('/mining2', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -214,15 +214,42 @@ router.get('/mining2', function(req, res, next) {
   else {
     /////////////////////////
     getUserInfoByEmail(req.cookies.user_email);
+    if(userInfo.TMDiff>7)  // check 8 hours
+    {
+      let strSQL1 = "update user set miningYN='N' where id = '" + userInfo.user_id + "'";
+      let result1 = sync_connection.query(strSQL1);
+      console.log(strSQL1);
+    }
+    let result1 = sync_connection.query("SELECT count(miningYN)+1 as TotMiningCnt FROM user where miningYN='Y' ");
+    let TotMiningCnt = result1[0].TotMiningCnt;
+    let TotMiningMHZ = num2Hash(TotMiningCnt);
+  
     res.render('mining2', { title: 'easypay mining', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
       pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
       klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
       reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
-      pot_reg_cnt:userInfo.pot_reg_cnt,TMDiffSec:userInfo.TMDiffSec
+      pot_reg_cnt:userInfo.pot_reg_cnt,TMDiffSec:userInfo.TMDiffSec,
+      TotMiningCnt:TotMiningCnt , TotMiningMHZ:TotMiningMHZ
     });
   }
 });
+function num2Hash(num) {
+  let danwe="H";
+  let numDigit = num.toString().length;
+  // console.log(numDigit +":numDigit");
+  num = num * 3600;
+  switch (numDigit.toString()){
+    case "1":case "2":case "3" :danwe="H"; break;
+    case "4":case "5":case "6" :danwe="KH"; num = num * 0.001; break;   // * 1킬로해시(KH) = 1,000 해시
+    case "7":case "8":case "9" :danwe="MH"; num = num * 0.001 * 0.001; break; // * 1메가해시(MH) = 1,000 킬로해시 = 1,000,000 해시
+    case "10":case "11":case "12" :danwe="GH"; num = num * 0.001 * 0.001 * 0.001; break; // * 1기가해시(GH) = 1,000 메가해시 = 1,000,000,000 해시
+    case "13":case "14":case "15" :danwe="TH"; num = num * 0.001 * 0.001 * 0.001 * 0.001; break; // * 1테라해시(TH) = 1,000 기가해시 = 1,000,000,000,000 해시
+    case "16":case "17":case "18" :danwe="PH"; num = num * 0.001 * 0.001 * 0.001 * 0.001 * 0.001; break; // * 1페타해시(PH) = 1,000 테라해시 = 1,000,000,000,000,000 해시
+    default : danwe="KH"; num = num * 0.001; break;
+  }
 
+  return num +" "+danwe +"/h"; 
+}
 router.post('/miningok2', function(req, res, next) {
   console.log('miningok2');
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -237,7 +264,7 @@ router.post('/miningok2', function(req, res, next) {
       try{
         var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
         let free_pot = 10;
-        let strSQL1 = "update user set pot=pot+ "+free_pot+",pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"' where id = '" + userInfo.user_id + "'";
+        let strSQL1 = "update user set pot=pot+ "+free_pot+",pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"',miningYN='Y' where id = '" + userInfo.user_id + "'";
         let result1 = sync_connection.query(strSQL1);
         console.log(strSQL1);
         let _memo = "click and get pot";
@@ -260,40 +287,40 @@ router.post('/miningok2', function(req, res, next) {
   }
 });
 
-router.post('/miningok', function(req, res, next) {
-  console.log('miningok');
-  if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
-    res.sendFile(STATIC_PATH + '/ulogin.html')
-    return;
-  }
-  else {
-    /////////////////////////
-    getUserInfoByEmail(req.cookies.user_email);
-    if(userInfo.TMDiff>7)  // check 8 hours
-    {
-      try{
-        var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-        let free_pot = 10;
-        let strSQL1 = "update user set pot=pot+ "+free_pot+",pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"' where id = '" + userInfo.user_id + "'";
-        let result1 = sync_connection.query(strSQL1);
-        console.log(strSQL1);
-        let _memo = "click and get pot";
-        let strSQL2 = "insert into mining_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userInfo.user_id+"','"+free_pot+"','"+userInfo.pot_balance+"','" + Number(Number(free_pot) + Number(userInfo.pot_balance)) + "','" + user_ip + "','" + _memo + "') ";
-        let result2 = sync_connection.query(strSQL2);
-        console.log(strSQL2);
-      }catch(e){
-        console.log(e);
-      }
-    }
-    getUserInfoByEmail(req.cookies.user_email); // 1 more
-    res.render('miningok', { title: 'easypay miningok', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
-      pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
-      klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
-      reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
-      pot_reg_cnt:userInfo.pot_reg_cnt
-    });
-  }
-});
+// router.post('/miningok', function(req, res, next) {
+//   console.log('miningok');
+//   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+//     res.sendFile(STATIC_PATH + '/ulogin.html')
+//     return;
+//   }
+//   else {
+//     /////////////////////////
+//     getUserInfoByEmail(req.cookies.user_email);
+//     if(userInfo.TMDiff>7)  // check 8 hours
+//     {
+//       try{
+//         var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+//         let free_pot = 10;
+//         let strSQL1 = "update user set pot=pot+ "+free_pot+",pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"' where id = '" + userInfo.user_id + "'";
+//         let result1 = sync_connection.query(strSQL1);
+//         console.log(strSQL1);
+//         let _memo = "click and get pot";
+//         let strSQL2 = "insert into mining_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userInfo.user_id+"','"+free_pot+"','"+userInfo.pot_balance+"','" + Number(Number(free_pot) + Number(userInfo.pot_balance)) + "','" + user_ip + "','" + _memo + "') ";
+//         let result2 = sync_connection.query(strSQL2);
+//         console.log(strSQL2);
+//       }catch(e){
+//         console.log(e);
+//       }
+//     }
+//     getUserInfoByEmail(req.cookies.user_email); // 1 more
+//     res.render('miningok', { title: 'easypay miningok', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
+//       pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
+//       klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
+//       reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
+//       pot_reg_cnt:userInfo.pot_reg_cnt
+//     });
+//   }
+// });
 
 //////////// 2021-12-21 make point e ////////////
 /////////////////////////////////////////////////
