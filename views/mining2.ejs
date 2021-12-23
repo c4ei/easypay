@@ -282,33 +282,33 @@ class Star {
     let s = size * (cnvsLength / this.z);
     // Renders circular star shapes, changing colour as points increase
     ctx.beginPath();
-    if (score <= 1000) {
+    if (score <= 1000*2.88) {
       ctx.fillStyle = "#82caff";
-    } else if (score <= 2100) {
+    } else if (score <= 2100*2.88) {
       ctx.fillStyle = "#00FA9A";
-    } else if (score <= 3200) {
+    } else if (score <= 3200*2.88) {
       ctx.fillStyle = "#306eff";
-    } else if (score <= 4000) {
+    } else if (score <= 4000*2.88) {
       ctx.fillStyle = "#7609c4";
-    } else if (score <= 4300) {
+    } else if (score <= 4300*2.88) {
       ctx.fillStyle = "#6900b4";
-    } else if (score <= 5400) {
+    } else if (score <= 5400*2.88) {
       ctx.fillStyle = "#1b1bd6";
-    } else if (score <= 5950) {
+    } else if (score <= 5950*2.88) {
       ctx.fillStyle = "#7f00d4";
-    } else if (score <= 6500) {
+    } else if (score <= 6500*2.88) {
       ctx.fillStyle = "#132aff";
-    } else if (score <= 7000) {
+    } else if (score <= 7000*2.88) {
       ctx.fillStyle = "#00708b";
-    } else if (score <= 7500) {
+    } else if (score <= 7500*2.88) {
       ctx.fillStyle = "#386323";
-    } else if (score <= 8150) {
+    } else if (score <= 8150*2.88) {
       ctx.fillStyle = "#5d794f";
-    } else if (score <= 8700) {
+    } else if (score <= 8700*2.88) {
       ctx.fillStyle = "#4cc437";
-    } else if (score <= 9200) {
+    } else if (score <= 9200*2.88) {
       ctx.fillStyle = "#838383";
-    } else if (score <= 10000) {
+    } else if (score <= 10000*2.88) {
       ctx.fillStyle = "#704cf0";
     }
     ctx.arc(xPos, yPos, s, 0, Math.PI * 2);
@@ -358,35 +358,35 @@ class Sprite {
       yPos = yPos + s * this.randomY;
       // Renders circular Sprite shapes, changing colour as points increase
       ctx.beginPath();
-      if (score <= 2400) {
+      if (score <= 2400*2.88) {
         ctx.fillStyle = "red";
-      } else if (score <= 2425) {
+      } else if (score <= 2425*2.88) {
         ctx.fillStyle = "#d1d1d1";
-      } else if (score <= 2450) {
+      } else if (score <= 2450*2.88) {
         ctx.fillStyle = "red";
-      } else if (score <= 2475) {
+      } else if (score <= 2475*2.88) {
         ctx.fillStyle = "#d1d1d1";
-      } else if (score <= 2500) {
+      } else if (score <= 2500*2.88) {
         ctx.fillStyle = "red";
-      } else if (score <= 2525) {
+      } else if (score <= 2525*2.88) {
         ctx.fillStyle = "#d1d1d1";
-      } else if (score <= 6300) {
+      } else if (score <= 6300*2.88) {
         ctx.fillStyle = "#e5e4e2";
-      } else if (score <= 7500) {
+      } else if (score <= 7500*2.88) {
         ctx.fillStyle = "#d1d1d1";
-      } else if (score <= 7525) {
+      } else if (score <= 7525*2.88) {
         ctx.fillStyle = "red";
-      } else if (score <= 7550) {
+      } else if (score <= 7550*2.88) {
         ctx.fillStyle = "#d1d1d1";
-      } else if (score <= 7575) {
+      } else if (score <= 7575*2.88) {
         ctx.fillStyle = "red";
-      } else if (score <= 7600) {
+      } else if (score <= 7600*2.88) {
         ctx.fillStyle = "#d1d1d1";
-      } else if (score <= 7625) {
+      } else if (score <= 7625*2.88) {
         ctx.fillStyle = "red";
-      } else if (score <= 7650) {
+      } else if (score <= 7650*2.88) {
         ctx.fillStyle = "#d1d1d1";
-      } else if (score <= 10000) {
+      } else if (score <= 10000*2.88) {
         ctx.fillStyle = "red";
       }
       ctx.arc(xPos, yPos, s, 0, Math.PI * 2);
@@ -721,7 +721,7 @@ function drawScore() {
   }
   ctx.strokeText("POT: <%=pot%> " , 10, cnvsHeight - 90);
   ctx.strokeText("REF: <%=reffer_cnt%> " , 10, cnvsHeight - 50);
-  ctx.strokeText("ENERGY:" + score, 10, cnvsHeight - 10);
+  ctx.strokeText("ENERGY:" + score , 10, cnvsHeight - 10);
   ctx.strokeStyle = "rgba(252, 252, 252, 0.486)";
 }
 
@@ -749,23 +749,23 @@ function countdown() {
 
 // Increases the speed per frame
 function speedIncrease() {
-  if (score < 2500 && cnvsWidth < 600) {
+  if (score < 2500*2.88 && cnvsWidth < 600) {
     speed += 0.002;
-  } else if (score < 2500 && cnvsWidth < 1200) {
+  } else if (score < 2500*2.88 && cnvsWidth < 1200) {
     speed += 0.005;
-  } else if (score < 2500) {
+  } else if (score < 2500*2.88) {
     speed += 0.007;
-  } else if (score < 5000 && cnvsWidth < 600) {
+  } else if (score < 5000*2.88 && cnvsWidth < 600) {
     speed += 0.001;
-  } else if (score < 5000 && cnvsWidth < 1200) {
+  } else if (score < 5000*2.88 && cnvsWidth < 1200) {
     speed += 0.002;
-  } else if (score < 5000) {
+  } else if (score < 5000*2.88) {
     speed += 0.002;
-  } else if (score < 7500 && cnvsWidth < 600) {
+  } else if (score < 7500*2.88 && cnvsWidth < 600) {
     speed += 0.0005;
-  } else if (score < 7500 && cnvsWidth < 1200) {
+  } else if (score < 7500*2.88 && cnvsWidth < 1200) {
     speed += 0.0002;
-  } else if (score < 7500) {
+  } else if (score < 7500*2.88) {
     speed += 0.001;
   }
 }
