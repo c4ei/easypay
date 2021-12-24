@@ -1,3 +1,4 @@
+// https://scope.klaytn.com/account/0x000000000000000000000000000000000000dead?tabId=txList burning address
 var express = require('express');
 var router = express.Router();
 var QRCode = require('qrcode');
@@ -118,12 +119,7 @@ router.get('/', function(req, res, next) {
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
     let pot_balance = result[0].pot;
-    let bck_balance = result[0].bck_balance;
     let klay_addr = result[0].klay_addr;
-    let klay_balance = result[0].klay_balance;
-    let klay_ceik_addr = result[0].klay_ceik_addr;
-    let klay_ceik_balance = result[0].klay_ceik_balance;
-
     // 
     // fn_ChkC4eiNetAlive();
     /////////////////////////
@@ -189,22 +185,6 @@ router.get('/mybal', function(req, res, next) {
 
 /////////////////////////////////////////////////
 //////////// 2021-12-21 make point s ////////////
-// router.get('/mining', function(req, res, next) {
-//   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
-//     res.sendFile(STATIC_PATH + '/ulogin.html')
-//     return;
-//   }
-//   else {
-//     /////////////////////////
-//     getUserInfoByEmail(req.cookies.user_email);
-//     res.render('mining', { title: 'easypay mining', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
-//       pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
-//       klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
-//       reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
-//       pot_reg_cnt:userInfo.pot_reg_cnt,TMDiffSec:userInfo.TMDiffSec
-//     });
-//   }
-// });
 
 router.get('/mining2', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -287,41 +267,6 @@ router.post('/miningok2', function(req, res, next) {
   }
 });
 
-// router.post('/miningok', function(req, res, next) {
-//   console.log('miningok');
-//   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
-//     res.sendFile(STATIC_PATH + '/ulogin.html')
-//     return;
-//   }
-//   else {
-//     /////////////////////////
-//     getUserInfoByEmail(req.cookies.user_email);
-//     if(userInfo.TMDiff>7)  // check 8 hours
-//     {
-//       try{
-//         var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-//         let free_pot = 10;
-//         let strSQL1 = "update user set pot=pot+ "+free_pot+",pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"' where id = '" + userInfo.user_id + "'";
-//         let result1 = sync_connection.query(strSQL1);
-//         console.log(strSQL1);
-//         let _memo = "click and get pot";
-//         let strSQL2 = "insert into mining_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userInfo.user_id+"','"+free_pot+"','"+userInfo.pot_balance+"','" + Number(Number(free_pot) + Number(userInfo.pot_balance)) + "','" + user_ip + "','" + _memo + "') ";
-//         let result2 = sync_connection.query(strSQL2);
-//         console.log(strSQL2);
-//       }catch(e){
-//         console.log(e);
-//       }
-//     }
-//     getUserInfoByEmail(req.cookies.user_email); // 1 more
-//     res.render('miningok', { title: 'easypay miningok', email: userInfo.user_email, c4ei_addr : userInfo.c4ei_addr, c4ei_balance : userInfo.c4ei_balance, 
-//       pot:userInfo.pot_balance, bck_balance:userInfo.bck_balance, klay_addr:userInfo.klay_addr, klay_balance:userInfo.klay_balance, 
-//       klay_ceik_addr:userInfo.klay_ceik_addr, klay_ceik_balance:userInfo.klay_ceik_balance ,loginCnt:userInfo.loginCnt, 
-//       reffer_id:userInfo.reffer_id, reffer_cnt:userInfo.reffer_cnt, last_pot_reg:userInfo.last_pot_reg, TMDiff:userInfo.TMDiff,
-//       pot_reg_cnt:userInfo.pot_reg_cnt
-//     });
-//   }
-// });
-
 //////////// 2021-12-21 make point e ////////////
 /////////////////////////////////////////////////
 
@@ -363,12 +308,6 @@ router.get('/rcv', function(req, res, next) {
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
-    let pot_balance = result[0].pot;
-    let bck_balance = result[0].bck_balance;
-    let klay_addr = result[0].klay_addr;
-    let klay_balance = result[0].klay_balance;
-    let klay_ceik_addr = result[0].klay_ceik_addr;
-    let klay_ceik_balance = result[0].klay_ceik_balance;
 
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
@@ -405,12 +344,6 @@ router.get('/sendC4ei', function(req, res, next) {
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
-    let pot_balance = result[0].pot;
-    let bck_balance = result[0].bck_balance;
-    let klay_addr = result[0].klay_addr;
-    let klay_balance = result[0].klay_balance;
-    let klay_ceik_addr = result[0].klay_ceik_addr;
-    let klay_ceik_balance = result[0].klay_ceik_balance;
 
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
@@ -503,12 +436,6 @@ router.post('/sendTrC4eiToAddr', function(req, res, next) {
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
-    // let pot_balance = result[0].pot;
-    // let bck_balance = result[0].bck_balance;
-    // let klay_addr = result[0].klay_addr;
-    // let klay_balance = result[0].klay_balance;
-    // let klay_ceik_addr = result[0].klay_ceik_addr;
-    // let klay_ceik_balance = result[0].klay_ceik_balance;
 
     if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
     if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
@@ -571,12 +498,6 @@ router.post('/sendTr', function(req, res, next) {
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
-    // let pot_balance = result[0].pot;
-    // let bck_balance = result[0].bck_balance;
-    // let klay_addr = result[0].klay_addr;
-    // let klay_balance = result[0].klay_balance;
-    // let klay_ceik_addr = result[0].klay_ceik_addr;
-    // let klay_ceik_balance = result[0].klay_ceik_balance;
 
     if(txt_my_email != user_email){ console.log('email different so can`t send'); return; }
     if(c4ei_addr!=txt_my_addr){ console.log('c4ei_addr different so can`t send'); return; }
@@ -630,11 +551,6 @@ router.get('/exPot2C4ei', function(req, res, next) {
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
     let pot_balance = result[0].pot;
-    let bck_balance = result[0].bck_balance;
-    let klay_addr = result[0].klay_addr;
-    let klay_balance = result[0].klay_balance;
-    let klay_ceik_addr = result[0].klay_ceik_addr;
-    let klay_ceik_balance = result[0].klay_ceik_balance;
 
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
@@ -668,11 +584,6 @@ router.get('/exC4ei2Pot', function(req, res, next) {
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
     let pot_balance = result[0].pot;
-    let bck_balance = result[0].bck_balance;
-    let klay_addr = result[0].klay_addr;
-    let klay_balance = result[0].klay_balance;
-    let klay_ceik_addr = result[0].klay_ceik_addr;
-    let klay_ceik_balance = result[0].klay_ceik_balance;
 
     // console.log("c4ei_addr :"+c4ei_addr);
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
@@ -705,12 +616,7 @@ router.get('/sendC4eibck', function(req, res, next) {
     let user_id = result[0].id;
     let c4ei_addr = result[0].c4ei_addr;
     let c4ei_balance = result[0].c4ei_balance;
-    let pot_balance = result[0].pot;
     let bck_balance = result[0].bck_balance;
-    // let klay_addr = result[0].klay_addr;
-    // let klay_balance = result[0].klay_balance;
-    // let klay_ceik_addr = result[0].klay_ceik_addr;
-    // let klay_ceik_balance = result[0].klay_ceik_balance;
 
     if ((c4ei_addr!="" &&c4ei_addr!=null) && user_id > 0){
       getBalanceC4eiToken("BCK", c4ei_addr, user_email, bck_balance);
@@ -732,10 +638,6 @@ router.get('/sendCeik', function(req, res, next) {
     let user_email = req.cookies.user_email;
     let result = sync_connection.query("SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance , round(replace(pot,',','') ,4) pot_balance, round(bck_balance ,4) as bck_balance, klay_addr, round(klay_balance ,4) as klay_balance, klay_ceik_addr, round(klay_ceik_balance ,4) as klay_ceik_balance FROM user a WHERE a.email='" + user_email + "'");
     let user_id = result[0].id;
-    let c4ei_addr = result[0].c4ei_addr;
-    let c4ei_balance = result[0].c4ei_balance;
-    let pot_balance = result[0].pot;
-    let bck_balance = result[0].bck_balance;
     let klay_addr = result[0].klay_addr;
     let klay_balance = result[0].klay_balance;
     let klay_ceik_addr = result[0].klay_ceik_addr;
@@ -743,14 +645,6 @@ router.get('/sendCeik', function(req, res, next) {
 
     if ((klay_ceik_addr!="" &&klay_ceik_addr!=null) && user_id > 0){
       getBalanceKlayToken("CEIK", klay_ceik_addr, user_email, klay_ceik_balance);
-      // var wallet_balance = web3.eth.getBalance(klay_ceik_addr, function(error, result) {
-      //   wallet_balance = web3.utils.fromWei(result, "ether");
-      //   if (wallet_balance != klay_ceik_balance){
-      //     let result = sync_connection.query("update user set klay_ceik_balance='"+wallet_balance+"' WHERE id='" + user_id + "'");
-      //     console.log("wallet_balance :"+wallet_balance);
-      //     klay_ceik_balance = wallet_balance;
-      //   }
-      // });
     }
     /////////////////////////
     res.render('sendCeik', { title: 'easypay Send', klay_addr:klay_addr, klay_balance:klay_balance, klay_ceik_addr : klay_ceik_addr, klay_ceik_balance : klay_ceik_balance, email: user_email });
@@ -911,18 +805,7 @@ router.get('/exCeik2Pot', function(req, res, next) {
     // console.log("klay_addr :"+klay_addr);
     let err_msg = "";
     if ((klay_addr!="" &&klay_addr!=null) && user_id > 0){
-      // let klay_balance_block =  getBalanceKlay(klay_addr);
-      // caver.rpc.klay.getBalance(address).then((response) => {
-      //   const klay_balance_block = caver.utils.convertFromPeb(caver.utils.hexToNumberString(response));
-      //   if (klay_balance_block != klay_balance){
-      //     let result = sync_connection.query("update user set klay_balance='"+klay_balance_block+"' WHERE id='" + user_id + "'");
-      //     console.log(user_email +" klay_balance_block :"+klay_balance_block);
-      //     klay_balance = klay_balance_block;
-      //   }
-      // });
-      //caver.rpc.klay.getBalance('0x0011A1cad2cA5d23Fde3cc0DefB10e1a8C3Df0c4').then(console.log)
       var wallet_balance = caver.rpc.klay.getBalance(klay_addr, function(error, result) {
-        // if(result != "undefined" || result != undefined){
         if(error == ""){
           wallet_balance = caver.utils.convertFromPeb(caver.utils.hexToNumberString(result));
           // wallet_balance = caver.utils.convertFromPeb(result, "KLAY");
