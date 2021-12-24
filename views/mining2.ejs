@@ -215,7 +215,7 @@ var size = 1;
 // Initial angle of canvas rotation for player ship object
 var angle = 0;
 // Initial score - The score is -100 to allow for countdown timer, game starts when score increases to 0
-var score = -100;
+var score = -1;
 var TMDiff    = "<%=TMDiff%>";
 var TMDiffSec = "<%=TMDiffSec%>";
 if(parseInt(TMDiff)<9){
@@ -730,7 +730,8 @@ function drawScore() {
 
 // Increases the value of score per frame
 function scoreIncrease() {
-  score += 1;
+  score += 0.01;
+  score = parseFloat(score.toFixed(2));
   // When player wins the game
   if (score == 28800) {
     completedScreen();
