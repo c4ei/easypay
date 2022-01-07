@@ -245,6 +245,13 @@ router.post('/miningok2', function(req, res, next) {
   else {
     /////////////////////////
     getUserInfoByEmail(req.cookies.user_email);
+    if(userInfo.loginCnt ==1 )
+    {
+      let strSQL2 = "update user set loginCnt=loginCnt+1 where id = '" + userInfo.user_id + "'";
+      let result2 = sync_connection.query(strSQL2);
+      console.log(strSQL2);
+    }
+    
     if(userInfo.TMDiff>7)  // check 8 hours
     {
       try{
