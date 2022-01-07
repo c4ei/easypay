@@ -166,7 +166,7 @@ var txt_TMDiff    = "<%=TMDiff%>";
 var txt_email     = "<%=email%>"; // not needed because cooike email get 
 
 function jsfn_send(){
-    if(parseInt(txt_TMDiff)<8){  // alert('can`t start every 8 hour end ');
+    if(parseInt(txt_TMDiff)<8 && txt_loginCnt>1){  // alert('can`t start every 8 hour end ');
       return;
     }else{
         document.getElementById("sendForm").action = "/miningok2";
