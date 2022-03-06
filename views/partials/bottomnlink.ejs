@@ -15,7 +15,7 @@
 <script type="text/javascript">
     function goVpoker(){
         alert("최초 접속시 에러 화면이 나오면 \n새로고침 해주시면 접속이 됩니다.");
-        window.open('https://vpoker.c4ei.net/?email=<%= email %>', 'pop_poker', 'top=0,left=0,width=1024,height=800,menubar=no,status=no,toolbar=no');
+        window.open('https://vpoker.c4ei.net/?email=<%= email %>&room=1', 'pop_poker', 'top=0,left=0,width=1024,height=800,menubar=no,status=no,toolbar=no');
         // jsfn_post_to_url('https://vpoker.c4ei.net',{'email':'<%= email %>','sec2':'sec'});
     }
     function jsfn_post_to_url(path, params, method) {
