@@ -86,6 +86,7 @@ function getUserInfoByEmail(user_email){
   // console.log(userInfo.klay_ceik_balance + ":klay_ceik_balance");
   return userInfo;
 }
+
 /////////////////////////
 router.get('/session2cookie', function(req, res, next) {
   //# added ggoogle auth
@@ -149,6 +150,10 @@ router.get('/', function(req, res, next) {
       // , uuidV4:uuidV4()
     });
   }
+});
+
+router.get('/lotto', function(req, res, next) {
+  res.redirect('/lotto');
 });
 
 router.get('/htmlLogin', function(req, res, next) {

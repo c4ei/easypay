@@ -1,0 +1,230 @@
+html {
+  --headerBgc: #8a8c3b;
+  --displayBgc: #a9d9d9;
+  --mainBgc: #a9d9d9;
+  --buttonBgc: #f28241;
+  --ballBgc: #fae946;
+  --couponBgc: #f2e7ac;
+  --couponBorder: #f26444;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Righteous", cursive;
+  box-sizing: border-box;
+  user-select: none;
+}
+body {
+  background-color: var(--mainBgc);
+}
+div.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
+header {
+  flex-basis: 10vh;
+  line-height: 10vh;
+  text-align: center;
+  letter-spacing: 1px;
+  background-color: var(--headerBgc);
+  color: var(--couponBgc);
+  border-radius: 0 0 10px 10px;
+  border-bottom: 3px solid var(--couponBgc);
+}
+main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+  background-color: var(--mainBgc);
+}
+div.display {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  height: 10vh;
+  text-align: center;
+  font-size: 25px;
+  background-color: var(--displayBgc);
+  margin-top: 10px;
+}
+
+div.ball {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 250%;
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgb(48, 48, 48);
+  border-radius: 50%;
+  font-size: 30px;
+  background-color: var(--ballBgc);
+  color: rgb(48, 48, 48);
+  transition: background-color 0.2s;
+  transform: translateY(-30vh);
+  animation: ballFalls 0.6s both;
+}
+@keyframes ballFalls {
+  100% {
+    transform: translateY(0);
+  }
+}
+div.ball:nth-of-type(2) {
+  animation-delay: 0.5s;
+}
+div.ball:nth-of-type(3) {
+  animation-delay: 0.3s;
+}
+div.ball:nth-of-type(4) {
+  animation-delay: 0.4s;
+}
+div.ball:nth-of-type(5) {
+  animation-delay: 0.2s;
+}
+div.ball:nth-of-type(6) {
+  animation-delay: 0.3s;
+}
+.coupon {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-around;
+  margin: 20px auto;
+  width: 90vw;
+  max-width: 500px;
+  height: 200px;
+  padding: 5px;
+  background-color: var(--couponBgc);
+  border: 2px solid var(--couponBorder);
+  border-radius: 10px;
+  box-shadow: 0 0 0 8px white, 0 0 0px 10px rgb(48, 48, 48);
+}
+
+.number {
+  flex-basis: 9.1%;
+  height: 25px;
+  border-left: 2px solid var(--couponBorder);
+  border-right: 2px solid var(--couponBorder);
+  border-radius: 5px;
+  line-height: 25px;
+  color: var(--couponBorder);
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 18px;
+}
+
+.number.selected {
+  text-decoration: underline;
+  color: gray;
+}
+section.results {
+  width: 80vw;
+  margin: 0 auto;
+}
+.results .info {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 1px 1px 10px 10px;
+  border-bottom: 2px solid var(--couponBorder);
+  background-color: #f88f53;
+  opacity: 0.9;
+}
+.results .games,
+.results .wallet,
+.results .money {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  border-bottom: 2px dashed #8a8c3b;
+}
+.controls {
+  margin: 0 auto;
+}
+
+button {
+  border-style: none;
+  border-radius: 3px;
+  outline: none;
+  margin: 20px 10px;
+  padding: 10px;
+  text-transform: uppercase;
+  text-shadow: 0 0 2px black;
+  font-size: 15px;
+  cursor: pointer;
+  color: white;
+  transition: 0.5s;
+  animation: appearBtn 0.5s both;
+}
+button.start {
+  background-color: var(--headerBgc);
+}
+button.reset {
+  background-color: var(--couponBorder);
+}
+button.off {
+  opacity: 0.5;
+  background-color: gray;
+}
+
+@media (orientation: landscape) {
+  header {
+    flex-basis: 20vh;
+    line-height: 20vh;
+  }
+  div.display {
+    height: 20vh;
+  }
+  div.ball {
+    width: 60px;
+    height: 60px;
+  }
+  .coupon {
+    width: 60vw;
+  }
+  section.results {
+    width: 50vw;
+  }
+}
+@media (min-width: 1024px) {
+  /* body {
+    background-image: url(./images/morocco-blue.png);
+  } */
+  div.app {
+    width: 80vw;
+    max-width: 1025px;
+    margin: 0 auto;
+  }
+  header {
+    flex-basis: 10vh;
+    line-height: 10vh;
+    opacity: 0.97;
+  }
+  main {
+    border-radius: 10px 10px 0 0;
+  }
+
+  div.display {
+    height: 10vh;
+  }
+  div.ball:hover {
+    background-color: yellow;
+  }
+  .number:hover {
+    font-weight: bold;
+  }
+  button.start:hover {
+    background-color: var(--ballBgc);
+  }
+  button.reset:hover {
+    background-color: #f88f53;
+  }
+}
