@@ -152,9 +152,9 @@ router.get('/', function(req, res, next) {
   }
 });
 
-router.get('/lotto', function(req, res, next) {
-  res.redirect('/lotto');
-});
+// router.get('/lotto', function(req, res, next) {
+//   res.redirect('/lotto');
+// });
 
 router.get('/htmlLogin', function(req, res, next) {
   // if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
@@ -190,6 +190,23 @@ router.get('/mybal', function(req, res, next) {
       // , ceik_klay : ceik_klay
     });
   }
+});
+
+router.get('/getLotto/:id', function(req, res, next) {
+  // if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
+  //   res.sendFile(STATIC_PATH + '/ulogin.html')
+  //   return;
+  // }
+  // else {
+    let result = sync_connection.query("SELECT yyyy,wk,regdate,chips,sendTr,numb_tot FROM lotto where sendTr='"+req.params.id+"'");
+    let _yyyy       = result[0].yyyy;
+    let _wk         = result[0].wk;
+    let _regdate    = result[0].regdate;
+    let _chips      = result[0].chips;
+    let _sendTr     = result[0].sendTr;
+    let _numb_tot   = result[0].numb_tot;
+    res.render('vtr', { title: 'lotto number', yyyy:_yyyy, wk:_wk, regdate:_regdate, chips:_chips, sendTr : _sendTr, numb_tot : _numb_tot});
+  // }
 });
 
 /////////////////////////////////////////////////
