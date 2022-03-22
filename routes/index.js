@@ -1704,8 +1704,8 @@ async function getBalanceKlayToken(tokenName, walletAddress, email, pre_ceik_bal
 }
 async function getBalanceKlay(walletAddress, email, pre_klay_balance) {
   var tokenbal = caver.klay.getBalance(walletAddress, function(error, result) {
-    tokenbal = caver.utils.convertFromPeb(caver.utils.hexToNumberString(result));
-
+    // tokenbal = caver.utils.convertFromPeb(caver.utils.hexToNumberString(result));
+    tokenbal = caver.utils.convertFromPeb(result);
     console.log("getBalanceKlay block KLAY bal : "+tokenbal + " / db KLAY bal : " + pre_klay_balance);
     if (pre_klay_balance != tokenbal){
       let result = sync_connection.query("update user set klay_balance='"+tokenbal+"' WHERE email='" + email + "'");
