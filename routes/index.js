@@ -55,7 +55,9 @@ const userInfo = {
   reffer_id : '',
   reffer_cnt : '',
   last_pot_reg : '',
-  TMDiff : ''
+  TMDiff : '',
+  pot_reg_cnt : '',
+  TMDiffSec : ''
   // print : function(){ console.log('user_email : ' + user_email + '); }
 }
 function getUserInfoByEmail(user_email){
@@ -210,6 +212,185 @@ router.get('/getLotto/:id', function(req, res, next) {
 });
 
 /////////////////////////////////////////////////
+//////////// 2022-03-30 make point s ////////////
+const userAcct = {
+  user_id : '',
+  c4ei_addr : '',
+  c4ei_balance : '',
+  pot_balance : '',
+  loginCnt : '',
+  reffer_id : '',
+  reffer_cnt : '',
+  last_pot_reg : '',
+  TMDiff : '',
+  pot_reg_cnt : '',
+  TMDiffSec : ''
+}
+function setUserInfoByAddress(user_address, user_ip){
+  getAddressCheck(user_address);
+  // console.log("## 230 ## setUserInfoByAddress : "+user_address);
+  let sql1 = "";
+  sql1 = sql1 + " SELECT count(id) cnt FROM game_user a WHERE a.c4ei_addr='" + user_address + "'";
+  let result1 = sync_connection.query(sql1);
+  if (result1[0].cnt == 0){
+    var strsql = "INSERT INTO game_user (c4ei_addr, regip) values ('" + user_address + "','"+user_ip+"')";
+    // console.log("## 236 ## setUserInfoByAddress : "+strsql);
+    try { 
+      let result1 = sync_connection.query(strsql);
+      // console.log(getCurTimestamp() + "############# insert success #############");
+      getUserInfoByAddress(user_address, user_ip);
+    } catch (err) { 
+      // console.log(getCurTimestamp() + "############# insert fail #############");
+    } 
+  }
+}
+function getUserInfoByAddress(user_address, user_ip){
+  let sql = "";
+  sql = sql + " SELECT id, c4ei_addr, round(c4ei_balance ,4) as c4ei_balance, round(replace(pot,',','') ,4) pot_balance, loginCnt, reffer_id, reffer_cnt, last_pot_reg, ";
+  sql = sql + " TIMESTAMPDIFF(HOUR, last_pot_reg, NOW() ) AS TMDiff, pot_reg_cnt, TIMESTAMPDIFF(SECOND, last_pot_reg, NOW() ) AS TMDiffSec ";
+  sql = sql + " FROM game_user a WHERE a.c4ei_addr='" + user_address + "'";
+  // console.log("## 251 ## getUserInfoByAddress : "+user_address);
+  let result;
+  try {
+    result = sync_connection.query(sql);
+    userAcct.user_id    = result[0].id;
+    userAcct.c4ei_addr  = result[0].c4ei_addr;
+    userAcct.c4ei_balance = result[0].c4ei_balance;
+    userAcct.pot_balance = result[0].pot_balance;
+    userAcct.loginCnt   = result[0].loginCnt;
+    userAcct.reffer_id  = result[0].reffer_id;
+    userAcct.reffer_cnt = result[0].reffer_cnt;
+    userAcct.last_pot_reg = result[0].last_pot_reg;
+    userAcct.TMDiff     = result[0].TMDiff;
+    userAcct.pot_reg_cnt =  result[0].pot_reg_cnt;
+    userAcct.TMDiffSec  = result[0].TMDiffSec;
+    // console.log("############# insert success #############");
+    // console.log(userInfo.c4ei_addr + ":c4ei_addr");
+    // console.log(userInfo.c4ei_balance + ":c4ei_balance");
+    return userAcct;
+  } catch (err) { 
+    setUserInfoByAddress(user_address, user_ip);
+    // console.log("############# insert fail #############");
+  } 
+}
+function getAddressCheck(user_address){
+  //########## address check start ##########
+  let addr_result     = Web3.utils.isAddress(user_address)
+  // console.log("## 277 ## getAddressCheck : "+addr_result)  // => true
+  if(!addr_result){
+    res.sendFile(STATIC_PATH + '/erraddress.html')
+    return;
+  }
+  //########## address check end ##########
+}
+router.get('/game', function(req, res, next) {
+  res.sendFile(STATIC_PATH + '/erraddress.html')
+  // return;
+});
+
+router.post('/game', function(req, res, next) {
+  var txt_my_addr     = req.body.txt_my_address;
+  var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+  // console.log(" ### 291 ### "+txt_my_addr + " : txt_my_addr ");
+  getAddressCheck(txt_my_addr);
+  getUserInfoByAddress(txt_my_addr, user_ip);
+  try{
+    let result2 = sync_connection.query("update game_user set loginCnt=loginCnt+1, last_reg=now(),last_ip='"+user_ip+"' where c4ei_addr='"+txt_my_addr+"'");
+  }catch(e){
+  }
+  console.log(" ### 294 ### "+txt_my_addr + " : txt_my_addr / TMDiff : " + userAcct.TMDiff );
+  if(userAcct.TMDiff>7)  // check 8 hours
+  {
+    let strSQL1 = "update game_user set miningYN='N' where c4ei_addr = '" + txt_my_addr + "'";
+    let result1 = sync_connection.query(strSQL1);
+    console.log(strSQL1);
+  }
+  let result1 = sync_connection.query("SELECT count(miningYN)+1 as TotMiningCnt FROM game_user where miningYN='Y' ");
+  let TotMiningCnt = result1[0].TotMiningCnt;
+  let TotMiningMHZ = num2Hash(TotMiningCnt);
+
+  console.log(" ### 310 ### "+userAcct.loginCnt + " : loginCnt / TMDiff : " + userAcct.TMDiff );
+  res.render('game', { title: 'mining', c4ei_addr : userAcct.c4ei_addr, c4ei_balance : userAcct.c4ei_balance, 
+    pot:userAcct.pot_balance, loginCnt:userAcct.loginCnt, reffer_id:userAcct.reffer_id, reffer_cnt:userAcct.reffer_cnt, 
+    last_pot_reg:userAcct.last_pot_reg, TMDiff:userAcct.TMDiff,pot_reg_cnt:userAcct.pot_reg_cnt,TMDiffSec:userAcct.TMDiffSec,
+    TotMiningCnt:TotMiningCnt , TotMiningMHZ:TotMiningMHZ
+  });
+});
+
+router.post('/gameok', function(req, res, next) {
+  var txt_my_addr     = req.body.txt_my_address;
+  var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+  getAddressCheck(txt_my_addr);
+  getUserInfoByAddress(txt_my_addr, user_ip);
+  console.log('############### gameok ############### userAcct.TMDiff : ' + userAcct.TMDiff);
+  if( userAcct.TMDiff>7 || userAcct.loginCnt ==1)  // check 8 hours
+  {
+    try{
+      if(userAcct.loginCnt ==1 )
+      {
+        let strSQL2 = "update game_user set loginCnt=loginCnt+1 where id = '" + userAcct.user_id + "'";
+        let result2 = sync_connection.query(strSQL2);
+        console.log(strSQL2);
+      }
+      let free_pot = 10;
+      let strSQL1 = "update game_user set pot=pot+ "+free_pot+",pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"',miningYN='Y' where id = '" + userAcct.user_id + "'";
+      let result1 = sync_connection.query(strSQL1);
+      console.log(strSQL1);
+      let _memo = "click and get pot";
+      let strSQL2 = "insert into mining_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userAcct.user_id+"','"+free_pot+"','"+userAcct.pot_balance+"','" + Number(Number(free_pot) + Number(userAcct.pot_balance)) + "','" + user_ip + "','" + _memo + "') ";
+      let result2 = sync_connection.query(strSQL2);
+      console.log(strSQL2);
+      sendC4eiFromMining(txt_my_addr, "0.1", user_ip); // real send 0.1 c4ei
+      console.log("### 344 ### sendC4eiFromMining "+txt_my_addr);
+    }catch(e){
+      console.log(e);
+    }
+  }else{
+    console.log("8 hours not pass");
+  }
+  getUserInfoByAddress(txt_my_addr, user_ip);
+  res.render('gameok', { title: 'c4ei miningok', c4ei_addr : userAcct.c4ei_addr, c4ei_balance : userAcct.c4ei_balance, 
+    pot:userAcct.pot_balance,loginCnt:userAcct.loginCnt, reffer_id:userAcct.reffer_id, reffer_cnt:userAcct.reffer_cnt, 
+    last_pot_reg:userAcct.last_pot_reg, TMDiff:userAcct.TMDiff,pot_reg_cnt:userAcct.pot_reg_cnt
+  });
+
+});
+
+function sendC4eiFromMining(rcvAddr, rcv_amt, user_ip){
+  if(rcv_amt==""){rcv_amt="0.1";}
+  var txt_memo = " 10 pot --> 0.1 c4ei ->  mining ";
+  //save_db_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip,txt_memo){
+  sendMiningC4EI(17, "0x014B0c7D9b22469fE13abf585b1E38676A4a136f", rcvAddr, rcv_amt, user_ip,txt_memo);
+}
+
+async function sendMiningC4EI(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip,txt_memo){
+  var fromAmt = await getAmt(txt_my_addr); fromAmt = await getAmtWei(fromAmt);
+  var toAmt = await getAmt(txt_to_address); toAmt = await getAmtWei(toAmt);
+  var strsql = "insert into sendlog (userIdx ,fromAddr ,fromAmt ,toAddr ,toAmt ,sendAmt ,regip, memo)";
+  strsql = strsql + " values ('" + user_id + "','" + txt_my_addr + "','" + fromAmt + "','" + txt_to_address + "','" + toAmt + "','" + txt_to_amt + "','" + user_ip + "','"+txt_memo+"')";
+  const connection = await pool.getConnection(async conn => conn); 
+  try { 
+    await connection.beginTransaction(); 
+    await connection.query(strsql); 
+    await connection.commit(); 
+    console.log('### 376 ###  sendMiningC4EI insert success!'); 
+  } catch (err) { 
+    await connection.rollback(); 
+    throw err; 
+  } finally { 
+    connection.release();
+    // sync
+    let result1 = sync_connection.query("select max(tidx) as maxtidx from sendlog where userIdx = '" + user_id + "'");
+    let tidx = result1[0].maxtidx;
+    console.log("####### 385 sendMiningC4EI ###### " + tidx +" : rtn #############");
+    sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx);
+  }
+}
+
+//////////// 2022-03-30 make point e ////////////
+/////////////////////////////////////////////////
+
+/////////////////////////////////////////////////
 //////////// 2021-12-21 make point s ////////////
 
 router.get('/mining2', function(req, res, next) {
@@ -256,6 +437,7 @@ function num2Hash(num) {
 
   return num +" "+danwe +"/h"; 
 }
+
 router.post('/miningok2', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined) {
     res.sendFile(STATIC_PATH + '/ulogin.html')
@@ -1393,7 +1575,7 @@ async function fn_unlockAccount(addr){
   let rtn_result = false;
   await web3.eth.personal.unlockAccount(addr, process.env.C4EI_ADDR_PWD, 500).then(function (result) {
     rtn_result = result;
-    console.log('fn_unlockAccount result :' + result);
+    console.log('#### 1578 #### fn_unlockAccount result :' + result);
   });
   return await rtn_result;
 }
@@ -1419,7 +1601,7 @@ async function sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx){
       from: txt_my_addr,
       to: txt_to_address,
       value: web3.utils.toWei(txt_to_amt,'ether'),
-      gas: 100000
+      gas: 300000
     }).
     //on('confirmation', function(confNumber, receipt, latestBlockHash){ console.log('CONFIRMED'); })
     once('sent', function(payload){ console.log('sent'); })
