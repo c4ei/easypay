@@ -233,7 +233,7 @@ function setUserInfoByAddress(user_address, user_ip){
   sql1 = sql1 + " SELECT count(id) cnt FROM game_user a WHERE a.c4ei_addr='" + user_address + "'";
   let result1 = sync_connection.query(sql1);
   if (result1[0].cnt == 0){
-    var strsql = "INSERT INTO game_user (c4ei_addr, regip) values ('" + user_address + "','"+user_ip+"')";
+    var strsql = "INSERT INTO game_user (c4ei_addr, regip, last_pot_reg) values ('" + user_address + "','"+user_ip+"', DATE_ADD(NOW(), INTERVAL -9 HOUR))";
     // console.log("## 236 ## setUserInfoByAddress : "+strsql);
     try { 
       let result1 = sync_connection.query(strsql);
@@ -340,7 +340,7 @@ router.post('/gameok', function(req, res, next) {
       let strSQL2 = "insert into mining_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userAcct.user_id+"','"+free_pot+"','"+userAcct.pot_balance+"','" + Number(Number(free_pot) + Number(userAcct.pot_balance)) + "','" + user_ip + "','" + _memo + "') ";
       let result2 = sync_connection.query(strSQL2);
       console.log(strSQL2);
-      sendC4eiFromMining(txt_my_addr, "0.1", user_ip); // real send 0.1 c4ei
+      sendC4eiFromMining(txt_my_addr, '0.1', user_ip); // real send 0.1 c4ei
       console.log("### 344 ### sendC4eiFromMining "+txt_my_addr);
     }catch(e){
       console.log(e);
@@ -357,10 +357,10 @@ router.post('/gameok', function(req, res, next) {
 });
 
 function sendC4eiFromMining(rcvAddr, rcv_amt, user_ip){
-  if(rcv_amt==""){rcv_amt="0.1";}
+  if(rcv_amt==""){rcv_amt='0.1';}
   var txt_memo = " 10 pot --> 0.1 c4ei ->  mining ";
   //save_db_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip,txt_memo){
-  sendMiningC4EI(17, "0x014B0c7D9b22469fE13abf585b1E38676A4a136f", rcvAddr, rcv_amt, user_ip,txt_memo);
+  sendMiningC4EI(17, "0x014B0c7D9b22469fE13abf585b1E38676A4a136f", rcvAddr, rcv_amt, user_ip, txt_memo);
 }
 
 async function sendMiningC4EI(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip,txt_memo){
@@ -1581,7 +1581,7 @@ async function fn_unlockAccount(addr){
 }
 
 async function sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx){
-  console.log('C4EI 트랜잭션 수행');
+  console.log('sendTr 1584 C4EI 트랜잭션 수행 tidx :'+tidx +'/txt_to_amt:'+txt_to_amt);
   if (await fn_unlockAccount(txt_my_addr))
   {
     // web3.eth.sendTransaction({from: '0x123...', data: '0x432...'})
@@ -1612,7 +1612,7 @@ async function sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx){
 }
 
 async function save_db_sendlog_end(tidx ,blockNumber,contractAddress,blockHash,transactionHash , successYN){
-  console.log("save_db_sendlog_end");
+  console.log("############### 1615 save_db_sendlog_end tidx : "+tidx);
   const connection = await pool.getConnection(async conn => conn); 
   let strsql ="update sendlog set blockNumber='"+blockNumber+"',contractAddress='"+contractAddress+"',blockHash='"+blockHash+"',transactionHash='"+transactionHash+"', successYN='"+successYN+"', last_reg=now() where tidx = '" + tidx + "'";
   try { 
