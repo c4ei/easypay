@@ -322,7 +322,7 @@ router.post('/gameok', function(req, res, next) {
   var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
   getAddressCheck(txt_my_addr);
   getUserInfoByAddress(txt_my_addr, user_ip);
-  console.log('############### gameok ############### userAcct.TMDiff : ' + userAcct.TMDiff);
+  console.log(getCurTimestamp()+'############### gameok ############### userAcct.TMDiff : ' + userAcct.TMDiff);
   if( userAcct.TMDiff>7 || userAcct.loginCnt ==1)  // check 8 hours
   {
     try{
