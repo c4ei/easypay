@@ -332,7 +332,7 @@ router.post('/gameok', function(req, res, next) {
         let result2 = sync_connection.query(strSQL2);
         console.log(strSQL2);
       }
-      let free_pot = 10;
+      let free_pot = 1;
       let strSQL1 = "update game_user set pot=pot+ "+free_pot+",pot_reg_cnt=pot_reg_cnt+1, last_pot_reg=now(),last_ip='"+user_ip+"',miningYN='Y' where id = '" + userAcct.user_id + "'";
       let result1 = sync_connection.query(strSQL1);
       console.log(strSQL1);
