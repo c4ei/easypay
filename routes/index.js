@@ -382,7 +382,7 @@ async function sendMiningC4EI(user_id,txt_my_addr,txt_to_address,txt_to_amt,user
     // sync
     let result1 = sync_connection.query("select max(tidx) as maxtidx from sendlog where userIdx = '" + user_id + "'");
     let tidx = result1[0].maxtidx;
-    console.log("####### 385 sendMiningC4EI ###### " + tidx +" : rtn #############");
+    console.log(getCurTimestamp()+"####### 385 sendMiningC4EI ###### " + tidx +" : rtn #############");
     sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx);
   }
 }
@@ -1604,7 +1604,7 @@ async function sendTr(txt_my_addr, txt_to_address, txt_to_amt, tidx){
       gas: 300000
     }).
     //on('confirmation', function(confNumber, receipt, latestBlockHash){ console.log('CONFIRMED'); })
-    once('sent', function(payload){ console.log('sent'); })
+    once('sent', function(payload){ console.log(getCurTimestamp()+' ### sent ###'); })
     .then(function(receipt){
       save_db_sendlog_end(tidx ,receipt.blockNumber, receipt.contractAddress, receipt.blockHash, receipt.transactionHash ,'Y');
     });
