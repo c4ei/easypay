@@ -103,9 +103,10 @@
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
         showAccount.innerHTML = "address:"+account;
-        console.log(account +":account 101");
+        // console.log(account +": account line 106");
         btnMetaMask.style.display='none';
         jsfn_bindAddress(account);
+        // alert(account+":account");
     }
     async function jsfn_loginMetamask(){
         if (typeof window.ethereum !== 'undefined') {
