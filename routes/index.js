@@ -283,10 +283,6 @@ function getAddressCheck(user_address){
   }
   //########## address check end ##########
 }
-router.get('/game', function(req, res, next) {
-  res.sendFile(STATIC_PATH + '/erraddress.html')
-  // return;
-});
 
 router.post('/game', function(req, res, next) {
   var txt_my_addr     = req.body.txt_my_address;
@@ -299,12 +295,12 @@ router.post('/game', function(req, res, next) {
   }catch(e){
   }
   console.log(" ### 294 ### "+txt_my_addr + " : txt_my_addr / TMDiff : " + userAcct.TMDiff );
-  if(userAcct.TMDiff>7)  // check 8 hours
-  {
-    let strSQL1 = "update game_user set miningYN='N' where c4ei_addr = '" + txt_my_addr + "'";
-    let result1 = sync_connection.query(strSQL1);
-    console.log(strSQL1);
-  }
+  // if(userAcct.TMDiff>7)  // check 8 hours
+  // {
+  //   let strSQL1 = "update game_user set miningYN='N' where c4ei_addr = '" + txt_my_addr + "'";
+  //   let result1 = sync_connection.query(strSQL1);
+  //   console.log(strSQL1);
+  // }
   let result1 = sync_connection.query("SELECT count(miningYN)+1 as TotMiningCnt FROM game_user where miningYN='Y' ");
   let TotMiningCnt = result1[0].TotMiningCnt;
   let TotMiningMHZ = num2Hash(TotMiningCnt);
@@ -316,6 +312,11 @@ router.post('/game', function(req, res, next) {
     TotMiningCnt:TotMiningCnt , TotMiningMHZ:TotMiningMHZ
   });
 });
+
+// router.get('/game', function(req, res, next) {
+//   // res.sendFile(STATIC_PATH + '/erraddress.html')
+//   console.log("/game - get ");
+// });
 
 router.post('/gameok', function(req, res, next) {
   var txt_my_addr     = req.body.txt_my_address;
