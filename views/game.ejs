@@ -595,7 +595,12 @@ document
 
 // Reloads page
 function reload() {
-  window.location.reload(true);
+  setTimeout('confReload()',400);
+}
+function confReload(){
+  if(confirm('resize to reload are you sure?')){
+    window.location.reload(true);
+  }
 }
 
 function gotoMain(){
