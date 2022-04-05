@@ -73,10 +73,10 @@
             <p>CONTROLS:
                 <br>PC 사용자는 좌우 방향키로, mobile 또는 tablet 
                 <br>사용자는 좌,우 화면 터치로 이용 가능 하십니다.<br>
-                Enter 혹은 Send POT 버튼을 클릭하시면 채굴된 POT을 전송합니다.
+                Enter 혹은 Send 버튼을 클릭하시면 채굴된 C4EI을 전송합니다.
             </p>
             <!-- Start Button -->
-            <button id="start-btn">Send POT</button>
+            <button id="start-btn">Send</button>
             <!-- Game Credits -->
             <p id="credit">Game & Music created by Sam Laubscher</p>
         </section>
@@ -712,8 +712,8 @@ function drawScore() {
     ctx.font = "2vw Orbitron, sans-serif";
   }
 
-  ctx.strokeText("REF: <%=reffer_cnt%> " , 10, cnvsHeight - 170);
-  ctx.strokeText("POT: <%=pot%> " , 10, cnvsHeight - 130);
+  ctx.strokeText("REF: <%=reffer_cnt%> " , 10, cnvsHeight - 130);
+  // ctx.strokeText("POT: <%=pot%> " , 10, cnvsHeight - 130);
   ctx.strokeText("ENERGY:" + score , 10, cnvsHeight - 90);
   ctx.strokeText("Total Mining User: <%=TotMiningCnt%> " , 10, cnvsHeight - 50);
   ctx.strokeText("Total Hash Power: <%=TotMiningMHZ%> " , 10, cnvsHeight - 10);
