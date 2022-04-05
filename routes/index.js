@@ -211,6 +211,16 @@ router.get('/getLotto/:id', function(req, res, next) {
   // }
 });
 
+//https://lotto.c4ei.net/myNum/0x0eEA7CA12D4632FF1368df24Cb429dBEa17dD71D
+router.get('/ref/:id', function(req, res, next) {
+  let sql ="";
+  sql = sql +" SELECT `id`,`c4ei_addr`,`last_ip` ";
+  sql = sql +" FROM game_user WHERE c4ei_addr='"+req.params.id+"'  ";
+
+  let result = sync_connection.query(sql);
+  console.log("######### server.js ######### "+timestamp()+" myNum addr: "+req.params.id);
+  res.render('ref', { title: 'ref friend', "result":result });
+});
 /////////////////////////////////////////////////
 //////////// 2022-03-30 make point s ////////////
 const userAcct = {

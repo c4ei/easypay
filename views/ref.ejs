@@ -1,0 +1,80 @@
+<html lang="en"><head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>c4ei.net</title>
+	<link rel="stylesheet" href="/css/main.css">
+	<script src="/js/jquery.min.js"></script>
+</head>
+
+<body data-theme="light">
+<main class="">
+<div style="padding-top:50px;"></div>
+<div style="text-align:center;max-width:800px;margin: auto;">
+	<div id="popup-parent">
+		<div class="popup-container">
+
+<!-- ########################################################################### -->   
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+<script>
+    //------------ 2022-03-30
+    const btnMetaMask = document.querySelector('.enableEthereumButton');
+    const showAccount = document.querySelector('.showAccount');
+    btnMetaMask.addEventListener('click', () => { jsfn_getAccount(); });
+
+    async function jsfn_getAccount() {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const account = accounts[0];
+        showAccount.innerHTML = "address:"+account;
+        btnMetaMask.style.display='none';
+        jsfn_bindAddress(account);
+    }
+
+    function jsfn_bindAddress(addr){
+        if (addr!==undefined){
+            jsfn_btnShowHide('visible');
+            jsfn_chkAddress(addr);
+        } else {
+            jsfn_btnShowHide('hidden');
+        }
+    }
+    function jsfn_btnShowHide(str){
+        let _msg = document.getElementById('ly_dispmsg');
+        if(str == 'visible'){ _msg.style.display = 'none'; } else { _msg.style.display = 'block'; }
+    }
+    function jsfn_chkAddress(addr){
+        document.getElementById('txt_my_address').value = addr;
+        document.getElementById('btn_mining_start').style.visibility = 'visible';
+    }
+    function jsfn_goto_ref(){
+        let chkAddr = document.getElementById('txt_my_address').value;
+        if(chkAddr!=''){
+            document.sendForm.submit();
+        }
+    }
+</script>
+
+<h4 id="ly_dispmsg" style="color: bisque;font-size: 12px;">메타마스크 연동 후 save 가능 합니다.</h4>
+<button class="enableEthereumButton">conncet Metamask</button>
+<span class="showAccount" style="font-size: 8px;"></span><br/>
+<input type="button" value="let`s go mining!" id="btn_mining_start" onclick='jsfn_goto_ref();' style="visibility: hidden;width:160px;height:30px;background-color: cornflowerblue;" >
+
+<div id="htmlForm" style="display: none;">
+<form id="sendForm" name="sendForm" method="post" action="/ref_ok">
+  <input type="hidden"  id="txt_ref_address" name="txt_ref_address" value="" >
+  <input type="hidden"  id="txt_my_address" name="txt_my_address" value="" >
+</form>
+</div>
+<!-- ########################################################################### -->   
+			<div id="ly_netErr" style="display:block;" class="popup">
+			
+			<br/>
+			<br/>
+			<a href="/"> click ! go main again  </a> 
+			</div>
+		</div>
+	</div>
+</div>
+</main>
+
+</body>
+</html>
