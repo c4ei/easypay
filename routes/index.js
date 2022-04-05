@@ -341,7 +341,12 @@ router.post('/gameok', function(req, res, next) {
       let strSQL2 = "insert into mining_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userAcct.user_id+"','"+free_pot+"','"+userAcct.pot_balance+"','" + Number(Number(free_pot) + Number(userAcct.pot_balance)) + "','" + user_ip + "','" + _memo + "') ";
       let result2 = sync_connection.query(strSQL2);
       console.log(strSQL2);
-      sendC4eiFromMining(txt_my_addr, '0.1', user_ip); // real send 0.1 c4ei
+      let rcv_default_bal = 0.1;
+      let rcv_add_bal = (userAcct.reffer_cnt*0.01); // real recevied c4ei
+      if(rcv_add_bal>0.9){ rcv_add_bal = 0.9; }  // max add 0.9 (total 1 c4ei)
+      let rcv_bal = parseFloat(rcv_default_bal + rcv_add_bal).toString();
+      console.log(getCurTimestamp()+'####### 348 ######## rcv_bal : '+rcv_bal + ' / rcv_add_bal :'+rcv_add_bal);
+      sendC4eiFromMining(txt_my_addr, rcv_bal, user_ip);
       console.log("### 344 ### sendC4eiFromMining "+txt_my_addr);
     }catch(e){
       console.log(e);

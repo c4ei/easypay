@@ -109,11 +109,20 @@
         // alert(account+":account");
     }
     // async function jsfn_loginMetamask(){
-    //     if (typeof window.ethereum !== 'undefined') {
-    //         console.log('MetaMask is installed!');
+    //     if (window.ethereum) {
+    //         try {
+    //             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    //             jsfn_bindAddress(accounts);
+    //         } catch (error) {
+    //             if (error.code === 4001) {
+    //                 // User rejected request
+    //             }
+    //             // jsfn_setError(error);
+    //             console.log(error);
+    //         }
     //     }
-    //     ethereum.request({ method: 'eth_requestAccounts' });
     // }
+    
     function jsfn_bindAddress(addr){
         // document.getElementById('ly_userAccount').innerText = addr;
         if (addr!==undefined){
