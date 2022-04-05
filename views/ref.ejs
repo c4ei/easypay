@@ -14,17 +14,31 @@
 		<div class="popup-container">
 
 <!-- ########################################################################### -->   
+<div id="ly_netErr" style="display:block;" class="popup">
+    <button class="enableEthereumButton">Connect Metamask</button>
+    <h4 id="ly_dispmsg" style="color: rgb(107, 101, 93);font-size: 12px;margin-top: 15px;">메타마스크 연동 후 save 가능 합니다.</h4>
+
+    <!-- <span class="showAccount" style="font-size: 8px;"></span><br/> -->
+    <input type="button" value="추천인 등록" id="btn_save_ref" onclick='jsfn_goto_ref();' style="visibility: hidden;width:160px;height:30px;background-color: cornflowerblue;margin-top: 15px;" >
+
+    <div id="htmlForm" style="display: block;">
+    <form id="sendForm" name="sendForm" method="post" action="/ref_ok">
+        추천인:<input type="text"  id="txt_ref_address" name="txt_ref_address" value="<%= result.c4ei_addr %>" style="margin-top: 15px;"> <br/>
+        내주소:<input type="text"  id="txt_my_address" name="txt_my_address" value=""  style="margin-top: 5px;">
+    </form>
+</div>
+
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
 <script>
     //------------ 2022-03-30
     const btnMetaMask = document.querySelector('.enableEthereumButton');
-    const showAccount = document.querySelector('.showAccount');
+    // const showAccount = document.querySelector('.showAccount');
     btnMetaMask.addEventListener('click', () => { jsfn_getAccount(); });
 
     async function jsfn_getAccount() {
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
-        showAccount.innerHTML = "address:"+account;
+        // showAccount.innerHTML = "address:"+account;
         btnMetaMask.style.display='none';
         jsfn_bindAddress(account);
     }
@@ -43,30 +57,19 @@
     }
     function jsfn_chkAddress(addr){
         document.getElementById('txt_my_address').value = addr;
-        document.getElementById('btn_mining_start').style.visibility = 'visible';
+        document.getElementById('btn_save_ref').style.visibility = 'visible';
     }
     function jsfn_goto_ref(){
+        let refAddr = document.getElementById('txt_ref_address').value;
         let chkAddr = document.getElementById('txt_my_address').value;
-        if(chkAddr!=''){
+        if(chkAddr!='' && refAddr!=''){
             document.sendForm.submit();
+        }else{
+            alert('need ref address and your address');
         }
     }
 </script>
-
-<h4 id="ly_dispmsg" style="color: bisque;font-size: 12px;">메타마스크 연동 후 save 가능 합니다.</h4>
-<button class="enableEthereumButton">conncet Metamask</button>
-<span class="showAccount" style="font-size: 8px;"></span><br/>
-<input type="button" value="let`s go mining!" id="btn_mining_start" onclick='jsfn_goto_ref();' style="visibility: hidden;width:160px;height:30px;background-color: cornflowerblue;" >
-
-<div id="htmlForm" style="display: none;">
-<form id="sendForm" name="sendForm" method="post" action="/ref_ok">
-  <input type="hidden"  id="txt_ref_address" name="txt_ref_address" value="" >
-  <input type="hidden"  id="txt_my_address" name="txt_my_address" value="" >
-</form>
-</div>
 <!-- ########################################################################### -->   
-			<div id="ly_netErr" style="display:block;" class="popup">
-			
 			<br/>
 			<br/>
 			<a href="/"> click ! go main again  </a> 

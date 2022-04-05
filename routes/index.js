@@ -218,7 +218,7 @@ router.get('/ref/:id', function(req, res, next) {
   sql = sql +" FROM game_user WHERE c4ei_addr='"+req.params.id+"'  ";
 
   let result = sync_connection.query(sql);
-  console.log("######### server.js ######### "+timestamp()+" myNum addr: "+req.params.id);
+  console.log("######### index.js ######### "+getCurTimestamp()+" ref addr: "+req.params.id);
   res.render('ref', { title: 'ref friend', "result":result });
 });
 /////////////////////////////////////////////////
