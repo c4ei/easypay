@@ -175,7 +175,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error',{msg :err});
+  console.log(getCurTimestamp()+": app 178 - error");
+  res.render('error',{'msg' :err});
   // res.render('msgpage', { title: 'oops', msg : '500 error '+err+''});
 });
 
@@ -183,5 +184,21 @@ app.use(function(err, req, res, next) {
 // // starting the server
 // app.listen(port, () =>
 //     console.log(`🚀 Server running on port ${port}!`));
+function getCurTimestamp() {
+  const d = new Date();
+
+  return new Date(
+    Date.UTC(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDate(),
+      d.getHours(),
+      d.getMinutes(),
+      d.getSeconds()
+    )
+  // `toIsoString` returns something like "2017-08-22T08:32:32.847Z"
+  // and we want the first part ("2017-08-22")
+  ).toISOString().replace('T','_').replace('Z','');
+}
 
 module.exports = app;

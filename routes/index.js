@@ -211,15 +211,26 @@ router.get('/getLotto/:id', function(req, res, next) {
   // }
 });
 
+function jsfnRepSQLinj(str){
+  str = str.replace('\'','`');
+  str = str.replace('--','');
+  return str;
+}
 //https://lotto.c4ei.net/myNum/0x0eEA7CA12D4632FF1368df24Cb429dBEa17dD71D
 router.get('/ref/:id', function(req, res, next) {
+  let ref_addr = jsfnRepSQLinj(req.params.id);
   let sql ="";
-  sql = sql +" SELECT `id`,`c4ei_addr`,`last_ip` ";
-  sql = sql +" FROM game_user WHERE c4ei_addr='"+req.params.id+"'  ";
-
+  sql = sql +" SELECT id, c4ei_addr, last_ip ";
+  sql = sql +" FROM game_user WHERE c4ei_addr='"+ref_addr+"' ";
+  console.log("######### index.js 225  ######### "+getCurTimestamp()+" sql: "+sql);
   let result = sync_connection.query(sql);
-  console.log("######### index.js ######### "+getCurTimestamp()+" ref addr: "+req.params.id);
-  res.render('ref', { title: 'ref friend', "result":result });
+  if(result.length > 0){
+    console.log("######### index.js 228  ######### "+getCurTimestamp()+" result: "+result[0].c4ei_addr);
+    res.render('ref', { title: 'ref friend', "result":result });
+  }else{
+    res.render('ref', { title: 'ref friend', "result":'nodata' });
+  }
+  
 });
 /////////////////////////////////////////////////
 //////////// 2022-03-30 make point s ////////////

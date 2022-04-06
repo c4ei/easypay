@@ -23,7 +23,7 @@
 
     <div id="htmlForm" style="display: block;">
     <form id="sendForm" name="sendForm" method="post" action="/ref_ok">
-        추천인:<input type="text"  id="txt_ref_address" name="txt_ref_address" value="<%= result.c4ei_addr %>" style="margin-top: 15px;"> <br/>
+        추천인:<input type="text"  id="txt_ref_address" name="txt_ref_address" value="<%= result=='nodata'?'nodata':result[0].c4ei_addr %>" style="margin-top: 15px;"> <br/>
         내주소:<input type="text"  id="txt_my_address" name="txt_my_address" value=""  style="margin-top: 5px;">
     </form>
 </div>
