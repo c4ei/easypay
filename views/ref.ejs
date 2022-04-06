@@ -23,7 +23,9 @@
 
     <div id="htmlForm" style="display: block;">
     <form id="sendForm" name="sendForm" method="post" action="/ref_ok">
-        추천인:<input type="text"  id="txt_ref_address" name="txt_ref_address" value="<%= result=='nodata'?'nodata':result[0].c4ei_addr %>" style="margin-top: 15px;"> <br/>
+        추천인:<input type="text"  id="txt_ref_address" name="txt_ref_address" value="<%= result=='nodata'?'nodata':result[0].c4ei_addr %>" style="margin-top: 15px;"> 
+        <input type="hidden"  id="txt_ref_id" name="txt_ref_id" value="<%= result=='nodata'?'0':result[0].id %>" style="margin-top: 15px;">
+        <br/>
         내주소:<input type="text"  id="txt_my_address" name="txt_my_address" value=""  style="margin-top: 5px;">
     </form>
 </div>
@@ -61,11 +63,26 @@
     }
     function jsfn_goto_ref(){
         let refAddr = document.getElementById('txt_ref_address').value;
+        let ref_id = document.getElementById('txt_ref_id').value;
         let chkAddr = document.getElementById('txt_my_address').value;
+        if(refAddr!=''){
+            alert('추천인으로 등록 할 수 없습니다.');
+            return;
+        }
+        if(chkAddr!=''){
+            alert('본인을 등록 할 수 없습니다.');
+            return;
+        }
+        if(ref_id=='0'||ref_id==''){
+            alert('추천인 에 문제가 있어 등록 할 수 없습니다.');
+            return;
+        }
+        if(refAddr==chkA){
+            alert('본인을 추천인으로 등록 할 수 없습니다.');
+            return;
+        }
         if(chkAddr!='' && refAddr!=''){
             document.sendForm.submit();
-        }else{
-            alert('need ref address and your address');
         }
     }
 </script>
