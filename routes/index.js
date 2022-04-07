@@ -211,6 +211,10 @@ router.get('/getLotto/:id', function(req, res, next) {
   // }
 });
 
+router.get('/ref', function(req, res, next) {
+  res.render('refmake', { title: 'ref friend', "result":'nodata' });
+});
+
 function jsfnRepSQLinj(str){
   str = str.replace('\'','`');
   str = str.replace('--','');
@@ -230,7 +234,6 @@ router.get('/ref/:id', function(req, res, next) {
   }else{
     res.render('ref', { title: 'ref friend', "result":'nodata' });
   }
-  
 });
 
 router.post('/ref_ok', function(req, res, next) {
@@ -244,19 +247,19 @@ router.post('/ref_ok', function(req, res, next) {
   getUserInfoByAddress(txt_my_addr, user_ip);
   let sql ="";
   sql = sql +" SELECT id, c4ei_addr, last_ip FROM game_user WHERE id='"+txt_ref_id+"' ";
-  console.log("######### index.js 225  ######### "+getCurTimestamp()+" sql: "+sql);
+  console.log("######### index.js 247  ######### "+getCurTimestamp()+" sql: "+sql);
   let result = sync_connection.query(sql);
   if(result.length > 0){
     if(userAcct.reffer_id=='0'){ // my ref
         let result2 = sync_connection.query("update game_user set reffer_id='"+txt_ref_id+"' ,reffer_cnt=reffer_cnt+1, last_reg=now(),last_ip='"+user_ip+"' where id='"+userAcct.id+"'");
         let result3 = sync_connection.query("update game_user set reffer_cnt=reffer_cnt+1, last_reg=now() where id='"+txt_ref_id+"'");
     } else {
-      res.render('error', { title: 'mining', 'msg' :'you alredy reffer registered' });
+      res.render('error', { 'msg' :'you alredy reffer registered' });
       return;    
     }
   }
-  console.log(" ### 310 ### "+userAcct.loginCnt + " : loginCnt / TMDiff : " + userAcct.TMDiff );
-  res.render('game', { title: 'mining', c4ei_addr : userAcct.c4ei_addr });
+  console.log(" ### 258 ### "+userAcct.loginCnt + " : loginCnt / TMDiff : " + userAcct.TMDiff );
+  res.render('error', { 'msg' :'you success reffer registered' });
 });
 
 /////////////////////////////////////////////////

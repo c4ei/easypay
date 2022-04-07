@@ -16,18 +16,16 @@
 <!-- ########################################################################### -->   
 <div id="ly_netErr" style="display:block;" class="popup">
     <button class="enableEthereumButton">Connect Metamask</button>
-    <h4 id="ly_dispmsg" style="color: rgb(107, 101, 93);font-size: 12px;margin-top: 15px;">메타마스크 연동 후 save 가능 합니다.</h4>
+    <h4 id="ly_dispmsg" style="color: rgb(107, 101, 93);font-size: 12px;margin-top: 15px;">메타마스크 연동 후 추천인 코드생성이 가능 합니다.</h4>
 
     <!-- <span class="showAccount" style="font-size: 8px;"></span><br/> -->
-    <input type="button" value="추천인 등록" id="btn_save_ref" onclick='jsfn_goto_ref();' style="cursor: pointer;visibility: hidden;width:160px;height:30px;background-color: cornflowerblue;margin-top: 15px;" >
+    <input type="button" value="추천인 코드생성" id="btn_save_ref" onclick='jsfn_ref_make();' style="cursor: pointer;visibility: hidden;width:160px;height:30px;background-color: cornflowerblue;margin-top: 15px;" >
 
     <div id="htmlForm" style="display: block;">
-    <form id="sendForm" name="sendForm" method="post" action="/ref_ok">
-        추천인:<input type="text"  id="txt_ref_address" name="txt_ref_address" value="<%= result=='nodata'?'nodata':result[0].c4ei_addr %>" style="margin-top: 15px;"> 
-        <input type="hidden"  id="txt_ref_id" name="txt_ref_id" value="<%= result=='nodata'?'0':result[0].id %>" style="margin-top: 15px;">
-        <br/>
+    <!-- <form id="sendForm" name="sendForm" method="post" action="/ref_ok"> -->
         내주소:<input type="text"  id="txt_my_address" name="txt_my_address" value=""  style="margin-top: 5px;">
-    </form>
+        <textarea id="txt_link" style="width:300px;margin-top: 5px;" rows="5"></textarea>
+    <!-- </form> -->
 </div>
 
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
@@ -61,25 +59,13 @@
         document.getElementById('txt_my_address').value = addr;
         document.getElementById('btn_save_ref').style.visibility = 'visible';
     }
-    function jsfn_goto_ref(){
-        let refAddr = document.getElementById('txt_ref_address').value;
-        let ref_id = document.getElementById('txt_ref_id').value;
+    function jsfn_ref_make(){
         let chkAddr = document.getElementById('txt_my_address').value;
-        if(refAddr==''){
-            alert('추천인으로 등록 할 수 없습니다. refAddr null ');
-            return;
-        }
-        if(ref_id=='0'||ref_id==''){
-            alert('추천인 에 문제가 있어 등록 할 수 없습니다.');
-            return;
-        }
-        if(chkAddr==refAddr){
-            alert('본인을 추천인으로 등록 할 수 없습니다.');
-            return;
-        }
-        if(chkAddr!='' && refAddr!=''){
-            document.sendForm.submit();
-        }
+        let txt_link = document.getElementById('txt_link');
+        txt_link.value = 'https://c4ei.net/ref/'+chkAddr;
+        txt_link.select();
+        document.execCommand('copy');
+        alert('복사되었습니다.');
     }
 </script>
 <!-- ########################################################################### -->   
