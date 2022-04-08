@@ -110,6 +110,10 @@
     btnMetaMask.addEventListener('click', () => { jsfn_getAccount(); });
 
     async function jsfn_getAccount() {
+        if (typeof window.ethereum === 'undefined') {
+            alert('MetaMask is not installed!');
+            return;
+        }
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
         showAccount.innerHTML = "address:"+account;
@@ -118,21 +122,7 @@
         jsfn_bindAddress(account);
         // alert(account+":account");
     }
-    // async function jsfn_loginMetamask(){
-    //     if (window.ethereum) {
-    //         try {
-    //             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    //             jsfn_bindAddress(accounts);
-    //         } catch (error) {
-    //             if (error.code === 4001) {
-    //                 // User rejected request
-    //             }
-    //             // jsfn_setError(error);
-    //             console.log(error);
-    //         }
-    //     }
-    // }
-    
+
     function jsfn_bindAddress(addr){
         // document.getElementById('ly_userAccount').innerText = addr;
         if (addr!==undefined){

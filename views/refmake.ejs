@@ -36,6 +36,10 @@
     btnMetaMask.addEventListener('click', () => { jsfn_getAccount(); });
 
     async function jsfn_getAccount() {
+        if (typeof window.ethereum === 'undefined') {
+            alert('MetaMask is not installed!');
+            return;
+        }
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
         // showAccount.innerHTML = "address:"+account;
