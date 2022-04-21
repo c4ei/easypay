@@ -11618,7 +11618,12 @@ body {
 }
 
 .projects-section {
-  /* padding: 10rem 0; */
+   padding-top: 18rem;
+}
+@media (min-width: 992px) {
+  .projects-section {
+    padding-top: 32rem;
+  }
 }
 .projects-section .featured-text {
   padding: 2rem;
@@ -11749,5 +11754,5 @@ body {
 @media (min-width: 1400px) {
     .abouttemp {padding-top: 50%;background-color: #000;}
     .page-top {margin-left: 5px;margin-right: 5px;}
-    .contact-section {padding-top: 10%;margin-top: 18%;}
+    .contact-section {padding-top: 10%;}
 }
