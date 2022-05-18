@@ -94,61 +94,6 @@
     </div>
 </header>
 
-<!-- ########################################################################### -->   
-<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
-<script>
-    //------------ 2022-03-30
-    const btnMetaMask = document.querySelector('.enableEthereumButton');
-    const showAccount = document.querySelector('.showAccount');
-    btnMetaMask.addEventListener('click', () => { jsfn_getAccount(); });
-
-    async function jsfn_getAccount() {
-        if (typeof window.ethereum === 'undefined') {
-            alert('MetaMask is not installed!');
-            return;
-        }
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        const account = accounts[0];
-        showAccount.innerHTML = "address:"+account;
-        // console.log(account +": account line 106");
-        btnMetaMask.style.display='none';
-        jsfn_bindAddress(account);
-        // alert(account+":account");
-    }
-
-    function jsfn_bindAddress(addr){
-        // document.getElementById('ly_userAccount').innerText = addr;
-        if (addr!==undefined){
-            jsfn_btnShowHide('visible');
-            jsfn_chkAddress(addr);
-        } else {
-            jsfn_btnShowHide('hidden');
-        }
-    }
-    function jsfn_btnShowHide(str){
-        // let _btn = document.getElementById('btn_mining_start');
-        let _msg = document.getElementById('ly_dispmsg');
-        // _btn.style.visibility = str;
-        if(str == 'visible'){ _msg.style.display = 'none'; } else { _msg.style.display = 'block'; }
-    }
-    function jsfn_chkAddress(addr){
-        document.getElementById('txt_my_address').value = addr;
-        document.getElementById('btn_mining_start').style.visibility = 'visible';
-    }
-    function jsfn_goto_mining(){
-        let chkAddr = document.getElementById('txt_my_address').value;
-        if(chkAddr!=''){
-            document.sendForm.submit();
-        }
-    }
-</script>
-   
-<div id="htmlForm" style="display: none;">
-<form id="sendForm" name="sendForm" method="post" action="/game">
-  <input type="hidden"  id="txt_my_address" name="txt_my_address" value="" >
-</form>
-</div>
-<!-- ########################################################################### -->   
 
 <!-- <section id="abouttemp" class="abouttemp">
 </section> -->
@@ -236,6 +181,62 @@ d) 게임 실행 후 방화벽 관련 화면이 나오면 체크박스 체크 �
                 </div>
             </div>
         </div>
+        <!-- ########################################################################### -->   
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+<script>
+    //------------ 2022-03-30
+    const btnMetaMask = document.querySelector('.enableEthereumButton');
+    const showAccount = document.querySelector('.showAccount');
+    btnMetaMask.addEventListener('click', () => { jsfn_getAccount(); });
+
+    async function jsfn_getAccount() {
+        if (typeof window.ethereum === 'undefined') {
+            alert('MetaMask is not installed!');
+            return;
+        }
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const account = accounts[0];
+        showAccount.innerHTML = "address:"+account;
+        // console.log(account +": account line 106");
+        btnMetaMask.style.display='none';
+        jsfn_bindAddress(account);
+        // alert(account+":account");
+    }
+
+    function jsfn_bindAddress(addr){
+        // document.getElementById('ly_userAccount').innerText = addr;
+        if (addr!==undefined){
+            jsfn_btnShowHide('visible');
+            jsfn_chkAddress(addr);
+        } else {
+            jsfn_btnShowHide('hidden');
+        }
+    }
+    function jsfn_btnShowHide(str){
+        // let _btn = document.getElementById('btn_mining_start');
+        let _msg = document.getElementById('ly_dispmsg');
+        // _btn.style.visibility = str;
+        if(str == 'visible'){ _msg.style.display = 'none'; } else { _msg.style.display = 'block'; }
+    }
+    function jsfn_chkAddress(addr){
+        document.getElementById('txt_my_address').value = addr;
+        document.getElementById('btn_mining_start').style.visibility = 'visible';
+    }
+    function jsfn_goto_mining(){
+        let chkAddr = document.getElementById('txt_my_address').value;
+        if(chkAddr!=''){
+            document.sendForm.submit();
+        }
+    }
+</script>
+   
+<div id="htmlForm" style="display: none;">
+<form id="sendForm" name="sendForm" method="post" action="/game">
+  <input type="hidden"  id="txt_my_address" name="txt_my_address" value="" >
+</form>
+</div>
+<!-- ########################################################################### -->   
+
     </div>
     <!-- 1 -->
     <!-- <div class="row gx-12 gx-lg-2">
