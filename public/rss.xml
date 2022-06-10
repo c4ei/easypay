@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title>
+            <![CDATA[c4ei.net | 경제적 자립을 위한 암호화폐 Cryptocurrency for economic independence]]>
+        </title>
+        <description>
+            <![CDATA[c4ei.net : 암호화폐,CEX,DEX,GAME,NFT,로또 등의 서비스를 제공합니다.]]>
+        </description>
+        <link>https://c4ei.net</link>
+        <image>
+            <url>https://c4ei.net/favicon.ico</url>
+            <title>c4ei.net | 경제적 자립을 위한 암호화폐 Cryptocurrency for economic independence</title>
+            <link>https://c4ei.net</link>
+        </image>
+        <generator>https://rss.app</generator>
+        <lastBuildDate>Thu, 09 Jun 2022 12:08:10 GMT</lastBuildDate>
+        <atom:link href="https://c4ei.net/rss.xml" rel="self" type="application/rss+xml"/><language>
+            <![CDATA[en]]>
+        </language>
+        <item>
+            <title>
+                <![CDATA[c4ei.net | 경제적 자립을 위한 암호화폐 Cryptocurrency for economic independence]]>
+            </title>
+            <description>
+                <![CDATA[<div>c4ei.net : 암호화폐,CEX,DEX,GAME,NFT,로또 등의 서비스를 제공합니다.</div>]]>
+            </description>
+            <link>https://c4ei.net</link>
+            <dc:creator>
+                <![CDATA[c4ei.net]]>
+            </dc:creator>
+        </item>
+    </channel>
+</rss>
