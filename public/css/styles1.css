@@ -11617,14 +11617,14 @@ body {
   margin-bottom: 5rem;
 }
 
-.projects-section {
+/* .projects-section {
    padding-top: 18rem;
-}
-@media (min-width: 992px) {
+} */
+/* @media (min-width: 992px) {
   .projects-section {
     padding-top: 32rem;
   }
-}
+} */
 .projects-section .featured-text {
   padding: 2rem;
 }
