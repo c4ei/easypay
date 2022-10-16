@@ -392,11 +392,11 @@ router.post('/gameok', function(req, res, next) {
       let strSQL2 = "insert into mining_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userAcct.id+"','"+free_pot+"','"+userAcct.pot_balance+"','" + Number(Number(free_pot) + Number(userAcct.pot_balance)) + "','" + user_ip + "','" + _memo + "') ";
       let result2 = sync_connection.query(strSQL2);
       // console.log(strSQL2);
-      let rcv_default_bal = 0.1;
-      let rcv_add_bal = (userAcct.reffer_cnt*0.01); // real recevied c4ei
-      if(rcv_add_bal>0.9){ rcv_add_bal = 0.9; }  // max add 0.9 (total 1 c4ei)
+      let rcv_default_bal = 0.033;
+      let rcv_add_bal = (userAcct.reffer_cnt*0.01); // real recevied c4ei 220816- 0.033 % change
+      if(rcv_add_bal>0.3){ rcv_add_bal = 0.3; }  // max add 0.9 (total 1 c4ei)
       let rcv_bal = parseFloat(rcv_default_bal + rcv_add_bal).toString();
-      console.log(getCurTimestamp()+'####### 348 ######## rcv_bal : '+rcv_bal + ' / rcv_add_bal :'+rcv_add_bal +' / txt_my_addr : '+txt_my_addr);
+      console.log(getCurTimestamp()+'####### 399 ######## rcv_bal : '+rcv_bal + ' / rcv_add_bal :'+rcv_add_bal +' / txt_my_addr : '+txt_my_addr);
       sendC4eiFromMining(txt_my_addr, rcv_bal, user_ip);
       // console.log("### 344 ### sendC4eiFromMining "+txt_my_addr);
     }catch(e){
@@ -415,7 +415,7 @@ router.post('/gameok', function(req, res, next) {
 
 function sendC4eiFromMining(rcvAddr, rcv_amt, user_ip){
   if(rcv_amt==""){rcv_amt='0.1';}
-  var txt_memo = " 10 pot --> 0.1 c4ei ->  mining ";
+  var txt_memo = " 10 pot --> "+rcv_amt+" c4ei ->  mining ";
   //save_db_sendlog(user_id,txt_my_addr,txt_to_address,txt_to_amt,user_ip,txt_memo){
   sendMiningC4EI(17, "0x014B0c7D9b22469fE13abf585b1E38676A4a136f", rcvAddr, rcv_amt, user_ip, txt_memo);
 }
