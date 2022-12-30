@@ -174,9 +174,9 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
+  // return res.status(err.status || 500);
   console.log(getCurTimestamp()+": app 178 - error");
-  res.render('error',{'msg' :err});
+  return res.render('error',{'msg' :err});
   // res.render('msgpage', { title: 'oops', msg : '500 error '+err+''});
 });
 

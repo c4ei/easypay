@@ -2,14 +2,14 @@
 
 $(document).ready(function() {
   function makeTimer() {
-    var endTime = new Date("November 15, 2022 02:15:13");
+    var endTime = new Date("November 15, 2023 02:15:13");
     var endTime = (Date.parse(endTime)) / 1000;
     var now = new Date();
     var now = (Date.parse(now) / 1000);
     var timeLeft = endTime - now;
     var days = Math.floor(timeLeft / 86400);
     var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
-    var Xmas95 = new Date('December 25, 2022 23:15:30');
+    var Xmas95 = new Date('December 25, 2023 23:15:30');
     var hour = Xmas95.getHours();
     var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600)) / 60);
     var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
@@ -38,14 +38,14 @@ $(document).ready(function() {
 /*------Timer Two------*/
 $(document).ready(function () {
     function makeTimer() {
-        var endTime = new Date("November 18, 2022 06:10:28");
+        var endTime = new Date("November 18, 2023 06:10:28");
         var endTime = (Date.parse(endTime)) / 1000;
         var now = new Date();
         var now = (Date.parse(now) / 1000);
         var timeLeft = endTime - now;
         var days = Math.floor(timeLeft / 86400);
         var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
-        var Xmas95 = new Date('December 25, 2022 23:15:30');
+        var Xmas95 = new Date('December 25, 2023 23:15:30');
         var hour = Xmas95.getHours();
         var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600)) / 60);
         var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));

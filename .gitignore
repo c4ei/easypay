@@ -106,3 +106,5 @@ dist
 
 *.zip
 *.apk
+
+sessions/
