@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add C4EI to MetaMask</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+      }
+      h1, h2 {
+        text-align: center;
+      }
+      h1 {
+        font-size: 32px;
+        font-weight: bold;
+        margin-top: 0;
+      }
+      h2 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      p {
+        margin: 10px 0;
+      }
+      code {
+        background-color: #f1f1f1;
+        padding: 2px;
+        font-family: monospace;
+      }
+      input[type="text"] {
+        font-size: 16px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+      }
+      input[type="submit"] {
+        font-size: 16px;
+        padding: 10px 20px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #555;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <script src="/js/chains.js"></script>
+  </head>
+  <body>
+    <h1>Add C4EI to MetaMask</h1>
+    <p>Follow the steps below to add C4EI to MetaMask:</p>
+    <ol>
+      <li>Install and activate MetaMask on your browser if you haven't already.</li>
+      <li>Click the MetaMask icon to open the popup window.</li>
+      <li>Select the "Network" tab in the popup window.</li>
+      <li>Click the "Add Network" button in the "Custom RPC" section.</li>
+      <li>Enter the following details:</li>
+      <ul>
+        <li><strong>RPC URL:</strong> <code>https://rpc.c4ei.net</code></li>
+        <li><strong>Chain ID:</strong> <code>21004</code></li>
+        <li><strong>Symbol:</strong> <code>C4EI</code></li>
+        <li><strong>Block Explorer URL:</strong> <code>https://exp.c4ei.net</code></li>
+      </ul>
+      <li>Click the "Save" button to add C4EI to MetaMask.</li>
+    </ol>
+    <p>You can now use C4EI on MetaMask by adding C4EI tokens to your wallet and using C4EI DApps.</p>
+    <button type="button" class="connect-btn readon white-btn hover-shape" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="assets/images/icons/connect.png" alt="Icon" onclick="jsfn_addC4ei();"> 
+        <span class="btn-text">Add C4ei</span>
+        <span class="hover-shape1"></span>
+        <span class="hover-shape2"></span>
+        <span class="hover-shape3"></span>
+    </button>
+
+<script>
+function jsfn_addC4ei(){    
+    // // Replace with your own details
+    // const __rpcUrl = "https://rpc.c4ei.net";
+    // const __chainId = 21004;
+    // const __symbol = "C4EI";
+    // const __blockExplorerUrl = "https://exp.c4ei.net";
+
+    // // Check if MetaMask is installed and connected
+    // if (typeof window.ethereum !== 'undefined') {
+    // console.log('MetaMask is installed!');
+    // window.ethereum.request({
+    //     method: 'wallet_addEthereumChain',
+    //     params: [{
+    //     chainId: `0x${__chainId.toString(16)}`,
+    //     chainName: __symbol,
+    //     nativeCurrency: {
+    //         name: __symbol,
+    //         symbol: __symbol,
+    //         decimals: 18
+    //     },
+    //     rpcUrls: [__rpcUrl],
+    //     blockExplorerUrls: [__blockExplorerUrl]
+    //     }]
+    // }).then(() => console.log(`${__symbol} has been added to MetaMask!`)).catch(error => console.error(error));
+    // } else {
+    // console.error('Please install MetaMask!');
+    // }
+    
+}
+</script>
+<script id="_wauuz9">var _wau = _wau || [];_wau.push(["small", "42y9cikjew", "uz9"]);</script>
+<script async src="//waust.at/s.js"></script>
+  </body>
+</html>

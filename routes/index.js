@@ -211,6 +211,30 @@ router.get('/getLotto/:id', function(req, res, next) {
   // }
 });
 
+// 23-02-12
+// router.get('/lotto', function(req, res, next) {
+//   let _sql = "";
+//   _sql = _sql +"SELECT numb , SUM(numbCnt) numbCnt FROM ( ";
+//   _sql = _sql +"	SELECT numb1 AS numb, count(numb1) numbCnt from lotto_num_all GROUP BY numb1 ";
+//   _sql = _sql +"	UNION ALL  ";
+//   _sql = _sql +"	SELECT numb2 AS numb, count(numb2) numbCnt from lotto_num_all GROUP BY numb2 ";
+//   _sql = _sql +"	UNION ALL  ";
+//   _sql = _sql +"	SELECT numb3 AS numb, count(numb3) numbCnt from lotto_num_all GROUP BY numb3 ";
+//   _sql = _sql +"	UNION ALL  ";
+//   _sql = _sql +"	SELECT numb4 AS numb, count(numb4) numbCnt from lotto_num_all GROUP BY numb4 ";
+//   _sql = _sql +"	UNION ALL  ";
+//   _sql = _sql +"	SELECT numb5 AS numb, count(numb5) numbCnt from lotto_num_all GROUP BY numb5 ";
+//   _sql = _sql +"	UNION ALL  ";
+//   _sql = _sql +"	SELECT numb6 AS numb, count(numb6) numbCnt from lotto_num_all GROUP BY numb6 ";
+//   _sql = _sql +") ds ";
+//   _sql = _sql +"GROUP BY numb ";
+//   _sql = _sql +"ORDER BY numbCnt DESC  ";
+//   let result = sync_connection.query(_sql);
+//   let _numb_tot   = result[0].numb_tot;
+//     res.render('lotto', { title: 'lotto number', yyyy:_yyyy, wk:_wk});
+// });
+
+
 router.get('/ref', function(req, res, next) {
   res.render('refmake', { title: 'ref friend', "result":'nodata' });
 });
