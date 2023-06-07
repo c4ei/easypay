@@ -1,0 +1,104 @@
+
+<h2 class="accordion">
+    Where is Webmining?
+</h2>
+<div class="accordion-panel">
+    <div id="webmining" name="webmining" style="text-align: center;">
+        <div style="padding-top: 5px;"></div>
+        <div style="text-align: center;">0.메타마스크에c4ei추가(Add c4ei to metamask)</div>
+        <div style="padding-top: 5px;"></div>
+        <h3 id="ly_dispmsg" style="color: rgb(255, 133, 85);font-size: 12px;"> </h3>
+        <div style="padding-top: 5px;">
+            1.Connect Metamask click ▶ 2.let`s go mining! click <br/>▶ 3.START click ▶ Wait 10 Sec ▶ 4.EXIT click <br/>▶ 8 hour later try again !
+            <br/>
+            1.Connect Metamask 클릭 ▶ 2.let`s go mining! 클릭 <br/>▶ 3.START 클릭 ▶ 10초 대기 ▶ 4.EXIT 클릭 <br/>▶ 8시간 후 재시도!
+        </div><br/>
+        <button class="enableEthereumButton">1.Connect Metamask</button>
+        <span class="showAccount" style="font-size: 8px;"></span><br/>
+        <input type="button" value="2.let`s go mining!" id="btn_mining_start" onclick='jsfn_goto_mining();' style="visibility: hidden;width:160px;height:30px;background-color: cornflowerblue;">
+        <br/><br/>
+        안드로이드 폰을 쓰고있으신 분은
+        <a href="https://play.google.com/store/apps/details?id=net.c4ei.wallet&hl=ko" target="_blank">C4EIwallet</a>
+        에서 <br/>하단 브라우저 탭을 클릭 하시면 메타마스크 설치 없이 <br/>마이닝 가능 하십니다.
+        <br/>
+        If you are using an Android phone
+        <a href="https://play.google.com/store/apps/details?id=net.c4ei.wallet&hl=en" target="_blank">C4EIwallet</a>
+        <br/>If you click the browser tab at the bottom, <br/>you can mine without installing Metamask.
+        <br/><br/><br/>
+    </div>
+    <!-- ########################################################################### -->
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <script>
+        // ------------ 2022-03-30
+        const btnMetaMask = document.querySelector('.enableEthereumButton');
+        const showAccount = document.querySelector('.showAccount');
+        btnMetaMask.addEventListener('click', () => {
+            jsfn_getAccount();
+        });
+
+        async function jsfn_getAccount() {
+            if (typeof window.ethereum === 'undefined') {
+                alert('MetaMask is not installed!');
+                return;
+            }
+            const accounts = await ethereum.request({method: 'eth_requestAccounts'});
+            const account = accounts[0];
+            showAccount.innerHTML = "address:" + account;
+            // console.log(account +": account line 106");
+            btnMetaMask.style.display = 'none';
+            jsfn_bindAddress(account);
+            // alert(account+":account");
+        }
+
+        function jsfn_bindAddress(addr) { // document.getElementById('ly_userAccount').innerText = addr;
+            if (addr !== undefined) {
+                jsfn_btnShowHide('visible');
+                jsfn_chkAddress(addr);
+            } else {
+                jsfn_btnShowHide('hidden');
+            }
+        }
+        function jsfn_btnShowHide(str) { // let _btn = document.getElementById('btn_mining_start');
+            let _msg = document.getElementById('ly_dispmsg');
+            // _btn.style.visibility = str;
+            if (str == 'visible') {
+                _msg.style.display = 'none';
+            } else {
+                _msg.style.display = 'block';
+            }
+        }
+        function jsfn_chkAddress(addr) {
+            document.getElementById('txt_my_address').value = addr;
+            document.getElementById('btn_mining_start').style.visibility = 'visible';
+        }
+        function jsfn_goto_mining() {
+            let chkAddr = document.getElementById('txt_my_address').value;
+            if (chkAddr != '') {
+                document.sendForm.submit();
+            }
+        }
+    </script>
+
+    <div id="htmlForm" style="display: none;">
+        <form id="sendForm" name="sendForm" method="post" action="/game">
+            <input type="hidden" id="txt_my_address" name="txt_my_address" value="">
+        </form>
+    </div>
+    <!-- ########################################################################### -->
+
+</div>
+
+<h2 class="accordion">
+    How to deposit CEIK LP Pool?
+</h2>
+<div class="accordion-panel" style="text-align: center;">
+    <p>
+        English<br/>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/LqSZP4Q09ko" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <br><br>
+        한국어<br/>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/p7zx3-Pge0Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <br><br>
+
+    </p>
+</div>
