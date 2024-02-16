@@ -116,6 +116,12 @@ router.get('/session2cookie', function(req, res, next) {
 router.get('/', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined ) {
     // res.sendFile(STATIC_PATH + '/ulogin.html')
+    var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+    console.log("######### / 121  ######### "+getCurTimestamp()+" / "+user_ip+" : user_ip");
+    // console.log(req.headers['x-forwarded-for'] +" - 1");
+    // console.log(req.connection.remoteAddress +" - 2");
+    // console.log(req.socket.remoteAddress +" - 3");
+    // console.log(req.connection.socket.remoteAddress +" - 4");
     res.sendFile(STATIC_PATH + '/main.html')
     return;
   }
@@ -286,6 +292,30 @@ router.post('/ref_ok', function(req, res, next) {
   res.render('error', { 'msg' :'you success reffer registered' });
 });
 
+router.post('/krwin', function(req, res, next) {
+  var email         = req.body.email;
+  var c4ei_addr     = req.body.c4ei_addr;
+  var send_krw      = req.body.send_krw;
+  var reffer_addr   = req.body.reffer_addr;
+  var C4EIamt       = req.body.C4EIamt;
+  var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+  // console.log(" ### 291 ### "+txt_my_addr + " : txt_my_addr ");
+  
+  let sql ="";
+  sql = sql + " insert into krw_in (email,c4ei_addr,send_krw,C4EIamt,reffer_addr,regip)  ";
+  sql = sql + " values ('"+email+"','"+c4ei_addr+"','"+send_krw+"','"+C4EIamt+"','"+reffer_addr+"','"+user_ip+"') ";
+  console.log("######### index.js 300  ######### "+getCurTimestamp()+" sql: "+sql);
+  let result = sync_connection.query(sql);
+  if(result.length > 0){
+  }
+  let sql1 = "";
+  sql1 = sql1 + " SELECT idx FROM krw_in WHERE c4ei_addr='" + c4ei_addr + "'";
+  let result1 = sync_connection.query(sql1);
+  let idx = result1[0].idx;
+  // console.log(" ### 258 ### "+userAcct.loginCnt + " : loginCnt / TMDiff : " + userAcct.TMDiff );
+  res.render('krwin', { 'msg' :'success' , idx:idx, email:email, c4ei_addr:c4ei_addr, send_krw:send_krw, C4EIamt:C4EIamt, reffer_addr:reffer_addr});
+});
+
 /////////////////////////////////////////////////
 //////////// 2022-03-30 make point s ////////////
 const userAcct = {
@@ -416,9 +446,9 @@ router.post('/gameok', function(req, res, next) {
       let strSQL2 = "insert into mining_log(user_idx,get_pot,pre_pot,cur_pot,regip,memo) values ('"+userAcct.id+"','"+free_pot+"','"+userAcct.pot_balance+"','" + Number(Number(free_pot) + Number(userAcct.pot_balance)) + "','" + user_ip + "','" + _memo + "') ";
       let result2 = sync_connection.query(strSQL2);
       // console.log(strSQL2);
-      let rcv_default_bal = 0.0033;
-      let rcv_add_bal = (userAcct.reffer_cnt*0.001); // real recevied c4ei 220816- 0.033 % change // 230607 inplation 0.0033
-      if(rcv_add_bal>0.03){ rcv_add_bal = 0.03; }  // max add 0.9 (total 1 c4ei) // 230607 inplation 0.03 MAX
+      let rcv_default_bal = 0.01;
+      let rcv_add_bal = (userAcct.reffer_cnt*0.001); // real recevied c4ei 220816- 0.033 % change // 230607 inplation 0.0033 // 231116 - 0.1
+      if(rcv_add_bal>0.09){ rcv_add_bal = 0.09; }  // max add 0.9 (total 1 c4ei) // 230607 inplation 0.03 MAX
       let rcv_bal = parseFloat(rcv_default_bal + rcv_add_bal).toString();
       console.log(getCurTimestamp()+'####### 399 ######## rcv_bal : '+rcv_bal + ' / rcv_add_bal :'+rcv_add_bal +' / txt_my_addr : '+txt_my_addr);
       sendC4eiFromMining(txt_my_addr, rcv_bal, user_ip);

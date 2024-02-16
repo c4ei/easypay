@@ -15,6 +15,27 @@ var md5 = require('md5');
 
 // Init express
 const app = express();
+//######################################################
+var ipfilter = require('express-ipfilter').IpFilter;
+var IpDeniedError = require('express-ipfilter').IpDeniedError;
+
+// 차단, 허용할 특정 아이피 목록
+// var ips = ['80.66.83.210', '192.168.0.11'];
+var ips = ['80.66.83.210'];
+// var ips = [['192.168.0.10', '192.168.0.20'], '192.168.0.100']; // 범위 사용 예시
+// app.use(ipfilter(ips, {mode: 'allow'})); // ips 목록의 ip들만 허용
+app.use(ipfilter(ips)); // ips 목록의 ip들 차단
+app.use(function(err, req, res, _next) {
+    //console.log('Error handler', err);
+    res.send('Access Denied');                     // page view 'Access Denied'
+    if(err instanceof IpDeniedError){
+      res.status(401).end();
+    }else{
+      res.status(err.status || 500).end();
+    }
+});
+//######################################################
+
 // Init environment
 dotenv.config();
 // parse requests of content-type: application/json
@@ -175,8 +196,13 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   // return res.status(err.status || 500);
-  console.log(getCurTimestamp()+": app 178 - error");
-  return res.render('error',{'msg' :err});
+  var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+  console.log(user_ip +" "+getCurTimestamp()+": app 200- error");
+  try{
+    return res.render('error',{'msg' :err});
+  }catch(e){
+
+  }
   // res.render('msgpage', { title: 'oops', msg : '500 error '+err+''});
 });
 
