@@ -309,7 +309,7 @@ router.post('/krwin', function(req, res, next) {
   if(result.length > 0){
   }
   let sql1 = "";
-  sql1 = sql1 + " SELECT idx FROM krw_in WHERE c4ei_addr='" + c4ei_addr + "'";
+  sql1 = sql1 + " SELECT idx FROM krw_in WHERE c4ei_addr='" + c4ei_addr + "' order BY idx DESC LIMIT 1";
   let result1 = sync_connection.query(sql1);
   let idx = result1[0].idx;
   // console.log(" ### 258 ### "+userAcct.loginCnt + " : loginCnt / TMDiff : " + userAcct.TMDiff );
