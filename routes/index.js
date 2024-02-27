@@ -113,6 +113,24 @@ router.get('/session2cookie', function(req, res, next) {
   res.redirect('/');
 });
 
+router.get('/home', function(req, res, next) {
+  let sql_sel1 ="";
+  sql_sel1 = sql_sel1 +" SELECT ";
+  sql_sel1 = sql_sel1 +" 	idx,AAH_amt,AAH_bal,ETH_amt,ETH_bal ";
+  sql_sel1 = sql_sel1 +" 	,BNB_amt,BNB_bal,MATIC_amt,MATIC_bal ";
+  sql_sel1 = sql_sel1 +" 	,TRX_amt,TRX_bal,C4EI_amt,C4EI_bal ";
+  sql_sel1 = sql_sel1 +" 	,USDT_amt,USDT_bal ";
+  sql_sel1 = sql_sel1 +" FROM c4ex_amt_sum limit 1";
+  console.log("######### index.js 124 home  ######### "+getCurTimestamp()+" sql_sel1: "+sql_sel1);
+  let result1 = sync_connection.query(sql_sel1);
+  if(result1.length > 0){
+    console.log("######### index.js 127  ######### "+getCurTimestamp()+" result1: "+result1[0].idx);
+    res.render('home', { title: 'AAH HOME', "result":result1 });
+  }else{
+    res.render('home', { title: 'AAH HOME', "result":'nodata' });
+  }
+});
+
 router.get('/', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined ) {
     // res.sendFile(STATIC_PATH + '/ulogin.html')
@@ -122,7 +140,8 @@ router.get('/', function(req, res, next) {
     // console.log(req.connection.remoteAddress +" - 2");
     // console.log(req.socket.remoteAddress +" - 3");
     // console.log(req.connection.socket.remoteAddress +" - 4");
-    res.sendFile(STATIC_PATH + '/main.html')
+    // res.sendFile(STATIC_PATH + '/main.html')
+    res.redirect('/home');
     return;
   }
   else {
