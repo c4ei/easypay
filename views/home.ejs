@@ -249,11 +249,12 @@
             
             <br />AAH 백서 (AAH whitepaper) (<a
             href="https://docs.google.com/document/d/1ERmQOBm7NwanICvbAgQO35nIfzTqkf4cnWiiLN4laJM/edit?usp=sharing"
-            target="_blank" title="AAH white paper korean">한국어</a> , 
+            target="_blank" title="AAH white paper korean">한국어</a> ,
             <a
             href="https://docs.google.com/document/d/1pa_NOiHPaeJH0U5Xk9yzgLX3uiaUe3Zdf_RB-6cbUjw/edit?usp=sharing"
             target="_blank" title="AAH white paper korean">English</a>
-            ) / 
+            ) / <a
+            href="/download/AAH.pdf" target="_blank" title="AAH법률검토의견서">AAH법률검토의견서</a> / 
             <!-- network: AAH<br />
             RPC URL: https://rpc.c4ex.net<br />
             chain ID: 21133<br />
@@ -338,15 +339,18 @@
             ◎AAH 는 C4EI장점을 개선 보완한 새로운 프로젝트이며 핵심은 산업과의 연동입니다.<br />
             <!-- C4EI 는 무료 배로로 나간 수량이 99% 여서 실제 사업에 적용 하기 힘들었습니다.<br /> -->
             <br />
+            <a href="https://docs.google.com/document/d/1yavY9OEqn0HUPwB_eUCxFQETealZdzQu1rj7yUnmV2M/edit?usp=sharing"
+                target="_blank">AAH 구매방법(How to purchase AAH)</a>
+            | <a href="https://docs.google.com/document/d/1cVD4bqt3K9rIK2kO1SCSWljD0X0mJ-OceeK_F3DBnaU/edit?usp=sharing"
+                target="_blank">쇼핑몰 사용방법(How to use SHOP)</a>
+            | <a href="https://docs.google.com/document/d/1MCmSWgJcJvnGi8mSXJoL9j4fXxYeat8bL12aeWuQvqE/edit?usp=sharing"
+                target="_blank">AAH 수량 늘이기 프로젝트(年12%)</a>
+            | <a href="https://docs.google.com/document/d/1xSZl4mkRTYUpkVAIjf2JFIrwPCphLRLprzHRd_T6k6s/edit?usp=sharing"
+                target="_blank">NFT(작업중)</a>
+
+            <!-- <br /><br /> -->
             <div id="lyExchange" onClick="fn_showExf();" style="cursor: pointer;" title="원화입금 구매신청(클릭)">
-                <a href="https://docs.google.com/document/d/1yavY9OEqn0HUPwB_eUCxFQETealZdzQu1rj7yUnmV2M/edit?usp=sharing"
-                    target="_blank">AAH 구매방법(How to purchase AAH)</a>
-                | <a href="https://docs.google.com/document/d/1cVD4bqt3K9rIK2kO1SCSWljD0X0mJ-OceeK_F3DBnaU/edit?usp=sharing"
-                    target="_blank">쇼핑몰 사용방법(How to use SHOP)</a>
-                <!-- <br /><br />
-                ◎AAH 원화 구매 는 아래 그림을 클릭해 주세요 (To purchase AAH KRW, please click the picture below.)<br />
-                &nbsp;&nbsp;★ KRW 구매가격은 월 혹은 분기별로 100원씩 인상 예정입니다.-->
-                <br /> 
+                <!-- ◎AAH 원화 구매 는 아래 그림을 클릭해 주세요 (To purchase AAH KRW, please click the picture below.)<br /> -->
                 <img src="/images/exchangeKRW_AAH.png" border="0" />
             </div>
             
@@ -374,10 +378,11 @@
                     function fn_mkKrw() {
                         let _txt_AAHamt = document.getElementById("txt_AAHamt").value;
                         // let _send_krw       = document.getElementById("txt_send_krw").value;
-                        let _krw = parseFloat(_txt_AAHamt * 1400);
+                        let _krw = parseFloat(_txt_AAHamt * 1500);
                         document.getElementById("txt_send_krw").value = _krw.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
                     }
                 </script>
+                ◎AAH 원화 구매 는 6월말까지 한시적으로 운영되며 KRW 구매가격은 월 별로 100원씩 인상 예정입니다.<br />
                 <table style="font-size: 12px;">
                     <form id="dKRWForm" name="dKRWForm" method="post">
                     <tr>
@@ -402,7 +407,7 @@
                         <td>원화 입금액</td>
                         <td><input type="text" id="txt_send_krw" name="send_krw" value="" readonly
                                 style="width: 300px;"> 원
-                            <br />1AAH=1400원(KRW)
+                            <br />1AAH=1500원(KRW)
                         </td>
                     </tr>
                     <!-- <tr>
