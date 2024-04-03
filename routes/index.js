@@ -114,6 +114,11 @@ router.get('/session2cookie', function(req, res, next) {
 });
 
 router.get('/home', function(req, res, next) {
+  let _refAAH_addr = ""
+  if (req.cookies.refAAH == "" || req.cookies.refAAH === undefined ) {
+  }else{
+    _refAAH_addr = req.cookies.refAAH;
+  }
   let sql_sel1 ="";
   sql_sel1 = sql_sel1 +" SELECT ";
   sql_sel1 = sql_sel1 +" 	idx,AAH_amt,AAH_bal,ETH_amt,ETH_bal ";
@@ -125,13 +130,21 @@ router.get('/home', function(req, res, next) {
   let result1 = sync_connection.query(sql_sel1);
   if(result1.length > 0){
     console.log("######### index.js 127  ######### "+getCurTimestamp()+" result1: "+result1[0].idx);
-    res.render('home', { title: 'AAH HOME', "result":result1 });
+    res.render('home', { title: 'AAH HOME', "result":result1 , "refAAH_addr" :_refAAH_addr });
   }else{
-    res.render('home', { title: 'AAH HOME', "result":'nodata' });
+    res.render('home', { title: 'AAH HOME', "result":'nodata', "refAAH_addr" :_refAAH_addr });
   }
 });
 
 router.get('/', function(req, res, next) {
+  try{
+    let ref = jsfnRepSQLinj(req.params.ref);
+    console.log("########################################");
+    console.log("추천인 타고들어옴 ref:"+ref);
+    console.log("########################################");
+  }catch(e){
+
+  }
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined ) {
     // res.sendFile(STATIC_PATH + '/ulogin.html')
     var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
@@ -262,6 +275,23 @@ router.get('/getLotto/:id', function(req, res, next) {
 
 router.get('/ref', function(req, res, next) {
   res.render('refmake', { title: 'ref friend', "result":'nodata' });
+});
+
+router.get('/refAAH', function(req, res, next) {
+  res.render('refAAH', { title: 'ref friend', "result":'nodata' });
+});
+
+router.get('/refAAH/:addr', function(req, res, next) {
+  let refAAH_addr = jsfnRepSQLinj(req.params.addr);
+  res.cookie('refAAH', refAAH_addr);
+  
+  var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
+  let sql ="";
+  sql = sql +" insert into refaccess_log (ref_address, regip) values ( '"+refAAH_addr+"','"+user_ip+"') ";
+  console.log("######### index.js 286  ######### "+getCurTimestamp()+" sql: "+sql);
+  let result = sync_connection.query(sql);
+  res.redirect('/home');
+  return;
 });
 
 function jsfnRepSQLinj(str){
