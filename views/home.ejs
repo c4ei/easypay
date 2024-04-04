@@ -659,8 +659,14 @@
 
     <!-- ================== END core-js ================== -->
 
-<script>
-    document.getElementById('_btnTg').click();
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+    try{
+        if(!wcs_add) var wcs_add = {};
+        wcs_add["wa"] = "1140715e7ab8700";
+        if(window.wcs) { wcs_do(); }
+    }
+    catch(e){}
 </script>
 </body>
 
