@@ -28,8 +28,9 @@
 </head>
 
 <body>
-    <!-- BEGIN #app -->
-    <div id="app" class="app app-sidebar-collapsed">
+    <!-- BEGIN #app --> 
+    <!-- <div id="app" class="app app-sidebar-collapsed"> -->
+    <div id="app" class="app"> 
         <!-- BEGIN #header -->
         <div id="header" class="app-header">
             <!-- BEGIN desktop-toggler -->
@@ -192,7 +193,7 @@
                 <div class="menu-search-container">
                     <div class="menu-search-icon"><i class="bi bi-search"></i></div>
                     <div class="menu-search-input">
-                        <input type="text" class="form-control form-control-lg" placeholder="Search menu...">
+                        <input type="text" name="txt_menuSearch" class="form-control form-control-lg" placeholder="Search menu...">
                     </div>
                     <div class="menu-search-icon">
                         <a href="javascript:alert('준비중(preparing)');" data-toggle-class="app-header-menu-search-toggled"
@@ -215,6 +216,36 @@
                         <a href="/" class="menu-link">
                             <span class="menu-icon"><i class="bi bi-house-door"></i></span>
                             <span class="menu-text">Home</span>
+                        </a>
+                        <a href="https://c4ex.net" class="menu-link" target="_blank">
+                            <span class="menu-text">TRADING(CEX)</span>
+                        </a>
+                        <a href="https://nft.c4ex.net" class="menu-link" target="_blank">
+                            <span class="menu-text">AAH NFT Auction</span>
+                        </a>
+                        <a href="https://dex.c4ex.net" class="menu-link" target="_blank">
+                            <span class="menu-text">AAH DEX</span>
+                        </a>
+                        <a href="https://dap.c4ex.net" class="menu-link" target="_blank">
+                            <span class="menu-text">AAH DAP</span>
+                        </a>
+                        <a href="https://shop.c4ei.net" class="menu-link" target="_blank">
+                            <span class="menu-text">SHOP (AAH ONLY)</span>
+                        </a>
+                        <a href="https://nft.c4ei.net" class="menu-link" target="_blank">
+                            <span class="menu-text">C4EI NFT Auction</span>
+                        </a>
+                        <a href="https://dex.c4ei.net" class="menu-link" target="_blank">
+                            <span class="menu-text">C4EI DEX</span>
+                        </a>
+                        <a href="https://lotto.c4ei.net" class="menu-link" target="_blank">
+                            <span class="menu-text">LOTTO</span>
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=net.c4ei.aahwallet" class="menu-link" target="_blank">
+                            <span class="menu-text">AAH wallet</span>
+                        </a>
+                        <a href="https://gplay.c4ei.net" class="menu-link" target="_blank">
+                            <span class="menu-text">구글플레이관련처리</span>
                         </a>
                     </div>
                 </div>
@@ -457,7 +488,7 @@
                     </tr>
                     <tr>
                         <td>E-MAIL</td>
-                        <td><input type="text" id="txt_email" name="email" value="" style="width: 300px;"></td>
+                        <td><input type="text" id="txt_email" name="email" value="" style="width: 300px;" autocomplete="off"></td>
                     </tr>
                     <tr>
                         <td>AAH주소</td>
@@ -668,6 +699,7 @@
     }
     catch(e){}
 </script>
+<!-- <a href="https://analytics.naver.com/summary/dashboard.html">naver</a> -->
 </body>
 
 </html>
