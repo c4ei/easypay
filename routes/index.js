@@ -136,6 +136,10 @@ router.get('/home', function(req, res, next) {
   }
 });
 
+router.get('/c4ei_net', function(req, res, next) {
+  res.redirect('/home');
+});
+
 router.get('/', function(req, res, next) {
   try{
     let ref = jsfnRepSQLinj(req.params.ref);
