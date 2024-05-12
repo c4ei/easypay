@@ -201,7 +201,7 @@ app.use(function(err, req, res, next) {
   try{
     return res.render('error',{'msg' :err});
   }catch(e){
-
+    res.end();
   }
   // res.render('msgpage', { title: 'oops', msg : '500 error '+err+''});
 });
