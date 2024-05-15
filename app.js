@@ -199,7 +199,14 @@ app.use(function(err, req, res, next) {
   var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
   console.log(user_ip +" "+getCurTimestamp()+": app 200- error");
   try{
-    return res.render('error',{'msg' :err});
+    // return res.render('error',{'msg' :err});
+    if (err) {
+      if (!res.headersSent) {
+          // res.status(500).send('Error occurred');
+          res.render('error',{'msg' :err});
+      }
+      return;
+    }
   }catch(e){
     res.end();
   }
