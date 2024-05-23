@@ -217,45 +217,13 @@
                             <span class="menu-icon"><i class="bi bi-house-door"></i></span>
                             <span class="menu-text">Home</span>
                         </a>
-                        <a href="https://c4ex.net" class="menu-link" target="_blank">
-                            <span class="menu-text">TRADING(CEX)</span>
-                        </a>
-                        <a href="https://ref.c4ei.net" class="menu-link" target="_blank">
-                            <span class="menu-text">AAH Web Mining</span>
-                        </a>
-                        <!-- <a href="https://ai.c4ex.net" class="menu-link" target="_blank">
-                            <span class="menu-text">AI CHAT</span>
-                        </a> -->
-                        <a href="https://nft.c4ex.net" class="menu-link" target="_blank">
-                            <span class="menu-text">AAH NFT Auction</span>
-                        </a>
-                        <a href="https://dex.c4ex.net" class="menu-link" target="_blank">
-                            <span class="menu-text">AAH DEX</span>
-                        </a>
-                        <a href="https://aah.c4ex.net" class="menu-link" target="_blank">
-                            <span class="menu-text">AAH Web Wallet</span>
-                        </a>
-                        <a href="https://dap.c4ex.net" class="menu-link" target="_blank">
-                            <span class="menu-text">AAH DAP</span>
-                        </a>
-                        <a href="https://shop.c4ei.net" class="menu-link" target="_blank">
-                            <span class="menu-text">SHOP (AAH ONLY)</span>
-                        </a>
-                        <!-- <a href="https://nft.c4ei.net" class="menu-link" target="_blank">
-                            <span class="menu-text">C4EI NFT Auction</span>
-                        </a> -->
-                        <a href="https://dex.c4ei.net" class="menu-link" target="_blank">
-                            <span class="menu-text">C4EI DEX</span>
-                        </a>
-                        <a href="https://lotto.c4ei.net" class="menu-link" target="_blank">
-                            <span class="menu-text">LOTTO</span>
-                        </a>
-                        <a href="https://play.google.com/store/apps/details?id=net.c4ei.aahwallet" class="menu-link" target="_blank">
-                            <span class="menu-text">AAH wallet</span>
-                        </a>
-                        <a href="https://gplay.c4ei.net" class="menu-link" target="_blank">
-                            <span class="menu-text">구글플레이관련처리</span>
-                        </a>
+                        <a href="#networks" class="menu-link"><span class="menu-text">네트워크 및 토큰</span></a>
+                        <a href="#buy" class="menu-link"><span class="menu-text">구매</span></a>
+                        <a href="#mining" class="menu-link"><span class="menu-text">MINING</span></a>
+                        <a href="#defi" class="menu-link"><span class="menu-text">DEFI</span></a>
+                        <a href="#staking" class="menu-link"><span class="menu-text">STAKING</span></a>
+                        <a href="#others" class="menu-link"><span class="menu-text">기타</span></a>
+                        <a href="#mobile-games" class="menu-link"><span class="menu-text">모바일 게임</span></a>
                     </div>
                 </div>
                 <!-- END menu -->
@@ -271,71 +239,214 @@
 
         <!-- BEGIN #content -->
         <div id="content" class="app-content">
-            <!-- <h4>AAH 프로젝트 소개</h4> -->
-            <h2><img src="https://i.ibb.co/VLXwBY3/AAH-256.png" width="32" height="32" /> 
-                All About Health 
-                <!-- - 건강의, 건강에 의한, 건강을 위한 네트워크 AAH. -->
-            </h2>
+            <script>
+                function fn_showAah() {
+                    let _lyF = document.getElementById('ly_AAH_info');
+                    if (_lyF.style.display == "block") {
+                        _lyF.style.display = 'none';
+                    } else {
+                        _lyF.style.display = 'block';
+                    }
+                }
+                function fn_showC4ei() {
+                    let _lyF = document.getElementById('ly_C4EI_info');
+                    if (_lyF.style.display == "block") {
+                        _lyF.style.display = 'none';
+                    } else {
+                        _lyF.style.display = 'block';
+                    }
+                }
+                function fn_showCeik() {
+                    let _lyF = document.getElementById('ly_CEIK_info');
+                    if (_lyF.style.display == "block") {
+                        _lyF.style.display = 'none';
+                    } else {
+                        _lyF.style.display = 'block';
+                    }
+                }
+                function fn_showSawon() {
+                    let _lyF = document.getElementById('ly_SAWON_info');
+                    if (_lyF.style.display == "block") {
+                        _lyF.style.display = 'none';
+                    } else {
+                        _lyF.style.display = 'block';
+                    }
+                }
+                function fn_showMobileGame() {
+                    let _lyF = document.getElementById('ly_MobileGame_info');
+                    if (_lyF.style.display == "block") {
+                        _lyF.style.display = 'none';
+                    } else {
+                        _lyF.style.display = 'block';
+                    }
+                }
+                function fn_showEtc() {
+                    let _lyF = document.getElementById('ly_ETC_info');
+                    if (_lyF.style.display == "block") {
+                        _lyF.style.display = 'none';
+                    } else {
+                        _lyF.style.display = 'block';
+                    }
+                }
+            </script>
+            <section id="networks" class="section" style="padding-top:49px;">
+                <h2>네트워크 및 토큰</h2>
+                <div class="network">
+                    <h3 onclick="fn_showAah();" style="cursor: pointer;"><img src="https://i.ibb.co/VLXwBY3/AAH-256.png" width="32" height="32" /> AAH - All About Health (클릭시상세정보)</h3>
+                    <p>메인넷(All About Healthy)</p>
+                    <div id="ly_AAH_info" style="display: none;">
+                        <!-- <h4>AAH 프로젝트 소개</h4> -->
+                        <a href="https://docs.google.com/document/d/1yavY9OEqn0HUPwB_eUCxFQETealZdzQu1rj7yUnmV2M/edit?usp=sharing" target="_blank">AAH 구매방법(How to purchase AAH)</a>
+                        <br /><hr/><br />
 
-            <a href="https://docs.google.com/document/d/1yavY9OEqn0HUPwB_eUCxFQETealZdzQu1rj7yUnmV2M/edit?usp=sharing" target="_blank">AAH 구매방법(How to purchase AAH)</a>
+                        <h3>What is AllAboutHealth Coin?</h3>
+                        AllAboutHealth Coin is a MainNet cryptocurrency that operates on a blockchain with a block creation time of just 5 seconds. 210,000,000 is the maximum issuance quantity for the stable and secure digital asset, AAH Coin. The chain ID for AAH is 21133, making it easily identifiable and accessible to various blockchain explorers.
+
+                        <h3>Key Features of AllAboutHealth Coin</h3>
+                        One of the key features of AAH Coin is its focus on security and efficiency and by integrating AAH with existing platforms like C4EI, users can benefit from economic and security synergies. AAH also offers a range of applications and services, including an AAH Wallet for Android, where users can securely store and manage their AAH coins.
+
+                        <h3>Play To Earn and Gaming Integration for AllAboutHealth</h3>
+                        AAH Coin is not just about transactions; it’s also about creating value and engagement for users. The ecosystem includes Android games where users can exchange AAH for in-game currency and even mine AAH every 8 hours. Games like cardAAH, SEAAAH, and majakAAH offer exciting gameplay and rewards, creating a unique gaming experience for users.
+
+                        <h3>Next-Generation Smart Contracts</h3>
+                        At the heart of AAH Coin is its next-generation smart contract platform. Built on a blockchain with a built-in Turing-complete programming language, AAH allows developers to create complex decentralized applications with ease. Whether it’s creating custom currencies, financial instruments, or smart property, AAH’s smart contracts offer unparalleled flexibility and security.
+
+                        <h3>Token Systems and Financial Applications</h3>
+                        AAH Coin also supports on-blockchain token systems, enabling a wide range of applications, including sub-currencies, company stocks, and secure coupons. Implementing token systems on AAH is straightforward, thanks to its robust and secure infrastructure.
+
+                        <h3>Blockchain and Mining</h3>
+                        AAH’s blockchain architecture is similar to Bitcoin’s but with some key differences. Blocks contain a copy of both the transaction list and the most recent state, ensuring efficiency and security. The block validation algorithm in AAH prevents fraud and ensures the integrity of the blockchain.
+
+                        <h3>The Future of AAH Coin</h3>
+                        The project, AAH, is committed to creating a thriving ecosystem for decentralized applications despite currently suspending its Play To Earn implementation. Additionally, AAH Coin, with its focus on security, efficiency, and innovation, is poised to revolutionize the world of decentralized finance and applications.
+
+                        <h3>Conclusion</h3>
+                        Additionally, All About Health (AAH) Coin is more than just a cryptocurrency, it’s a platform for innovation and creativity. Furthermore, a major player in the world of decentralized applications, AAH Coin, boasts an advanced smart contract platform, an integrated gaming ecosystem, and a strong focus on security. Whether you’re a developer looking to create the next big thing or a gamer looking for new challenges, AAH Coin has something for everyone.
+                        <br /><br />
+                        <h3>AAH 코인은 무엇인가요?</h3>
+                        AllAboutHealth 코인은 블록 생성 시간이 단 5초인 블록체인에서 작동하는 메인넷 암호화폐입니다. 안정적이고 안전한 디지털 자산 AAH Coin의 최대 발행수량은 210,000,000개입니다. AAH의 체인 ID는 21133이므로 다양한 블록체인 탐색기에서 쉽게 식별하고 액세스할 수 있습니다.
+                        <h3>AllAboutHealth 코인의 주요 특징</h3>
+                        AAH 코인의 주요 특징 중 하나는 보안과 효율성에 중점을 두고 있다는 점이며, AAH를 C4EI와 같은 기존 플랫폼과 통합함으로써 사용자는 경제적, 보안적 시너지 효과를 누릴 수 있습니다. AAH는 또한 사용자가 AAH 코인을 안전하게 저장하고 관리할 수 있는 Android용 AAH 지갑을 포함하여 다양한 애플리케이션과 서비스를 제공합니다.
+                        <h3>AllAboutHealth를 위한 Play To Earn 및 게임 통합</h3>
+                        AAH 코인은 단지 거래에 관한 것이 아닙니다. 이는 또한 사용자를 위한 가치와 참여를 창출하는 것이기도 합니다. 생태계에는 사용자가 AAH를 게임 내 통화로 교환하고 8시간마다 AAH를 채굴할 수도 있는 Android 게임이 포함되어 있습니다. CardAAH, SEAAAH, majakAAH와 같은 게임은 흥미진진한 게임 플레이와 보상을 제공하여 사용자에게 독특한 게임 경험을 선사합니다.
+                        <h3>차세대 스마트 계약</h3>
+                        AAH 코인의 중심에는 차세대 스마트 계약 플랫폼이 있습니다. Turing-complete 프로그래밍 언어가 내장된 블록체인을 기반으로 구축된 AAH를 통해 개발자는 복잡한 분산형 애플리케이션을 쉽게 만들 수 있습니다. 맞춤형 통화, 금융 상품, 스마트 자산 등을 생성하는 등 AAH의 스마트 계약은 비교할 수 없는 유연성과 보안을 제공합니다.
+                        <h3>토큰 시스템 및 금융 애플리케이션</h3>
+                        AAH 코인은 또한 블록체인 토큰 시스템을 지원하여 하위 통화, 회사 주식 및 보안 쿠폰을 포함한 광범위한 응용 프로그램을 가능하게 합니다. 강력하고 안전한 인프라 덕분에 AAH에서 토큰 시스템을 구현하는 것은 간단합니다.
+                        <h3>블록체인과 채굴</h3>
+                        AAH의 블록체인 아키텍처는 비트코인과 유사하지만 몇 가지 중요한 차이점이 있습니다. 블록에는 거래 목록과 최신 상태의 사본이 모두 포함되어 효율성과 보안이 보장됩니다. AAH의 블록 검증 알고리즘은 사기를 방지하고 블록체인의 무결성을 보장합니다.
+                        <h3>AAH 코인의 미래</h3>
+                        AAH 프로젝트는 현재 Play To Earn 구현을 중단했음에도 불구하고 분산형 애플리케이션을 위한 번성하는 생태계를 만들기 위해 최선을 다하고 있습니다. 또한 보안, 효율성 및 혁신에 중점을 둔 AAH 코인은 분산형 금융 및 애플리케이션의 세계에 혁명을 일으킬 준비가 되어 있습니다.
+                        <h3>결론</h3>
+                        또한 AAH(All About Health) 코인은 단순한 암호화폐가 아니라 혁신과 창의성을 위한 플랫폼입니다. 또한 분산형 애플리케이션 세계의 주요 플레이어인 AAH 코인은 고급 스마트 계약 플랫폼, 통합 게임 생태계 및 보안에 대한 강력한 초점을 자랑합니다. 차세대 혁신을 추구하는 개발자이든 새로운 도전을 모색하는 게이머이든 AAH Coin은 모두를 위한 무언가를 제공합니다.
+                        
+
+                        <br />
+                        <hr />
+                        <h4>AAH 백서 (AAH whitepaper)</h4>
+                        <a
+                        href="https://docs.google.com/document/d/1ERmQOBm7NwanICvbAgQO35nIfzTqkf4cnWiiLN4laJM/edit?usp=sharing"
+                        target="_blank" title="AAH white paper korean">한국어</a> ,
+                        <a href="https://docs.google.com/document/d/1pa_NOiHPaeJH0U5Xk9yzgLX3uiaUe3Zdf_RB-6cbUjw/edit?usp=sharing"
+                        target="_blank" title="AAH white paper korean">English</a>
+                        / <a href="/download/AAH.pdf" target="_blank" title="AAH법률검토의견서">AAH법률검토의견서</a> / 
+                        <a href="https://exp.c4ex.net" target="_blank">explorer</a> / 
+                        <a href="https://stat.c4ex.net" target="_blank">status</a>
+                    
+                        <br /><br />
+                    </div>
+                </div>
+                <div class="network">
+                    <h3 onclick="fn_showC4ei();" style="cursor: pointer;"><img src="https://i.ibb.co/9ZgYSnP/c4ei.png" width="32" height="32" style="background-color: aliceblue;" /> C4EI - Chain for Education and Industry (클릭시상세정보)</h3>
+                    <p>메인넷</p>
+                    <div id="ly_C4EI_info" style="display: none;">
+                        <h4>C4EI 프로젝트 소개</h4>- C4EI백서 C4EI whitepaper 
+                        (<a
+                        href="https://docs.google.com/document/d/e/2PACX-1vQWg1Aj46NAaCHRoZFjykj5-g-2zgVhKa_s_eHZha2edKlxF3DZEeVblMCvt4pCqJKbsRnwNMMpWQGQ/pub"
+                        target="_blank" title="c4ei white paper korean">한국어</a>,
+                        <a href="https://docs.google.com/document/d/1c7bNBiWRuTD4ydYRKU_UoDIgoIjaoNacPLl_sUj-nTk/edit?usp=sharing"
+                        target="_blank" title="c4ei white paper English">Eng</a>) / 
+                        <a href="https://stat.c4ei.net" target="_blank" title="c4ei block chain status">C4EI status</a>
+                        / <a href="https://exp.c4ei.net" target="_blank" title="c4ei block chain explore">C4EI explore</a><br /><br />
+                        C4EI는 교육 및 산업 분야에 혁신적인 기술을 제공하기 위해 설계된 블록체인 기반의 암호화폐입니다. 이 프로젝트는 다음과 같은 주요 목표를 가지고 있습니다<br /><br />
+                        <b>○교육 분야 혁신:</b>
+                        C4EI는 학교, 대학, 교육 기관에서 사용할 수 있는 블록체인 기반 솔루션을 제공합니다. 학생 성적, 학위 인증, 학교 관리, 학습 기록 추적 및 교육자원 관리를 향상시키는 데 도움을
+                        줍니다.<br />
+                        <b>○산업 분야 혁신:</b>
+                        제조, 공급망, 물류 및 다양한 산업 분야에서 블록체인을 활용하여 효율성을 향상시키고 안정성을 보장합니다. 스마트 계약을 통해 계약 및 거래 프로세스를 자동화하고 신뢰성 있는 거래를
+                        지원합니다.<br />
+                        <b>○안전 및 보안:</b>
+                        C4EI는 블록체인 기술의 핵심 보안 기능을 통해 데이터 무결성을 유지하고 거래의 투명성을 보장합니다. 사용자들은 안전하게 거래를 할 수 있으며 데이터 위변조를 방지합니다.<br />
+                        <b>○사용자 친화적:</b>
+                        C4EI 토큰은 사용자들에게 쉽게 액세스할 수 있도록 설계되었으며 모바일 앱 또는 웹 플랫폼을 통해 손쉽게 관리할 수 있습니다.<br />
+                        <br />
+                        <a href="how2meta.html" target="_blank">How can I add metamask C4EI ?</a><br />
+                        <a href="javascript:jsfn_openmetaPop();">메타마스크에c4ei추가(Add c4ei to metamask)</a>
+                        <br /><br />
+                    </div>
+                </div>
+                <div class="network">
+                    <h3 onclick="fn_showCeik();" style="cursor: pointer;"><img src="https://i.ibb.co/N9h8ZTL/klayCeik.png" height="32" /> CEIK - c4ei.net 4 klay (클릭시상세정보)</h3>
+                    <p>KLAYTN 토큰</p>
+                    <div id="ly_CEIK_info" style="display: none;">
+                        <p class="text-white-50">
+                            Happiness, satisfaction, pleasure, melancholy, love, joy, sadness, hate… 
+                            <br/>Ironically, one of the reasons we live is economic independence or independence. 
+                            <br/>You have to support someone, you have to eat more than $7 a meal,
+                            <br/> and you have to pay for an apartment, a car, and various loans.
+                            <br/>It starts with the belief that if cryptocurrency is really settled in the future, 
+                            <br/>C4EI will also help you in your future life.
+                            <br/>I want to share a small first step with you and move forward.
+        
+                            <br/><br/>CEIK token !!! We have prepared a meeting between C4ei and Klay. 
+                            <br/>We will make it possible to exchange C4EI and CEIK in the future.
+                            <br/>(우리는 C4ei와 Klay 의 만남을 준비하였습니다. 향후 C4EI 와 CEIK의 교환이 가능 하도록 하겠습니다.)
+                            <br/>
+                            <br/>CEIK<a href="https://klayswap.com/exchange/swap?output=0x18814b01b5cc76f7043e10fd268cc4364df47da0" target="_blank"><img src="https://s.klayswap.com/img/token/ic-ceik.png" style="width:20px;height:20px" border="0">BUY</a>
+                            <br/>CEIK<a href="https://scope.klaytn.com/token/0x18814b01b5cc76f7043e10fd268cc4364df47da0" target="_blank"><img src="https://s.klayswap.com/img/token/ic-ceik.png" style="width:20px;height:20px" border="0">INFO</a>
+                            <br/>KLAY+CEIK<a href="https://klayswap.com/exchange/pool/detail/0x50e746edaa283365136ed86a4e5dfddc6cd3cf9e" target="_blank"><img src="https://s.klayswap.com/img/token/ic-klay.svg" style="width:20px;height:20px" border="0"><img src="https://s.klayswap.com/img/token/ic-ceik.png" style="width:20px;height:20px" border="0">DEPOSIT</a> 
+                            <br/>KLAYSWAP+CEIK<a href="https://klayswap.com/exchange/pool/detail/0xcc81d437ffc161d349d6186b1a1f8dde515093d6" target="_blank"><img src="https://s.klayswap.com/img/token/ic-ksp.svg" style="width:20px;height:20px" border="0"><img src="https://s.klayswap.com/img/token/ic-ceik.png" style="width:20px;height:20px" border="0">DEPOSIT</a>
+                            <br/>
+                        </p>
+                        <br /><br />
+                    </div>
+                    
+                </div>
+                <div class="network">
+                    <h3 onclick="fn_showSawon();" style="cursor: pointer;"><img src="https://i.ibb.co/wgQj38n/sawon-eth.png" width="32" height="32" style="background-color: aliceblue;" /> SAWON (클릭시상세정보)</h3>
+                    <p>ETH, BSC, KLAY, POLYGON 토큰 - VINDAX 상장된 토큰은 SAWON(ETH) 임</p>
+
+                    <div id="ly_SAWON_info" style="display: none;">
+SAWON 요약 정리 
+
+2022년 12월 10일 한국시간 23:00시에 ETH 기반 디지털 자산 거래 플랫폼인 VinDAX 에서 SAWON 토큰 IEO 를 진행한다고 한다.<br />
+총 발행량은 21004개이며 프라이빗 세일 물량 1% 와 커뮤니티 할당 19% 는 제외된다고 한다. 그리고 남은 80%중 20%는 재단 및 어드바이저 인센티브 용도로 사용되며<br />
+나머지 70%는 바이백 소각용도로 사용될 예정이라고 한다. 또한 해당 프로젝트 팀에서는 성공적인 IEO 이후 대형거래소 상장도 계획되어 있다고 밝혔다.<br />
+<br />
+빈댁스 : <a href="https://vindax.com/?ref=5f62b1117c8f9cdaa8c895f8c8c631dc" target="_blank">https://vindax.com/?ref=5f62b1117c8f9cdaa8c895f8c8c631dc</a>
+<br />
+사원 구매 링크 : <a href="https://vindax.com/exchange-base.html?symbol=SAWON_ETH" target="_blank">https://vindax.com/exchange-base.html?symbol=SAWON_ETH</a>
+<br />
+                    </div>
+                </div>
+            </section>
             <br /><hr/><br />
-            <!-- ◎AAH 는 C4EI장점을 개선 보완한 새로운 프로젝트이며 핵심은 산업과의 연동입니다.<br /> -->
-            <!-- Introduction to AAH for English <a href="https://cryptopia.in/allabouthealth" target="_blank">cryptopia</a>  -->
-
-            <h3>What is AllAboutHealth Coin?</h3>
-            AllAboutHealth Coin is a MainNet cryptocurrency that operates on a blockchain with a block creation time of just 5 seconds. 210,000,000 is the maximum issuance quantity for the stable and secure digital asset, AAH Coin. The chain ID for AAH is 21133, making it easily identifiable and accessible to various blockchain explorers.
-
-            <h3>Key Features of AllAboutHealth Coin</h3>
-            One of the key features of AAH Coin is its focus on security and efficiency and by integrating AAH with existing platforms like C4EI, users can benefit from economic and security synergies. AAH also offers a range of applications and services, including an AAH Wallet for Android, where users can securely store and manage their AAH coins.
-
-            <h3>Play To Earn and Gaming Integration for AllAboutHealth</h3>
-            AAH Coin is not just about transactions; it’s also about creating value and engagement for users. The ecosystem includes Android games where users can exchange AAH for in-game currency and even mine AAH every 8 hours. Games like cardAAH, SEAAAH, and majakAAH offer exciting gameplay and rewards, creating a unique gaming experience for users.
-
-            <h3>Next-Generation Smart Contracts</h3>
-            At the heart of AAH Coin is its next-generation smart contract platform. Built on a blockchain with a built-in Turing-complete programming language, AAH allows developers to create complex decentralized applications with ease. Whether it’s creating custom currencies, financial instruments, or smart property, AAH’s smart contracts offer unparalleled flexibility and security.
-
-            <h3>Token Systems and Financial Applications</h3>
-            AAH Coin also supports on-blockchain token systems, enabling a wide range of applications, including sub-currencies, company stocks, and secure coupons. Implementing token systems on AAH is straightforward, thanks to its robust and secure infrastructure.
-
-            <h3>Blockchain and Mining</h3>
-            AAH’s blockchain architecture is similar to Bitcoin’s but with some key differences. Blocks contain a copy of both the transaction list and the most recent state, ensuring efficiency and security. The block validation algorithm in AAH prevents fraud and ensures the integrity of the blockchain.
-
-            <h3>The Future of AAH Coin</h3>
-            The project, AAH, is committed to creating a thriving ecosystem for decentralized applications despite currently suspending its Play To Earn implementation. Additionally, AAH Coin, with its focus on security, efficiency, and innovation, is poised to revolutionize the world of decentralized finance and applications.
-
-            <h3>Conclusion</h3>
-            Additionally, All About Health (AAH) Coin is more than just a cryptocurrency, it’s a platform for innovation and creativity. Furthermore, a major player in the world of decentralized applications, AAH Coin, boasts an advanced smart contract platform, an integrated gaming ecosystem, and a strong focus on security. Whether you’re a developer looking to create the next big thing or a gamer looking for new challenges, AAH Coin has something for everyone.
-            <br /><br />
-            <h3>AAH 코인은 무엇인가요?</h3>
-            AllAboutHealth 코인은 블록 생성 시간이 단 5초인 블록체인에서 작동하는 메인넷 암호화폐입니다. 안정적이고 안전한 디지털 자산 AAH Coin의 최대 발행수량은 210,000,000개입니다. AAH의 체인 ID는 21133이므로 다양한 블록체인 탐색기에서 쉽게 식별하고 액세스할 수 있습니다.
-            <h3>AllAboutHealth 코인의 주요 특징</h3>
-            AAH 코인의 주요 특징 중 하나는 보안과 효율성에 중점을 두고 있다는 점이며, AAH를 C4EI와 같은 기존 플랫폼과 통합함으로써 사용자는 경제적, 보안적 시너지 효과를 누릴 수 있습니다. AAH는 또한 사용자가 AAH 코인을 안전하게 저장하고 관리할 수 있는 Android용 AAH 지갑을 포함하여 다양한 애플리케이션과 서비스를 제공합니다.
-            <h3>AllAboutHealth를 위한 Play To Earn 및 게임 통합</h3>
-            AAH 코인은 단지 거래에 관한 것이 아닙니다. 이는 또한 사용자를 위한 가치와 참여를 창출하는 것이기도 합니다. 생태계에는 사용자가 AAH를 게임 내 통화로 교환하고 8시간마다 AAH를 채굴할 수도 있는 Android 게임이 포함되어 있습니다. CardAAH, SEAAAH, majakAAH와 같은 게임은 흥미진진한 게임 플레이와 보상을 제공하여 사용자에게 독특한 게임 경험을 선사합니다.
-            <h3>차세대 스마트 계약</h3>
-            AAH 코인의 중심에는 차세대 스마트 계약 플랫폼이 있습니다. Turing-complete 프로그래밍 언어가 내장된 블록체인을 기반으로 구축된 AAH를 통해 개발자는 복잡한 분산형 애플리케이션을 쉽게 만들 수 있습니다. 맞춤형 통화, 금융 상품, 스마트 자산 등을 생성하는 등 AAH의 스마트 계약은 비교할 수 없는 유연성과 보안을 제공합니다.
-            <h3>토큰 시스템 및 금융 애플리케이션</h3>
-            AAH 코인은 또한 블록체인 토큰 시스템을 지원하여 하위 통화, 회사 주식 및 보안 쿠폰을 포함한 광범위한 응용 프로그램을 가능하게 합니다. 강력하고 안전한 인프라 덕분에 AAH에서 토큰 시스템을 구현하는 것은 간단합니다.
-            <h3>블록체인과 채굴</h3>
-            AAH의 블록체인 아키텍처는 비트코인과 유사하지만 몇 가지 중요한 차이점이 있습니다. 블록에는 거래 목록과 최신 상태의 사본이 모두 포함되어 효율성과 보안이 보장됩니다. AAH의 블록 검증 알고리즘은 사기를 방지하고 블록체인의 무결성을 보장합니다.
-            <h3>AAH 코인의 미래</h3>
-            AAH 프로젝트는 현재 Play To Earn 구현을 중단했음에도 불구하고 분산형 애플리케이션을 위한 번성하는 생태계를 만들기 위해 최선을 다하고 있습니다. 또한 보안, 효율성 및 혁신에 중점을 둔 AAH 코인은 분산형 금융 및 애플리케이션의 세계에 혁명을 일으킬 준비가 되어 있습니다.
-            <h3>결론</h3>
-            또한 AAH(All About Health) 코인은 단순한 암호화폐가 아니라 혁신과 창의성을 위한 플랫폼입니다. 또한 분산형 애플리케이션 세계의 주요 플레이어인 AAH 코인은 고급 스마트 계약 플랫폼, 통합 게임 생태계 및 보안에 대한 강력한 초점을 자랑합니다. 차세대 혁신을 추구하는 개발자이든 새로운 도전을 모색하는 게이머이든 AAH Coin은 모두를 위한 무언가를 제공합니다.
-            
-
-            <br />
-            <hr />
-            <h4>AAH 백서 (AAH whitepaper)</h4>
-            <a
-            href="https://docs.google.com/document/d/1ERmQOBm7NwanICvbAgQO35nIfzTqkf4cnWiiLN4laJM/edit?usp=sharing"
-            target="_blank" title="AAH white paper korean">한국어</a> ,
-            <a href="https://docs.google.com/document/d/1pa_NOiHPaeJH0U5Xk9yzgLX3uiaUe3Zdf_RB-6cbUjw/edit?usp=sharing"
-            target="_blank" title="AAH white paper korean">English</a>
-             / <a href="/download/AAH.pdf" target="_blank" title="AAH법률검토의견서">AAH법률검토의견서</a> / 
-            <a href="https://exp.c4ex.net" target="_blank">explorer</a> / 
-            <a href="https://stat.c4ex.net" target="_blank">status</a>
-            
+            <section id="buy" class="section" style="padding-top:49px;">
+                <h2>구매</h2>
+                <p>
+                    <a href="https://c4ex.net" class="menu-link" target="_blank">
+                        <span class="menu-text">TRADING(AAH)</span>
+                    </a>
+                    <br /><br />
+                    ◎ AAH 는 <a href="https://c4ex.net" target="_blank">https://c4ex.net</a> 에서 거래 가능합니다.<br />
+                    <a href="javascript:jsfn_open_metaAAHPop();">메타마스크에 AAH추가(Add AAH to metamask)</a><br />
+                    <a href="https://play.google.com/store/apps/details?id=net.c4ei.aahwallet" target="_blank">AAH Wallet-download (AAH 주소 생성)</a>
+                            ◎<a href="https://c4ex.net" target="_blank">C4EX</a>에서의 미국달러(USDT) 주소는 아래와 같습니다. USDT 주소가 AAH 는 AusDDeFi (AUSD) 입니다.!!!!<br />
+                    AAH-AUSD contract address : <a href="https://exp.c4ex.net/address/0x3adBF8fa04c21517D8E50908305D0413D2A44300" target="_blank">0x3adBF8fa04c21517D8E50908305D0413D2A44300</a><br />
+                    C4EI-USDT contract address : <a href="https://exp.c4ei.net/contracts/0xf10e02ce41b28e52ad015eae3a83e040d4aee3a8" target="_blank">0xf10e02ce41b28e52ad015eae3a83e040d4aee3a8</a><br />
+                    <!-- KLAY-AUSD contract address : <a href="https://klaytnscope.com/account/0xE022f24EDd0558F22ECbd19c8Ad140a5F59B9a67" target="_blank">0xE022f24EDd0558F22ECbd19c8Ad140a5F59B9a67</a><br /> -->
+                    착오 송금에 주의해 주세요!
+                </p>
             <!-- 
             <br /><hr/><br />
 
@@ -414,136 +525,167 @@
                 </table>
             </div>
             -->
+                
+            </section>
             <br /><hr/><br />
-            ◎ AAH 는 <a href="https://c4ex.net" target="_blank">https://c4ex.net</a> 에서 거래 가능합니다.<br />
-            <a href="javascript:jsfn_open_metaAAHPop();">메타마스크에 AAH추가(Add AAH to metamask)</a><br />
-            <a href="https://play.google.com/store/apps/details?id=net.c4ei.aahwallet" target="_blank">AAH Wallet-download (AAH 주소 생성)</a>
-
-            <!-- <hr/> -->
+            <section id="mining" class="section" style="padding-top:49px;">
+                <h2>MINING</h2>
+                <p>
+                    <a href="https://ref.c4ei.net" class="menu-link" target="_blank">
+                        <span class="menu-text">AAH Web Mining</span>
+                    </a>
+                    <br />
+                    <a href="https://t.me/aah_mining" class="menu-link" target="_blank">
+                        <span class="menu-text">AAH Telegram Mining</span>
+                    </a>
+                    <br />
+                    <a href="https://ceik.c4ei.net" class="menu-link" target="_blank">
+                        <span class="menu-text">CEIK Web Mining</span>
+                    </a>
+                    <br />
+                    <a href="https://t.me/c4eiAirdrop" class="menu-link" target="_blank">
+                        <span class="menu-text">C4EI Telegram Mining</span>
+                    </a>
+                </p>
+            </section>
             <br /><hr/><br />
-            ◎<a href="https://c4ex.net" target="_blank">C4EX</a>에서의 미국달러(USDT) 주소는 아래와 같습니다. USDT 주소가 AAH 는 AusDDeFi (AUSD) 입니다.!!!!<br />
-            AAH-AUSD contract address : <a href="https://exp.c4ex.net/address/0x3adBF8fa04c21517D8E50908305D0413D2A44300" target="_blank">0x3adBF8fa04c21517D8E50908305D0413D2A44300</a><br />
-            C4EI-USDT contract address : <a href="https://exp.c4ei.net/contracts/0xf10e02ce41b28e52ad015eae3a83e040d4aee3a8" target="_blank">0xf10e02ce41b28e52ad015eae3a83e040d4aee3a8</a><br />
-            <!-- KLAY-AUSD contract address : <a href="https://klaytnscope.com/account/0xE022f24EDd0558F22ECbd19c8Ad140a5F59B9a67" target="_blank">0xE022f24EDd0558F22ECbd19c8Ad140a5F59B9a67</a><br /> -->
-            착오 송금에 주의해 주세요!
+            <section id="defi" class="section" style="padding-top:49px;">
+                <h2>DEFI</h2>
+                <p>
+                    <a href="https://dex.c4ex.net" class="menu-link" target="_blank">
+                        <span class="menu-text">AAH DEX</span>
+                    </a>
+                </p>
+            </section>
+            <br /><hr/><br />
+            <section id="staking" class="section" style="padding-top:49px;">
+                <h2>STAKING</h2>
+                <p>
+                    <a href="https://dap.c4ex.net" class="menu-link" target="_blank">
+                        <span class="menu-text">AAH DAP</span>
+                    </a>
+                </p>
+            </section>
+            <br /><hr/><br />
+            <section id="others" class="section" style="padding-top:49px;">
+                <h2 onclick="fn_showEtc();" style="cursor: pointer;">기타 (클릭시상세정보)</h2>
+                <p>
+                    <a href="https://nft.c4ex.net" class="menu-link" target="_blank">
+                        <span class="menu-text">AAH NFT Auction</span>
+                    </a>
+                    <br/>
+                    <a href="https://shop.c4ei.net" class="menu-link" target="_blank">
+                        <span class="menu-text">SHOP (AAH ONLY)</span>
+                    </a>
+                    <br/>
+                    <a href="https://aah.c4ex.net" class="menu-link" target="_blank">
+                        <span class="menu-text">AAH Web Wallet</span>
+                    </a>
+                    <br/>
+                    <br /><a href="https://lotto.c4ei.net" target="_blank">AAH LOTTO</a> 
+                    <br /><a href="https://gplay.c4ei.net/lottolist" target="_blank">LOTTO 분석</a> 
+                    <br /><a href="https://gplay.c4ei.net" target="_blank">구글플레이 관련(Google play refund service)</a>
+                    <br/><br/>
+                    <a href="https://ai.c4ex.net" class="menu-link" target="_blank"><span class="menu-text">AI CHAT</span></a>
+                </p>
+                <div id="ly_ETC_info" style="display: none;">
+                    <img src="https://i.ibb.co/stfwwLZ/aahwebmining.png" alt="c4ex-net2" border="0" height="260">
+                    <br /><a href="https://ref.c4ei.net" target="_blank">AAH Web Mining</a> 
+                    <a href="https://docs.google.com/document/d/1xWXYf4TzwS-xaKU2Ox82SkTtW5UVAcBGDPy3qKSsKVo/edit?usp=sharing" target="_blank">(설명서)</a> 
+                    <br /><hr/><br />
+        
+                    <br /><br />
+                    <img src="https://i.ibb.co/9wRKnck/c4ex-net2.png" alt="c4ex-net2" border="0" height="260">
+                    <img src="https://i.ibb.co/JCjbpXj/c4ex-wallet-A.png" alt="c4ex-net3" border="0" height="260">
+        
+                    <br /><a href="https://c4ex.net" target="_blank">c4ex.net</a> 
+                    <a href="https://docs.google.com/document/d/11h0WhWO0GCep63sKr9i0xM13nrllVVIBPZVs84re8Jk/edit?usp=sharing" target="_blank">(CEX 설명서)</a> 
+                    <br /><hr/><br />
+        
+                    <img src="https://i.ibb.co/1sgvtkc/ai.png" alt="aahwebwallet" border="0"  height="260">
+                    <br /><a class="gafi" href="https://ai.c4ex.net" target="_blank">AI CHAT</a> 
+                    <a href="https://docs.google.com/document/d/1QUb79TsIFxoCQaJcsuwqHZd0voUmY-4DOGSaAgQS4vM/edit?usp=sharing" target="_blank">(설명서)</a> 
+                    <br /><br />
+        
+                    <img src="https://i.ibb.co/mzRC9ck/aahwebwallet.png" alt="aahwebwallet" border="0"  height="260">
+                    <br /><a class="gafi" href="https://aah.c4ex.net" target="_blank">AAH Web Wallet</a> 
+                    <a href="https://docs.google.com/document/d/1nq8YLPS0nKqUAq0yAKlkjnNF8LDVC0880sTUSYHGFLs/edit?usp=sharing" target="_blank">(설명서)</a> 
+                    <br /><br />
+        
+                    <img src="https://i.ibb.co/y8hFcFq/dex-c4ex-net1.png" alt="dex-c4ex-net1" border="0" height="380">
+                    <img src="https://i.ibb.co/kcBtCDV/dex-c4ex-net2.png" alt="dex-c4ex-net2" border="0" height="380">
+                    <br /><a href="https://dex.c4ex.net" target="_blank">AAH DEX</a> 
+                    <a href="https://docs.google.com/document/d/15KtmcTW50roeYVfKlhGI64D6Uu81BxQYnt421xpNhoo/edit?usp=sharing" target="_blank">(DEX 설명서)</a> 
+                    
+                    <br /><hr/><br />
+                    <img src="https://i.ibb.co/z7FfPkt/lotto.png" alt="lotto1" border="0" height="380">
+                    <img src="https://i.ibb.co/Hq9gfdN/lotto2.png" alt="lotto2" border="0" height="380">
+                    <br />
+                    <img src="https://i.ibb.co/MCVhNH3/lotto3.png" alt="lotto3" border="0" height="380" style="margin-top: 10px;">
+                    <br /><a href="https://lotto.c4ei.net" target="_blank">AAH LOTTO</a> 
+                    <a href="https://docs.google.com/document/d/1ybuBXgRUDslYqE7Pl6And3idmyHmsQ2PvxVUnErXG2U/edit?usp=sharing" target="_blank">(LOTTO 설명서)</a> 
+                    <br /><hr/><br /><a href="https://nft.c4ex.net" target="_blank">AAH NFT Auction</a> 
+                    <a href="https://docs.google.com/document/d/1S3HcMW2EmzvCEtDeF4JdSrbZOuO0JdPOHl5Stc0lhbE/edit?usp=sharing" target="_blank">(설명서)</a>
+                    <br /><hr/><br /><a href="https://shop.c4ei.net" target="_blank">쇼핑몰(SHOP)</a> 
+                    <a href="https://docs.google.com/document/d/1cVD4bqt3K9rIK2kO1SCSWljD0X0mJ-OceeK_F3DBnaU/edit?usp=sharing" target="_blank">(설명서)</a>
+                    <br /><hr/><br />
+                    <a href="https://docs.google.com/document/d/1MCmSWgJcJvnGi8mSXJoL9j4fXxYeat8bL12aeWuQvqE/edit?usp=sharing" target="_blank">DAP.C4EX.NET - AAH 수량 늘이기 (年12%) DOC</a>
+                    <br /><hr/><br />
+                    <img src="https://i.ibb.co/x2YChq3/aahwallet.png" alt="aahwallet" border="0" height="380"><br />
+                    <a href="https://play.google.com/store/apps/details?id=net.c4ei.aahwallet" target="_blank">AAH Wallet-download</a>
+                    <br /><hr/><br />
+        
+                    ◎ <a href="https://shop.c4ei.net" target="_blank">shop.c4ei.net</a> - partner <br />
+                    <div style="height: 120px; overflow: auto;padding: 10px;">
+                        <img src="https://i.ibb.co/5vgnxxc/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/xGTQwgz/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/5LzVfNC/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/jfXd9dm/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/gW3F61X/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/88J4QLT/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/6ZtB5nb/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/MnydK1p/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/VTq67yC/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/rd68yX3/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/VHRgJQG/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/WfxKjCW/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/BZRZGdG/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/dbgvhpw/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/qYj2NVq/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/3hX32zY/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/Z11HQzM/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/yXKKLYb/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/XXMMdLC/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/PgHZZS4/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/27JK4By/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/gZRm9sQ/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/pb3kZJG/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/FqFPSt3/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/D7NYJRd/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/qsVhdMj/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/0jkrgcG/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/ZTq2jyg/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/hyy0R3p/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/VTQDmMt/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/58zByNQ/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/khtFSw8/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/FsjBmHL/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/g4vf1qH/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/KVtkHfR/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/xGHYKtf/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/MVx392C/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                        <img src="https://i.ibb.co/NWXwBs9/2.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
+                    </div>
+                    <br/><br/>
+                </div>
 
+            </section>
             <br /><hr/><br />
 
-            ○ AAH로 아래와 같은 프로젝트를 진행 혹은 완료 하였습니다.
-            <br /><br />
-            <img src="https://i.ibb.co/stfwwLZ/aahwebmining.png" alt="c4ex-net2" border="0" height="260">
-            <br /><a href="https://ref.c4ei.net" target="_blank">AAH Web Mining</a> 
-            <a href="https://docs.google.com/document/d/1xWXYf4TzwS-xaKU2Ox82SkTtW5UVAcBGDPy3qKSsKVo/edit?usp=sharing" target="_blank">(설명서)</a> 
-            <br /><hr/><br />
 
-            <br /><br />
-            <img src="https://i.ibb.co/9wRKnck/c4ex-net2.png" alt="c4ex-net2" border="0" height="260">
-            <img src="https://i.ibb.co/JCjbpXj/c4ex-wallet-A.png" alt="c4ex-net3" border="0" height="260">
 
-            <br /><a href="https://c4ex.net" target="_blank">c4ex.net</a> 
-            <a href="https://docs.google.com/document/d/11h0WhWO0GCep63sKr9i0xM13nrllVVIBPZVs84re8Jk/edit?usp=sharing" target="_blank">(CEX 설명서)</a> 
-            <br /><hr/><br />
-
-            <img src="https://i.ibb.co/1sgvtkc/ai.png" alt="aahwebwallet" border="0"  height="260">
-            <br /><a class="gafi" href="https://ai.c4ex.net" target="_blank">AI CHAT</a> 
-            <a href="https://docs.google.com/document/d/1QUb79TsIFxoCQaJcsuwqHZd0voUmY-4DOGSaAgQS4vM/edit?usp=sharing" target="_blank">(설명서)</a> 
-            <br /><br />
-
-            <img src="https://i.ibb.co/mzRC9ck/aahwebwallet.png" alt="aahwebwallet" border="0"  height="260">
-            <br /><a class="gafi" href="https://aah.c4ex.net" target="_blank">AAH Web Wallet</a> 
-            <a href="https://docs.google.com/document/d/1nq8YLPS0nKqUAq0yAKlkjnNF8LDVC0880sTUSYHGFLs/edit?usp=sharing" target="_blank">(설명서)</a> 
-            <br /><br />
-
-            <img src="https://i.ibb.co/y8hFcFq/dex-c4ex-net1.png" alt="dex-c4ex-net1" border="0" height="380">
-            <img src="https://i.ibb.co/kcBtCDV/dex-c4ex-net2.png" alt="dex-c4ex-net2" border="0" height="380">
-            <br /><a href="https://dex.c4ex.net" target="_blank">AAH DEX</a> 
-            <a href="https://docs.google.com/document/d/15KtmcTW50roeYVfKlhGI64D6Uu81BxQYnt421xpNhoo/edit?usp=sharing" target="_blank">(DEX 설명서)</a> 
-            
-            <br /><hr/><br />
-            <img src="https://i.ibb.co/z7FfPkt/lotto.png" alt="lotto1" border="0" height="380">
-            <img src="https://i.ibb.co/Hq9gfdN/lotto2.png" alt="lotto2" border="0" height="380">
-            <br />
-            <img src="https://i.ibb.co/MCVhNH3/lotto3.png" alt="lotto3" border="0" height="380" style="margin-top: 10px;">
-            <br /><a href="https://lotto.c4ei.net" target="_blank">AAH LOTTO</a> 
-            <a href="https://docs.google.com/document/d/1ybuBXgRUDslYqE7Pl6And3idmyHmsQ2PvxVUnErXG2U/edit?usp=sharing" target="_blank">(LOTTO 설명서)</a> 
-            <br /><hr/><br /><a href="https://nft.c4ex.net" target="_blank">AAH NFT Auction</a> 
-            <a href="https://docs.google.com/document/d/1S3HcMW2EmzvCEtDeF4JdSrbZOuO0JdPOHl5Stc0lhbE/edit?usp=sharing" target="_blank">(설명서)</a>
-                <!-- <a href="https://docs.google.com/document/d/1xSZl4mkRTYUpkVAIjf2JFIrwPCphLRLprzHRd_T6k6s/edit?usp=sharing" target="_blank">(NFT 설명서)</a> -->
-            <br /><hr/><br /><a href="https://shop.c4ei.net" target="_blank">쇼핑몰(SHOP)</a> 
-            <a href="https://docs.google.com/document/d/1cVD4bqt3K9rIK2kO1SCSWljD0X0mJ-OceeK_F3DBnaU/edit?usp=sharing" target="_blank">(설명서)</a>
-            <br /><hr/><br />
-            <a href="https://docs.google.com/document/d/1MCmSWgJcJvnGi8mSXJoL9j4fXxYeat8bL12aeWuQvqE/edit?usp=sharing" target="_blank">DAP.C4EX.NET - AAH 수량 늘이기 (年12%) DOC</a>
-            <br /><hr/><br />
-            <img src="https://i.ibb.co/x2YChq3/aahwallet.png" alt="aahwallet" border="0" height="380"><br />
-            <a href="https://play.google.com/store/apps/details?id=net.c4ei.aahwallet" target="_blank">AAH Wallet-download</a>
-            <br /><hr/><br />
-
-            ◎ <a href="https://shop.c4ei.net" target="_blank">shop.c4ei.net</a> - partner <br />
-            <div style="height: 120px; overflow: auto;padding: 10px;">
-                <img src="https://i.ibb.co/5vgnxxc/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/xGTQwgz/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/5LzVfNC/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/jfXd9dm/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/gW3F61X/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/88J4QLT/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/6ZtB5nb/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/MnydK1p/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/VTq67yC/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/rd68yX3/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/VHRgJQG/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/WfxKjCW/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/BZRZGdG/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/dbgvhpw/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/qYj2NVq/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/3hX32zY/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/Z11HQzM/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/yXKKLYb/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/XXMMdLC/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/PgHZZS4/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/27JK4By/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/gZRm9sQ/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/pb3kZJG/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/FqFPSt3/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/D7NYJRd/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/qsVhdMj/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/0jkrgcG/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/ZTq2jyg/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/hyy0R3p/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/VTQDmMt/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/58zByNQ/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/khtFSw8/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/FsjBmHL/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/g4vf1qH/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/KVtkHfR/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/xGHYKtf/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/MVx392C/image.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-                <img src="https://i.ibb.co/NWXwBs9/2.png" border="0" style="height: 80px;padding:5px 5px 5px 5px;"></a>
-            </div>
-            <br /><br />
             
             <!-- <hr />
-            <h4>C4EI 프로젝트 소개</h4>- C4EI백서 C4EI whitepaper 
-            (<a
-            href="https://docs.google.com/document/d/e/2PACX-1vQWg1Aj46NAaCHRoZFjykj5-g-2zgVhKa_s_eHZha2edKlxF3DZEeVblMCvt4pCqJKbsRnwNMMpWQGQ/pub"
-            target="_blank" title="c4ei white paper korean">한국어</a>,
-            <a href="https://docs.google.com/document/d/1c7bNBiWRuTD4ydYRKU_UoDIgoIjaoNacPLl_sUj-nTk/edit?usp=sharing"
-            target="_blank" title="c4ei white paper English">Eng</a>) / 
-            <a href="https://stat.c4ei.net" target="_blank" title="c4ei block chain status">C4EI status</a>
-            / <a href="https://exp.c4ei.net" target="_blank" title="c4ei block chain explore">C4EI explore</a><br /><br />
-            C4EI는 교육 및 산업 분야에 혁신적인 기술을 제공하기 위해 설계된 블록체인 기반의 암호화폐입니다. 이 프로젝트는 다음과 같은 주요 목표를 가지고 있습니다<br /><br />
-            <b>○교육 분야 혁신:</b>
-            C4EI는 학교, 대학, 교육 기관에서 사용할 수 있는 블록체인 기반 솔루션을 제공합니다. 학생 성적, 학위 인증, 학교 관리, 학습 기록 추적 및 교육자원 관리를 향상시키는 데 도움을
-            줍니다.<br />
-            <b>○산업 분야 혁신:</b>
-            제조, 공급망, 물류 및 다양한 산업 분야에서 블록체인을 활용하여 효율성을 향상시키고 안정성을 보장합니다. 스마트 계약을 통해 계약 및 거래 프로세스를 자동화하고 신뢰성 있는 거래를
-            지원합니다.<br />
-            <b>○안전 및 보안:</b>
-            C4EI는 블록체인 기술의 핵심 보안 기능을 통해 데이터 무결성을 유지하고 거래의 투명성을 보장합니다. 사용자들은 안전하게 거래를 할 수 있으며 데이터 위변조를 방지합니다.<br />
-            <b>○사용자 친화적:</b>
-            C4EI 토큰은 사용자들에게 쉽게 액세스할 수 있도록 설계되었으며 모바일 앱 또는 웹 플랫폼을 통해 손쉽게 관리할 수 있습니다.<br />
-            <br />
-            <a href="how2meta.html" target="_blank">How can I add metamask C4EI ?</a><br />
-            <a href="javascript:jsfn_openmetaPop();">메타마스크에c4ei추가(Add c4ei to metamask)</a>
             
             <br /><hr/><br />
             ○ C4EI로 아래와 같은 프로젝트를 진행 혹은 완료 하였습니다.
@@ -557,40 +699,53 @@
             <br />
             <a href="https://dex.c4ei.net" target="_blank">C4EI DEX</a> <a href="https://docs.google.com/document/d/15KtmcTW50roeYVfKlhGI64D6Uu81BxQYnt421xpNhoo/edit?usp=sharing" target="_blank">(DEX 설명서)</a> 
              -->
-            <br /><hr/><br />
-            <img src="https://i.ibb.co/5hz8mn3/cardC4EI.png" alt="cardC4EI" border="0"><br />
-            <a href="https://play.google.com/store/apps/details?id=net.c4ei.cardc4ei" target="_blank">cardC4EI - 카드배틀(안드로이드)</a> (버전1.09 2023-11-23)
-            | <a href="https://drive.google.com/file/d/1SPvsfKEYX0qAdV6OD9EoykqexibaorLs/view?usp=sharing" target="_blank">윈도우-c4exCrad_V1.09.exe</a>
-            | <a href="/cardc4ei.html" target="_blank">설명(DOC)</a> | <a
-                href="https://docs.google.com/document/d/1Wrn3_9TbnvIkRW_8OaCHTko1Obw4fEdtgKvjKJIdTeY/edit?usp=sharing"
-                target="_blank">cardC4EI 결재방법</a>
+             
+             <section id="mobile-games" class="section" style="padding-top:49px;">
+                <h2 onclick="fn_showMobileGame();" style="cursor: pointer;">모바일 게임 (클릭시상세정보)</h2>
 
-            <br /><hr/><br /><img src="https://i.ibb.co/TgS4YFz/seaC4EI.png" alt="seaC4EI" border="0">
-            <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.sea" target="_blank">SEAC4EI - 같은 바다동물 맞추기(안드로이드)</a> (버전1 2023-11-13)
-            <br /><hr/><br /><img src="https://i.ibb.co/ZmRXSXJ/majak-C4-EI.png" alt="majak-C4-EI" border="0">
-            <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.majak" target="_blank">majakC4EI - 타일3개맞추기(안드로이드)</a> (버전2 2023-11-01)
-            <a href="/c4eimajak.html" target="_blank">설명(DOC)</a> |
-            
-            <br /><hr/><br /><img src="https://i.ibb.co/jTYy1XP/c4ei-FPS2.png" alt="c4ei-FPS2" border="0">
-            <br /><img src="https://i.ibb.co/zN7Tr7t/c4ei-FPS2-2.png" alt="c4ei-FPS2-2" border="0">
-            <br />C4EI FPS 다운로드 (버전2 2023-10-25)
-            <a href="https://drive.google.com/file/d/1nply44lix3NzD7GaI5tdD6wNzwmbhVe1/view?usp=sharing" target="_blank">윈도우Setup</a> |
-            <a href="https://play.google.com/store/apps/details?id=net.c4ei.fps2" target="_blank">구글플레이</a> |
-            <a href="https://drive.google.com/file/d/1ARxKGcNkSSjSit_ofgkJWqDmhIs-sEBt/view?usp=sharing" target="_blank">맥</a> |
-            <a href="/c4eifps.html" target="_blank">설명(DOC)</a> |
-            <a href="https://docs.google.com/document/d/1JrUuGEn-iB2UvI1MJUsiP6P7QLXjMfCn-YSWb3boqac/edit?usp=sharing" target="_blank">C4EI FPS 상품결제 방법</a>
-            
-            <br /><hr/><br /><img src="https://i.ibb.co/PTqRpgv/shoot-C4-EI.png" alt="shoot-C4-EI" border="0">
-            <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.shoot" target="_blank">shootC4EI(download)</a>
-            <a href="/shootC4EI.html" target="_blank">shootC4EI (doc)</a>(버전21 2023-06-13 C4EI 주소 저장 기능 추가)
-            <br /><hr/><br /><img src="https://i.ibb.co/xjV6NVT/Clash-C4-EI.png" alt="Clash-C4-EI" border="0">
-            <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.clashC4EI" target="_blank">clashC4EI</a>
-            (버전10 2023-06-23 광고3,2판째 마다 나오게)
-            <br /><hr/><br /><img src="https://i.ibb.co/JqyGkJW/bamC4EI.png" alt="bamC4EI" border="0">
-            <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.bam" target="_blank">bamC4EI</a>(버전8 2023-06-28 C4EI아이콘으로변경)
+                <a href="https://play.google.com/store/apps/details?id=net.c4ei.cardc4ei" target="_blank">cardC4EI - 카드배틀(안드로이드)</a> (버전1.09 2023-11-23)
+                <br /><a href="https://drive.google.com/file/d/1SPvsfKEYX0qAdV6OD9EoykqexibaorLs/view?usp=sharing" target="_blank">윈도우-c4exCrad_V1.09.exe</a>
+                <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.sea" target="_blank">SEAC4EI - 같은 바다동물 맞추기(안드로이드)</a>
+                <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.majak" target="_blank">majakC4EI - 타일3개맞추기(안드로이드)</a>
+                <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.fps2" target="_blank">C4EI FPS</a>
+                <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.shoot" target="_blank">shootC4EI(download)</a>
+                <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.clashC4EI" target="_blank">clashC4EI</a>
+                <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.bam" target="_blank">bamC4EI</a>
+                <br /><br />
+                <div id="ly_MobileGame_info" style="display: none;">
+                    <img src="https://i.ibb.co/5hz8mn3/cardC4EI.png" alt="cardC4EI" border="0"><br />
+                    <a href="https://play.google.com/store/apps/details?id=net.c4ei.cardc4ei" target="_blank">cardC4EI - 카드배틀(안드로이드)</a> (버전1.09 2023-11-23)
+                    | <a href="https://drive.google.com/file/d/1SPvsfKEYX0qAdV6OD9EoykqexibaorLs/view?usp=sharing" target="_blank">윈도우-c4exCrad_V1.09.exe</a>
+                    | <a href="/cardc4ei.html" target="_blank">설명(DOC)</a> | <a
+                        href="https://docs.google.com/document/d/1Wrn3_9TbnvIkRW_8OaCHTko1Obw4fEdtgKvjKJIdTeY/edit?usp=sharing"
+                        target="_blank">cardC4EI 결재방법</a>
 
-            <br /><hr/><br /><img src="https://i.ibb.co/yFZKD5n/gplay.png" alt="gplay" border="0">
-            <br /><a href="https://gplay.c4ei.net" target="_blank">구글플레이 환불서비스(Google play refund service)</a>
+                    <br /><hr/><br /><img src="https://i.ibb.co/TgS4YFz/seaC4EI.png" alt="seaC4EI" border="0">
+                    <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.sea" target="_blank">SEAC4EI - 같은 바다동물 맞추기(안드로이드)</a> (버전1 2023-11-13)
+                    <br /><hr/><br /><img src="https://i.ibb.co/ZmRXSXJ/majak-C4-EI.png" alt="majak-C4-EI" border="0">
+                    <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.majak" target="_blank">majakC4EI - 타일3개맞추기(안드로이드)</a> (버전2 2023-11-01)
+                    <a href="/c4eimajak.html" target="_blank">설명(DOC)</a> |
+                    
+                    <br /><hr/><br /><img src="https://i.ibb.co/jTYy1XP/c4ei-FPS2.png" alt="c4ei-FPS2" border="0">
+                    <br /><img src="https://i.ibb.co/zN7Tr7t/c4ei-FPS2-2.png" alt="c4ei-FPS2-2" border="0">
+                    <br />C4EI FPS 다운로드 (버전2 2023-10-25)
+                    <a href="https://drive.google.com/file/d/1nply44lix3NzD7GaI5tdD6wNzwmbhVe1/view?usp=sharing" target="_blank">윈도우Setup</a> |
+                    <a href="https://play.google.com/store/apps/details?id=net.c4ei.fps2" target="_blank">구글플레이</a> |
+                    <a href="https://drive.google.com/file/d/1ARxKGcNkSSjSit_ofgkJWqDmhIs-sEBt/view?usp=sharing" target="_blank">맥</a> |
+                    <a href="/c4eifps.html" target="_blank">설명(DOC)</a> |
+                    <a href="https://docs.google.com/document/d/1JrUuGEn-iB2UvI1MJUsiP6P7QLXjMfCn-YSWb3boqac/edit?usp=sharing" target="_blank">C4EI FPS 상품결제 방법</a>
+                    
+                    <br /><hr/><br /><img src="https://i.ibb.co/PTqRpgv/shoot-C4-EI.png" alt="shoot-C4-EI" border="0">
+                    <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.shoot" target="_blank">shootC4EI(download)</a>
+                    <a href="/shootC4EI.html" target="_blank">shootC4EI (doc)</a>(버전21 2023-06-13 C4EI 주소 저장 기능 추가)
+                    <br /><hr/><br /><img src="https://i.ibb.co/xjV6NVT/Clash-C4-EI.png" alt="Clash-C4-EI" border="0">
+                    <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.clashC4EI" target="_blank">clashC4EI</a>
+                    (버전10 2023-06-23 광고3,2판째 마다 나오게)
+                    <br /><hr/><br /><img src="https://i.ibb.co/JqyGkJW/bamC4EI.png" alt="bamC4EI" border="0">
+                    <br /><a href="https://play.google.com/store/apps/details?id=net.c4ei.bam" target="_blank">bamC4EI</a>(버전8 2023-06-28 C4EI아이콘으로변경)
+                </div>
+            </section>
+
         </div>
 
     <!-- END #content -->

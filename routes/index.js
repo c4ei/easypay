@@ -152,14 +152,14 @@ router.get('/', function(req, res, next) {
   if (req.cookies.user_idx == "" || req.cookies.user_idx === undefined ) {
     // res.sendFile(STATIC_PATH + '/ulogin.html')
     var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-    console.log("######### / 121  ######### "+getCurTimestamp()+" / "+user_ip+" : user_ip");
+    console.log("######### /home / 155  ######### "+getCurTimestamp()+" / "+user_ip+" : user_ip");
     // console.log(req.headers['x-forwarded-for'] +" - 1");
     // console.log(req.connection.remoteAddress +" - 2");
     // console.log(req.socket.remoteAddress +" - 3");
     // console.log(req.connection.socket.remoteAddress +" - 4");
     // res.sendFile(STATIC_PATH + '/main.html')
-    // res.redirect('/home');
-    res.redirect('https://ai.c4ex.net');
+    res.redirect('/home');
+    // res.redirect('https://ai.c4ex.net');
     return;
   }
   else {
