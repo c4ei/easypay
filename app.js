@@ -181,6 +181,7 @@ app.use(errorMiddleware);
 // 404 error
 app.all('*', (req, res, next) => {
   const err = new HttpException(404, 'Endpoint Not Found');
+  console.log("### 184 ### : "+req.originalUrl);
   next(err);
   return res.render('msgpage', { title: 'oops', msg : '500 error '+err+''});
 });
@@ -190,27 +191,28 @@ app.use(errorMiddleware);
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // 개발 환경에서만 에러 정보를 제공
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // 에러 페이지 렌더링
   // return res.status(err.status || 500);
-  var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-  console.log(user_ip +" "+getCurTimestamp()+": app 200- error");
-  try{
-    // return res.render('error',{'msg' :err});
+  var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
+  console.log(`${user_ip} ${getCurTimestamp()}: ${req.originalUrl} - Error: ${err.message}`);
+
+  try {
     if (err) {
       if (!res.headersSent) {
-          // res.status(500).send('Error occurred');
-          res.render('error',{'msg' :err});
+        // 에러 발생 시 500 상태 코드로 응답
+        // res.status(500).send('Error occurred');
+        res.render('error', { 'msg': err });
       }
       return;
     }
-  }catch(e){
+  } catch (e) {
     res.end();
   }
-  // res.render('msgpage', { title: 'oops', msg : '500 error '+err+''});
+  // res.render('msgpage', { title: 'oops', msg : '500 error ' + err });
 });
 
 // const port = Number(process.env.PORT || 3331);
