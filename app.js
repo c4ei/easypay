@@ -16,6 +16,9 @@ var md5 = require('md5');
 // Init express
 const app = express();
 //######################################################
+var compression = require('compression');
+app.use(compression());
+
 var ipfilter = require('express-ipfilter').IpFilter;
 var IpDeniedError = require('express-ipfilter').IpDeniedError;
 
@@ -181,9 +184,10 @@ app.use(errorMiddleware);
 // 404 error
 app.all('*', (req, res, next) => {
   const err = new HttpException(404, 'Endpoint Not Found');
-  console.log("### 184 ### : "+req.originalUrl);
+  var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
+  console.log("### 188 ### : "+req.originalUrl);
   next(err);
-  return res.render('msgpage', { title: 'oops', msg : '500 error '+err+''});
+  return res.render('msgpage', { title: `oops - ${user_ip}`, msg : '500 error '+err+''});
 });
 // Error middleware
 app.use(errorMiddleware);
@@ -205,7 +209,7 @@ app.use(function(err, req, res, next) {
       if (!res.headersSent) {
         // 에러 발생 시 500 상태 코드로 응답
         // res.status(500).send('Error occurred');
-        res.render('error', { 'msg': err });
+        res.render('error', { 'msg': user_ip+' - '+err });
       }
       return;
     }

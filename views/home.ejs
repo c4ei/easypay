@@ -396,7 +396,7 @@
                     <h3 onclick="fn_showCeik();" style="cursor: pointer;"><img src="https://i.ibb.co/N9h8ZTL/klayCeik.png" height="32" /> CEIK - c4ei.net 4 klay (클릭)</h3>
                     <p>TOKEN (KLAYTN네트워크)</p>
                     <div id="ly_CEIK_info" style="display: none;">
-                        <p class="text-white-50">
+                        <p class="text-black-50">
                             Happiness, satisfaction, pleasure, melancholy, love, joy, sadness, hate… 
                             <br/>Ironically, one of the reasons we live is economic independence or independence. 
                             <br/>You have to support someone, you have to eat more than $7 a meal,
@@ -460,82 +460,80 @@
                 </p>
             
 
-            <h4>AAH 구매하기 </h4>
-            <div id="lyExchange" onClick="fn_showExf();" style="cursor: pointer;" title="KRW입금 구매신청(클릭)">
-                <img src="/images/exchangeKRW_AAH.png" border="0" />
-            </div> 
-            
-            <div id="lyForm" style="display: none;">
-                <script>
-                    function fn_showExf() {
-                        let _lyF = document.getElementById('lyForm');
-                        if (_lyF.style.display == "block") {
-                            _lyF.style.display = 'none';
-                        } else {
-                            _lyF.style.display = 'block';
-                        }
-                    }
-                    function jsfn_deposit_krw() {
-                        let frm = document.dKRWForm;
-                        let _email = document.getElementById("txt_email").value;
-                        let _c4ei_addr = document.getElementById("txt_c4ei_addr").value;
-                        let _send_krw = document.getElementById("txt_send_krw").value;
-                        // let _reffer_addr = document.getElementById("txt_reffer_addr").value;
-                        if (_email.length < 10) { alert('email을 입력 하세요'); _email.focus(); return; }
-                        if (_c4ei_addr.length < 10) { alert('AAH 주소를  입력 하세요'); _c4ei_addr.focus(); return; }
-                        frm.action = "/krwin";
-                        frm.submit();
-                    }
-                    function fn_mkKrw() {
-                        let _txt_AAHamt = document.getElementById("txt_AAHamt").value;
-                        // let _send_krw       = document.getElementById("txt_send_krw").value;
-                        let _krw = parseFloat(_txt_AAHamt * 1500);
-                        document.getElementById("txt_send_krw").value = _krw.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-                    }
-                </script>
-                ◎AAH 원화 구매 시즌2 - [시즌1종료 판매금액:0원]<br />
-                <table style="font-size: 12px;">
-                    <form id="dKRWForm" name="dKRWForm" method="post">
-                    <tr>
-                        <td colspan="2"><b>원화(KRW) 입금으로 AAH 구매</b></td>
-                    </tr>
-                    <tr>
-                        <td>E-MAIL</td>
-                        <td><input type="text" id="txt_email" name="email" value="" style="width: 300px;" autocomplete="off"></td>
-                    </tr>
-                    <tr>
-                        <td>AAH주소</td>
-                        <td><input type="text" id="txt_c4ei_addr" name="c4ei_addr" value="" style="width: 300px;"></td>
-                    </tr>
-                    <tr>
-                        <td>AAH구매수량</td>
-                        <td><input type="text" id="txt_AAHamt" name="C4EIamt" value=""
-                                onKeyup="this.value=this.value.replace(/[^-\.0-9]/g,'');fn_mkKrw();"
-                                style="width: 300px;">
-                            개(EA)</td>
-                    </tr>
-                    <tr>
-                        <td>원화 입금액</td>
-                        <td><input type="text" id="txt_send_krw" name="send_krw" value="" readonly
-                                style="width: 300px;"> 원
-                            <br />1AAH=1500원(KRW)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>추천인 AAH 주소</td>
-                        <td><input type="text" id="txt_reffer_addr" name="reffer_addr" value="<%=refAAH_addr%>" style="width: 300px;" readonly></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="center" style="padding-top: 15px;">
-                            <input type="button" value="입금" id="btn_mining_start" onclick='jsfn_deposit_krw();'
-                                style="width:160px;height:30px;background-color: cornflowerblue;" />
-                        </td>
-                    </tr>
-                    </form>
-                </table>
-            </div>
-            
+                <h4>AAH 구매하기 </h4>
+                <div id="lyExchange" onClick="fn_showExf();" style="cursor: pointer;" title="KRW입금 구매신청(클릭)">
+                    <img src="/images/exchangeKRW_AAH.png" border="0" />
+                </div> 
                 
+                <div id="lyForm" style="display: block;">
+                    <script>
+                        function fn_showExf() {
+                            let _lyF = document.getElementById('lyForm');
+                            if (_lyF.style.display == "block") {
+                                _lyF.style.display = 'none';
+                            } else {
+                                _lyF.style.display = 'block';
+                            }
+                        }
+                        function jsfn_deposit_krw() {
+                            let frm = document.dKRWForm;
+                            let _email = document.getElementById("txt_email").value;
+                            let _c4ei_addr = document.getElementById("txt_c4ei_addr").value;
+                            let _send_krw = document.getElementById("txt_send_krw").value;
+                            // let _reffer_addr = document.getElementById("txt_reffer_addr").value;
+                            if (_email.length < 10) { alert('email을 입력 하세요'); _email.focus(); return; }
+                            if (_c4ei_addr.length < 10) { alert('AAH 주소를  입력 하세요'); _c4ei_addr.focus(); return; }
+                            frm.action = "/krwin";
+                            frm.submit();
+                        }
+                        function fn_mkKrw() {
+                            let _txt_AAHamt = document.getElementById("txt_AAHamt").value;
+                            // let _send_krw       = document.getElementById("txt_send_krw").value;
+                            let _krw = parseFloat(_txt_AAHamt * 1500);
+                            document.getElementById("txt_send_krw").value = _krw.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                        }
+                    </script>
+                    ◎AAH 원화 구매 시즌2 <br />
+                    <table style="font-size: 12px;">
+                        <form id="dKRWForm" name="dKRWForm" method="post">
+                        <tr>
+                            <td colspan="2"><b>원화(KRW) 입금으로 AAH 구매</b></td>
+                        </tr>
+                        <tr>
+                            <td>E-MAIL</td>
+                            <td><input type="text" id="txt_email" name="email" value="" style="width: 300px;" autocomplete="off"></td>
+                        </tr>
+                        <tr>
+                            <td>AAH주소</td>
+                            <td><input type="text" id="txt_c4ei_addr" name="c4ei_addr" value="" style="width: 300px;"></td>
+                        </tr>
+                        <tr>
+                            <td>AAH구매수량</td>
+                            <td><input type="text" id="txt_AAHamt" name="C4EIamt" value=""
+                                    onKeyup="this.value=this.value.replace(/[^-\.0-9]/g,'');fn_mkKrw();"
+                                    style="width: 300px;">
+                                개(EA)</td>
+                        </tr>
+                        <tr>
+                            <td>원화 입금액</td>
+                            <td><input type="text" id="txt_send_krw" name="send_krw" value="" readonly
+                                    style="width: 300px;"> 원
+                                <br />1AAH=1500원(KRW)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>추천인 AAH 주소</td>
+                            <td><input type="text" id="txt_reffer_addr" name="reffer_addr" value="<%=refAAH_addr%>" style="width: 300px;" readonly></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center" style="padding-top: 15px;">
+                                <input type="button" value="입금" id="btn_mining_start" onclick='jsfn_deposit_krw();'
+                                    style="width:160px;height:30px;background-color: cornflowerblue;" />
+                            </td>
+                        </tr>
+                        </form>
+                    </table>
+                </div>
             </section>
             <br /><hr/><br />
             <section id="mining" class="section" style="padding-top:49px;">
