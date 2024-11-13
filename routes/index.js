@@ -126,10 +126,10 @@ router.get('/home', function(req, res, next) {
   sql_sel1 = sql_sel1 +" 	,TRX_amt,TRX_bal,C4EI_amt,C4EI_bal ";
   sql_sel1 = sql_sel1 +" 	,USDT_amt,USDT_bal ";
   sql_sel1 = sql_sel1 +" FROM c4ex_amt_sum limit 1";
-  console.log("######### index.js 124 home  ######### "+getCurTimestamp()+" sql_sel1: "+sql_sel1);
+  // console.log("######### index.js 124 home  ######### "+getCurTimestamp()+" sql_sel1: "+sql_sel1);
   let result1 = sync_connection.query(sql_sel1);
   if(result1.length > 0){
-    console.log("######### index.js 127  ######### "+getCurTimestamp()+" result1: "+result1[0].idx);
+    // console.log("######### index.js 127  ######### "+getCurTimestamp()+" result1: "+result1[0].idx);
     res.render('home', { title: 'AAH HOME', "result":result1 , "refAAH_addr" :_refAAH_addr });
   }else{
     res.render('home', { title: 'AAH HOME', "result":'nodata', "refAAH_addr" :_refAAH_addr });
