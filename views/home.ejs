@@ -30,6 +30,38 @@
 
     <link href="asset2/css/vendor.min.css" rel="stylesheet">
     <link href="asset2/css/app.min.css" rel="stylesheet">
+    <style>
+        .network {
+            border: 1px solid black; /* 가는 검은색 테두리 */
+            border-radius: 8px;      /* 모서리를 둥글게 */
+            padding: 10px;           /* 내용과 테두리 사이 여백 */
+            margin-bottom: 10px;
+        }
+        .section {
+            border: 1px solid #bad7fd; /* 가는 검은색 테두리 */
+            border-radius: 8px;      /* 모서리를 둥글게 */
+            padding: 10px;           /* 내용과 테두리 사이 여백 */
+        }
+        .language-selector button {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .content {
+            display: none; /* 기본적으로 보이지 않게 설정 */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .content.active {
+            display: block; /* active 클래스가 있는 요소만 보이게 */
+        }
+    </style>
     <!-- ================== END core-css ================== -->
 
 </head>
@@ -193,52 +225,69 @@
                 <h2>♡ 네트워크 및 토큰</h2>
                 <br />
                 <div class="network">
-                    <h3 onclick="fn_showAah();" style="cursor: pointer;"><img src="https://i.ibb.co/VLXwBY3/AAH-256.png" width="32" height="32" /> AAH - All About Health (클릭)</h3>
+                    <h3 onclick="fn_showAah();" style="cursor: pointer;"><img src="https://i.ibb.co/VLXwBY3/AAH-256.png" width="32" height="32" /> AAH 블록체인 네트워크 - All About Health (클릭)</h3>
+                    <div id="ly_AAH_info_use">
+                    AAH 코인의 사용처 <br/><br/>
+
+                    AAH 건강에 관한 모든것을 블록체인과 함께 하려는 의지를 담은 네트워크 입니다.<br/>
+                    AAH 코인은 <a href="https://shoppingbank.store" target="_blank">쇼핑뱅크</a> 에서 상품 구매가 가능하며 실제 1 AAH 당 1500원의 가치로 계산 됩니다.<br/>
+                    google play <a href="https://play.google.com/store/apps/details?id=net.c4ei.fps2" target="_blank">c4ei FPS2</a> 에서도 AAH 사용 가능합니다.<br/>
+                    AAH 는 네트워크의 검증자 네트워크의 지위를 추가(Node 추가) 하려면 333,333개의 AAH가 필요합니다. (노드 추가시 1노드당 하루 10개의 AAH 분배 받습니다.)<br/>
+                    향후 계획은 변경 될수있습니다 만 검증자 네트워크는 현재 10개 까지로 제한 합니다.<br/>
+                    AAH 네트워크의 좀더 자세한 정보는 <a href="javascript:fn_showAah();">클릭</a>해 주세요<br/>
+                    </div>
                     <p>COIN (All About Healthy 네트워크)</p>
                     <div id="ly_AAH_info" style="display: none;">
-                        <h4>What is AllAboutHealth Coin?</h4>
-                        AllAboutHealth Coin is a MainNet cryptocurrency that operates on a blockchain with a block creation time of just 5 seconds. 210,000,000 is the maximum issuance quantity for the stable and secure digital asset, AAH Coin. The chain ID for AAH is 21133, making it easily identifiable and accessible to various blockchain explorers.
-
-                        <h4>Key Features of AllAboutHealth Coin</h4>
-                        One of the key features of AAH Coin is its focus on security and efficiency and by integrating AAH with existing platforms like C4EI, users can benefit from economic and security synergies. AAH also offers a range of applications and services, including an AAH Wallet for Android, where users can securely store and manage their AAH coins.
-
-                        <h4>Play To Earn and Gaming Integration for AllAboutHealth</h4>
-                        AAH Coin is not just about transactions; it’s also about creating value and engagement for users. The ecosystem includes Android games where users can exchange AAH for in-game currency and even mine AAH every 8 hours. Games like cardAAH, SEAAAH, and majakAAH offer exciting gameplay and rewards, creating a unique gaming experience for users.
-
-                        <h4>Next-Generation Smart Contracts</h4>
-                        At the heart of AAH Coin is its next-generation smart contract platform. Built on a blockchain with a built-in Turing-complete programming language, AAH allows developers to create complex decentralized applications with ease. Whether it’s creating custom currencies, financial instruments, or smart property, AAH’s smart contracts offer unparalleled flexibility and security.
-
-                        <h4>Token Systems and Financial Applications</h4>
-                        AAH Coin also supports on-blockchain token systems, enabling a wide range of applications, including sub-currencies, company stocks, and secure coupons. Implementing token systems on AAH is straightforward, thanks to its robust and secure infrastructure.
-
-                        <h4>Blockchain and Mining</h4>
-                        AAH’s blockchain architecture is similar to Bitcoin’s but with some key differences. Blocks contain a copy of both the transaction list and the most recent state, ensuring efficiency and security. The block validation algorithm in AAH prevents fraud and ensures the integrity of the blockchain.
-
-                        <h4>The Future of AAH Coin</h4>
-                        The project, AAH, is committed to creating a thriving ecosystem for decentralized applications despite currently suspending its Play To Earn implementation. Additionally, AAH Coin, with its focus on security, efficiency, and innovation, is poised to revolutionize the world of decentralized finance and applications.
-
-                        <h4>Conclusion</h4>
-                        Additionally, All About Health (AAH) Coin is more than just a cryptocurrency, it’s a platform for innovation and creativity. Furthermore, a major player in the world of decentralized applications, AAH Coin, boasts an advanced smart contract platform, an integrated gaming ecosystem, and a strong focus on security. Whether you’re a developer looking to create the next big thing or a gamer looking for new challenges, AAH Coin has something for everyone.
-                        <br /><br />
-                        <h4>AAH 코인은 무엇인가요?</h4>
-                        AllAboutHealth 코인은 블록 생성 시간이 단 5초인 블록체인에서 작동하는 메인넷 암호화폐입니다. 안정적이고 안전한 디지털 자산 AAH Coin의 최대 발행수량은 210,000,000개입니다. AAH의 체인 ID는 21133이므로 다양한 블록체인 탐색기에서 쉽게 식별하고 액세스할 수 있습니다.
-                        <h4>AllAboutHealth 코인의 주요 특징</h4>
-                        AAH 코인의 주요 특징 중 하나는 보안과 효율성에 중점을 두고 있다는 점이며, AAH를 C4EI와 같은 기존 플랫폼과 통합함으로써 사용자는 경제적, 보안적 시너지 효과를 누릴 수 있습니다. AAH는 또한 사용자가 AAH 코인을 안전하게 저장하고 관리할 수 있는 Android용 AAH 지갑을 포함하여 다양한 애플리케이션과 서비스를 제공합니다.
-                        <h4>AllAboutHealth를 위한 Play To Earn 및 게임 통합</h4>
-                        AAH 코인은 단지 거래에 관한 것이 아닙니다. 이는 또한 사용자를 위한 가치와 참여를 창출하는 것이기도 합니다. 생태계에는 사용자가 AAH를 게임 내 통화로 교환하고 8시간마다 AAH를 채굴할 수도 있는 Android 게임이 포함되어 있습니다. CardAAH, SEAAAH, majakAAH와 같은 게임은 흥미진진한 게임 플레이와 보상을 제공하여 사용자에게 독특한 게임 경험을 선사합니다.
-                        <h4>차세대 스마트 계약</h4>
-                        AAH 코인의 중심에는 차세대 스마트 계약 플랫폼이 있습니다. Turing-complete 프로그래밍 언어가 내장된 블록체인을 기반으로 구축된 AAH를 통해 개발자는 복잡한 분산형 애플리케이션을 쉽게 만들 수 있습니다. 맞춤형 통화, 금융 상품, 스마트 자산 등을 생성하는 등 AAH의 스마트 계약은 비교할 수 없는 유연성과 보안을 제공합니다.
-                        <h4>토큰 시스템 및 금융 애플리케이션</h4>
-                        AAH 코인은 또한 블록체인 토큰 시스템을 지원하여 하위 통화, 회사 주식 및 보안 쿠폰을 포함한 광범위한 응용 프로그램을 가능하게 합니다. 강력하고 안전한 인프라 덕분에 AAH에서 토큰 시스템을 구현하는 것은 간단합니다.
-                        <h4>블록체인과 채굴</h4>
-                        AAH의 블록체인 아키텍처는 비트코인과 유사하지만 몇 가지 중요한 차이점이 있습니다. 블록에는 거래 목록과 최신 상태의 사본이 모두 포함되어 효율성과 보안이 보장됩니다. AAH의 블록 검증 알고리즘은 사기를 방지하고 블록체인의 무결성을 보장합니다.
-                        <h4>AAH 코인의 미래</h4>
-                        AAH 프로젝트는 현재 Play To Earn 구현을 중단했음에도 불구하고 분산형 애플리케이션을 위한 번성하는 생태계를 만들기 위해 최선을 다하고 있습니다. 또한 보안, 효율성 및 혁신에 중점을 둔 AAH 코인은 분산형 금융 및 애플리케이션의 세계에 혁명을 일으킬 준비가 되어 있습니다.
-                        <h4>결론</h4>
-                        또한 AAH(All About Health) 코인은 단순한 암호화폐가 아니라 혁신과 창의성을 위한 플랫폼입니다. 또한 분산형 애플리케이션 세계의 주요 플레이어인 AAH 코인은 고급 스마트 계약 플랫폼, 통합 게임 생태계 및 보안에 대한 강력한 초점을 자랑합니다. 차세대 혁신을 추구하는 개발자이든 새로운 도전을 모색하는 게이머이든 AAH Coin은 모두를 위한 무언가를 제공합니다.
-
-                        <br />
-                        <hr />
+                        <div class="language-selector">
+                            <button onclick="fn_showContent('korean')">한국어</button>
+                            <button onclick="fn_showContent('english')">English</button>
+                        </div>
+                        
+                        <div id="korean" class="content active">
+                            <h4>AAH 코인은 무엇인가요?</h4>
+                            AllAboutHealth 코인은 블록 생성 시간이 단 5초인 블록체인에서 작동하는 메인넷 암호화폐입니다. 안정적이고 안전한 디지털 자산 AAH Coin의 최대 발행수량은 210,000,000개입니다. AAH의 체인 ID는 21133이므로 다양한 블록체인 탐색기에서 쉽게 식별하고 액세스할 수 있습니다.
+                            <h4>AllAboutHealth 코인의 주요 특징</h4>
+                            AAH 코인의 주요 특징 중 하나는 보안과 효율성에 중점을 두고 있다는 점이며, AAH를 C4EI와 같은 기존 플랫폼과 통합함으로써 사용자는 경제적, 보안적 시너지 효과를 누릴 수 있습니다. AAH는 또한 사용자가 AAH 코인을 안전하게 저장하고 관리할 수 있는 Android용 AAH 지갑을 포함하여 다양한 애플리케이션과 서비스를 제공합니다.
+                            <h4>AllAboutHealth를 위한 Play To Earn 및 게임 통합</h4>
+                            AAH 코인은 단지 거래에 관한 것이 아닙니다. 이는 또한 사용자를 위한 가치와 참여를 창출하는 것이기도 합니다. 생태계에는 사용자가 AAH를 게임 내 통화로 교환하고 8시간마다 AAH를 채굴할 수도 있는 Android 게임이 포함되어 있습니다. CardAAH, SEAAAH, majakAAH와 같은 게임은 흥미진진한 게임 플레이와 보상을 제공하여 사용자에게 독특한 게임 경험을 선사합니다.
+                            <h4>차세대 스마트 계약</h4>
+                            AAH 코인의 중심에는 차세대 스마트 계약 플랫폼이 있습니다. Turing-complete 프로그래밍 언어가 내장된 블록체인을 기반으로 구축된 AAH를 통해 개발자는 복잡한 분산형 애플리케이션을 쉽게 만들 수 있습니다. 맞춤형 통화, 금융 상품, 스마트 자산 등을 생성하는 등 AAH의 스마트 계약은 비교할 수 없는 유연성과 보안을 제공합니다.
+                            <h4>토큰 시스템 및 금융 애플리케이션</h4>
+                            AAH 코인은 또한 블록체인 토큰 시스템을 지원하여 하위 통화, 회사 주식 및 보안 쿠폰을 포함한 광범위한 응용 프로그램을 가능하게 합니다. 강력하고 안전한 인프라 덕분에 AAH에서 토큰 시스템을 구현하는 것은 간단합니다.
+                            <h4>블록체인과 채굴</h4>
+                            AAH의 블록체인 아키텍처는 비트코인과 유사하지만 몇 가지 중요한 차이점이 있습니다. 블록에는 거래 목록과 최신 상태의 사본이 모두 포함되어 효율성과 보안이 보장됩니다. AAH의 블록 검증 알고리즘은 사기를 방지하고 블록체인의 무결성을 보장합니다.
+                            <h4>AAH 코인의 미래</h4>
+                            AAH 프로젝트는 현재 Play To Earn 구현을 중단했음에도 불구하고 분산형 애플리케이션을 위한 번성하는 생태계를 만들기 위해 최선을 다하고 있습니다. 또한 보안, 효율성 및 혁신에 중점을 둔 AAH 코인은 분산형 금융 및 애플리케이션의 세계에 혁명을 일으킬 준비가 되어 있습니다.
+                            <h4>결론</h4>
+                            또한 AAH(All About Health) 코인은 단순한 암호화폐가 아니라 혁신과 창의성을 위한 플랫폼입니다. 또한 분산형 애플리케이션 세계의 주요 플레이어인 AAH 코인은 고급 스마트 계약 플랫폼, 통합 게임 생태계 및 보안에 대한 강력한 초점을 자랑합니다. 차세대 혁신을 추구하는 개발자이든 새로운 도전을 모색하는 게이머이든 AAH Coin은 모두를 위한 무언가를 제공합니다.
+                        </div>
+                        
+                        <div id="english" class="content">
+                            <h4>What is AllAboutHealth Coin?</h4>
+                            AllAboutHealth Coin is a MainNet cryptocurrency that operates on a blockchain with a block creation time of just 5 seconds. 210,000,000 is the maximum issuance quantity for the stable and secure digital asset, AAH Coin. The chain ID for AAH is 21133, making it easily identifiable and accessible to various blockchain explorers.
+    
+                            <h4>Key Features of AllAboutHealth Coin</h4>
+                            One of the key features of AAH Coin is its focus on security and efficiency and by integrating AAH with existing platforms like C4EI, users can benefit from economic and security synergies. AAH also offers a range of applications and services, including an AAH Wallet for Android, where users can securely store and manage their AAH coins.
+    
+                            <h4>Play To Earn and Gaming Integration for AllAboutHealth</h4>
+                            AAH Coin is not just about transactions; it’s also about creating value and engagement for users. The ecosystem includes Android games where users can exchange AAH for in-game currency and even mine AAH every 8 hours. Games like cardAAH, SEAAAH, and majakAAH offer exciting gameplay and rewards, creating a unique gaming experience for users.
+    
+                            <h4>Next-Generation Smart Contracts</h4>
+                            At the heart of AAH Coin is its next-generation smart contract platform. Built on a blockchain with a built-in Turing-complete programming language, AAH allows developers to create complex decentralized applications with ease. Whether it’s creating custom currencies, financial instruments, or smart property, AAH’s smart contracts offer unparalleled flexibility and security.
+    
+                            <h4>Token Systems and Financial Applications</h4>
+                            AAH Coin also supports on-blockchain token systems, enabling a wide range of applications, including sub-currencies, company stocks, and secure coupons. Implementing token systems on AAH is straightforward, thanks to its robust and secure infrastructure.
+    
+                            <h4>Blockchain and Mining</h4>
+                            AAH’s blockchain architecture is similar to Bitcoin’s but with some key differences. Blocks contain a copy of both the transaction list and the most recent state, ensuring efficiency and security. The block validation algorithm in AAH prevents fraud and ensures the integrity of the blockchain.
+    
+                            <h4>The Future of AAH Coin</h4>
+                            The project, AAH, is committed to creating a thriving ecosystem for decentralized applications despite currently suspending its Play To Earn implementation. Additionally, AAH Coin, with its focus on security, efficiency, and innovation, is poised to revolutionize the world of decentralized finance and applications.
+    
+                            <h4>Conclusion</h4>
+                            Additionally, All About Health (AAH) Coin is more than just a cryptocurrency, it’s a platform for innovation and creativity. Furthermore, a major player in the world of decentralized applications, AAH Coin, boasts an advanced smart contract platform, an integrated gaming ecosystem, and a strong focus on security. Whether you’re a developer looking to create the next big thing or a gamer looking for new challenges, AAH Coin has something for everyone.
+                        </div>
+                        
                         <h4>AAH 백서 (AAH whitepaper)</h4>
                         <a
                         href="https://docs.google.com/document/d/1ERmQOBm7NwanICvbAgQO35nIfzTqkf4cnWiiLN4laJM/edit?usp=sharing"
@@ -254,9 +303,10 @@
                         <br />
                     </div>
                 </div>
+                
                 <div class="network">
-                    <h3 onclick="fn_showC4ei();" style="cursor: pointer;"><img src="https://i.ibb.co/9ZgYSnP/c4ei.png" width="32" height="32" style="background-color: aliceblue;" /> C4EI - Chain 4 Education and Industry (클릭)</h3>
-                    <p>COIN (C4EI 네트워크)</p>
+                    <h3 onclick="fn_showC4ei();" style="cursor: pointer;"><img src="https://i.ibb.co/9ZgYSnP/c4ei.png" width="32" height="32" style="background-color: aliceblue;" /> C4EI 블록체인 네트워크 - Chain 4 Education and Industry (클릭)</h3>
+                    <p onclick="fn_showC4ei();" style="cursor: pointer;"> C4EI 블록체인 네트워크</p>
                     <div id="ly_C4EI_info" style="display: none;">
                         <h4>C4EI 프로젝트 소개</h4>- C4EI백서 C4EI whitepaper 
                         (<a href="https://docs.google.com/document/d/e/2PACX-1vQWg1Aj46NAaCHRoZFjykj5-g-2zgVhKa_s_eHZha2edKlxF3DZEeVblMCvt4pCqJKbsRnwNMMpWQGQ/pub"
@@ -284,6 +334,7 @@
                         <br />
                     </div>
                 </div>
+                
                 <div class="network">
                     <h3 onclick="fn_showCeik();" style="cursor: pointer;"><img src="https://i.ibb.co/N9h8ZTL/klayCeik.png" height="32" /> CEIK - c4ei.net 4 klay (클릭)</h3>
                     <p>TOKEN (KLAYTN네트워크)</p>
@@ -312,9 +363,13 @@
                     </div>
                     
                 </div>
+                
                 <div class="network">
                     <h3 onclick="fn_showSawon();" style="cursor: pointer;"><img src="https://i.ibb.co/wgQj38n/sawon-eth.png" width="32" height="32" style="background-color: aliceblue;" /> SAWON (클릭)</h3>
-                    <p>TOKEN (ETH, BSC, KLAY, POLYGON, C4EI 네트워크) - VINDAX 상장된 토큰은 SAWON(ETH) 임</p>
+                    <p> SAWON TOKEN 은 총발행량 21004 개만 발행된 극소량 토큰입니다. 소유 만으로 가치가 존재 하는 토큰입니다. <br/>
+                        최소 발행량으로 가치가 있는 코인이며 현재 VINDAX에 상장 중입니다.<br/>
+                        SAWON TOKEN 은 ETH, BSC, KLAY, POLYGON, C4EI 네트워크로 각각 발행 되었으며 현재 VINDAX 상장된 SAWON 토큰은 ETH 네크워크를 사용합니다.
+                    </p>
 
                     <div id="ly_SAWON_info" style="display: none;">
                         SAWON 요약 정리 
@@ -329,6 +384,7 @@
                         <br /><br />
                     </div>
                 </div>
+
             </section>
             <br /><hr style="margin-top: 1px;margin-bottom: 1px;"/><br />
             <section id="buy" class="section" style="padding-top:13px;">
@@ -652,6 +708,16 @@
         }
         function jsfn_open_metaAAHPop() {
             window.open("https://c4ei.net/metaAAH.html", "_blank", "width=500,height=500,top=100,left=100");
+        }
+
+        function fn_showContent(language) {
+            // 모든 콘텐츠 숨기기
+            document.querySelectorAll('.content').forEach((content) => {
+                content.classList.remove('active');
+            });
+
+            // 선택된 언어의 콘텐츠만 표시
+            document.getElementById(language).classList.add('active');
         }
     </script>
 
