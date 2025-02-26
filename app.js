@@ -19,24 +19,38 @@ const app = express();
 var compression = require('compression');
 app.use(compression());
 
-var ipfilter = require('express-ipfilter').IpFilter;
-var IpDeniedError = require('express-ipfilter').IpDeniedError;
+// ######## IP 주소 차단 start ######## yarn add express-ipfilter
+app.set('trust proxy', true); // trust proxy 설정은 최상단에 위치
+const { IpFilter, IpDeniedError } = require('express-ipfilter');
+// 차단, 허용할 특정 IP 목록  // var ips = [['192.168.0.10', '192.168.0.20'], '192.168.0.100']; // 범위 사용 예시
+const ips = ['80.66.83.210','103.194.185.58','194.38.23.18','103.212.98.106','45.148.10.80','196.251.73.83','122.136.188.132']; 
+app.use(IpFilter(ips, {
+  log: false,
+  detectIp: (req) => req.ip // trust proxy 설정 후 req.ip 사용 가능
+})); // IP 필터 적용
 
-// 차단, 허용할 특정 아이피 목록
-// var ips = ['80.66.83.210', '192.168.0.11'];
-var ips = ['80.66.83.210'];
-// var ips = [['192.168.0.10', '192.168.0.20'], '192.168.0.100']; // 범위 사용 예시
-// app.use(ipfilter(ips, {mode: 'allow'})); // ips 목록의 ip들만 허용
-app.use(ipfilter(ips)); // ips 목록의 ip들 차단
-app.use(function(err, req, res, _next) {
-    //console.log('Error handler', err);
-    res.send('Access Denied');                     // page view 'Access Denied'
-    if(err instanceof IpDeniedError){
-      res.status(401).end();
-    }else{
-      res.status(err.status || 500).end();
-    }
+// 에러 핸들러
+app.use((err, req, res, _next) => {
+  if (err instanceof IpDeniedError) {
+    res.status(401).send('Access Denied');
+  } else {
+    res.status(err.status || 500).end();
+  }
 });
+// ######## 1초에 3번 이상 같은 IP에서 오는 요청 차단 start ######## yarn add express-rate-limit
+const rateLimit = require('express-rate-limit');
+const limiter = rateLimit({
+  windowMs: 1000, // 1초
+  max: 3, // 최대 3회
+  message: 'Too many requests, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => req.ip // trust proxy 설정 후 req.ip 사용 가능
+});
+
+app.use(limiter); // app.use('/order_cnt', limiter); // 특정 라우트에 적용
+//    ######## 1초에 5번 이상 같은 IP에서 오는 요청 차단 end ########
+// ######## IP 주소 차단 end ######## 
 //######################################################
 
 // Init environment
@@ -60,34 +74,10 @@ app.use(session({  // 2
   store: new FileStore()
 }));
 
-// var bodyParser = require('body-parser');
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-// express를 설치했다면 body-parser가 필요 없다
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// app.use(
-//   bodyParser.raw({ type: 'application/x-www-form-urlencoded' }),
-//   function (req, res, next) {
-//   try {
-//   req.body = JSON.parse(req.body)
-//   } catch (err) {
-//   log.info('application/x-www-form-urlencoded JSON PARSE ERROR : ', err);
-//   req.body = require('qs').parse(req.body.toString());
-//   }
-//   next();
-//   }
-// );
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// res.send() => res.body에 값을 입력할 수 있습니다. res.send({username: "darren"}) 이면 res.body에 username이란 이름으로 값을 넣어줍니다.
-// res.status() => 상태코드
-// res.json() => json 형태로 응답함.
-// res.end() => 끝냄
-//###########################
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -110,82 +100,12 @@ app.use(`/api/v1/users`, userRouter);
 // Error middleware
 app.use(errorMiddleware);
 
-
-// // // post 로 넘어 오면 !!! 게임
-// app.use('/ulogin', cookieParser(process.env.COOKIE_SECRET));
-// app.post('/ulogin', function (req, res) {
-//   // var md5 = require('md5'); 2021-05-27 delete
-//   var param_username = req.body.username;
-//   var param_password = req.body.password;
-//   console.log('요청 파라미터 >> username : ' + param_username);
-
-//   // var conn = db_config.init();//2020-09-13
-//   // db_config.connect(conn);
-//   // var sql = "SELECT a.id,a.name,email,role,status,avatar,password ,CAST((SELECT balance FROM accounts WHERE user_id=a.id) as DECIMAL(20)) as POT FROM users a WHERE email='" + param_username + "' "; // and password ='" + md5(param_password) + "'
-//   // // console.log(sql);
-//   // conn.query(sql, function (err, rows, fields) {
-//   //   if (err) {
-//   //     console.log('query is not excuted. select fail...\n' + err);
-//   //     res.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
-//   //     res.end("<h1>error. query is not excuted </h1>");
-//   //     res.sendFile(STATIC_PATH + '/ulogin.html')
-//   //   }
-//   //   else {
-
-//   //     if (rows.length > 0) {
-//   //       var user_dbpwd = rows[0].password;
-//   //       console.log('index 168 #user_dbpwd : '+user_dbpwd+' // param_password : '+param_password); //
-//   //       var bcrypt = require('bcrypt');
-//   //       user_dbpwd = user_dbpwd.replace(/^\$2y(.+)$/i, '$2a$1');
-//   //       if(bcrypt.compareSync(param_password, user_dbpwd)){
-//   //         console.log('login ok');
-//   //       }else{
-//   //         console.log('login fail...\n' + err);
-//   //         res.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
-//   //         res.end("<h1>error. login fail password maybe wrong </h1>");
-//   //         res.sendFile(STATIC_PATH + '/ulogin.html')
-//   //         // res.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
-//   //         // res.end("<script>alert('password maybe wrong');document.location.href='/';</script>");
-//   //       }
-//         let user_idx  = rows[0].id;
-//         let user_ip   = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress;
-//         res.cookie('user_idx', user_idx); // 2020-01-27
-
-//         // login 성공
-//         if (req.cookies.pre_sid == "" || req.cookies.pre_sid === undefined) {
-//           console.log('################ index.js 253 빈폼 날리기  ################');
-//           res.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
-//           res.end("<html lang='en'><head><title>temp</title></head><body onload='document.frm.submit();'><form id='frm' name='frm' method='post' action='/'><input type='hidden' name='user_idx' id='user_idx' value='"+user_idx+"'><input type='hidden' name='loginok' id='loginok' value='loginok'></form></body></html>");
-//         } else {
-//           let sid = req.cookies.pre_sid;
-//           console.log('################ index.js 260  /sessionn 뒤 존재 cookies sid : '+sid+' ################');
-//           res.cookie('pre_sid', ""); // diff url 
-//           res.redirect('/session/' + sid); //최초 링크대로 전달 bug fix
-//         }
-
-//       // } else {
-//       //   res.writeHead("200", { "Content-Type": "text/html;charset=utf-8" });
-//       //   res.end("<script>alert('password maybe wrong');document.location.href='/';</script>");
-//       //   //   res.sendFile(STATIC_PATH + '/ulogin.html')
-//       // }
-//     // }
-//   // });
-// })
-
-// starting the server
-// app.listen(port, () => console.log(`🚀 Server running on port ${port}!`));
-//####################################
-
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
-
 // 404 error
 app.all('*', (req, res, next) => {
   const err = new HttpException(404, 'Endpoint Not Found');
   var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
-  console.log("### 188 ### : "+req.originalUrl);
+  console.log("### 93 ### : "+req.originalUrl +""+ getCurTimestamp() + " user_ip :"+user_ip);
+  // /admin
   next(err);
   return res.render('msgpage', { title: `oops - ${user_ip}`, msg : '500 error '+err+''});
 });
@@ -219,10 +139,6 @@ app.use(function(err, req, res, next) {
   // res.render('msgpage', { title: 'oops', msg : '500 error ' + err });
 });
 
-// const port = Number(process.env.PORT || 3331);
-// // starting the server
-// app.listen(port, () =>
-//     console.log(`🚀 Server running on port ${port}!`));
 function getCurTimestamp() {
   const d = new Date();
 
