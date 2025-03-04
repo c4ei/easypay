@@ -40,8 +40,8 @@ app.use((err, req, res, _next) => {
 // ######## 1초에 3번 이상 같은 IP에서 오는 요청 차단 start ######## yarn add express-rate-limit
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
-  windowMs: 1000, // 1초
-  max: 3, // 최대 3회
+  windowMs: 5000, // 1초
+  max: 10, // 최대 3회
   message: 'Too many requests, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
