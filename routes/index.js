@@ -113,6 +113,27 @@ router.get('/session2cookie', function(req, res, next) {
   res.redirect('/');
 });
 
+// 현재 시간을 YYYY-MM-DD HH:MM:SS 형식으로 반환하는 함수
+function getFormattedTime() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+// /time 엔드포인트 생성
+router.get('/time', (req, res) => {
+  var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
+  const serverTime = getFormattedTime();
+  console.log(`### /time ### ${serverTime} / ${user_ip}`);
+  res.send(serverTime);
+});
+
+
 router.get('/home', function(req, res, next) {
   let _refAAH_addr = ""
   if (req.cookies.refAAH == "" || req.cookies.refAAH === undefined ) {
