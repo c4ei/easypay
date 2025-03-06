@@ -100,6 +100,24 @@ app.use(`/api/v1/users`, userRouter);
 // Error middleware
 app.use(errorMiddleware);
 
+// 현재 시간을 YYYY-MM-DD HH:MM:SS 형식으로 반환하는 함수
+function getFormattedTime() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+// /time 엔드포인트 생성
+app.get('/time', (req, res) => {
+  const serverTime = getFormattedTime();
+  res.send(serverTime);
+});
+
 // 404 error
 app.all('*', (req, res, next) => {
   const err = new HttpException(404, 'Endpoint Not Found');
