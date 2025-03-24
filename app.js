@@ -23,7 +23,7 @@ app.use(compression());
 app.set('trust proxy', true); // trust proxy 설정은 최상단에 위치
 const { IpFilter, IpDeniedError } = require('express-ipfilter');
 // 차단, 허용할 특정 IP 목록  // var ips = [['192.168.0.10', '192.168.0.20'], '192.168.0.100']; // 범위 사용 예시
-const ips = ['80.66.83.210','103.194.185.58','194.38.23.18','103.212.98.106','45.148.10.80','196.251.73.83','122.136.188.132']; 
+const ips = ['80.66.83.210','103.194.185.58','194.38.23.18','103.212.98.106','45.148.10.80','196.251.73.83','122.136.188.132','170.39.218.12']; 
 app.use(IpFilter(ips, {
   log: false,
   detectIp: (req) => req.ip // trust proxy 설정 후 req.ip 사용 가능
@@ -37,11 +37,11 @@ app.use((err, req, res, _next) => {
     res.status(err.status || 500).end();
   }
 });
-// ######## 1초에 3번 이상 같은 IP에서 오는 요청 차단 start ######## yarn add express-rate-limit
+// ######## 5초에 20번 이상 같은 IP에서 오는 요청 차단 start ######## yarn add express-rate-limit
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
-  windowMs: 5000, // 1초
-  max: 10, // 최대 3회
+  windowMs: 5000, // 5초
+  max: 20, // 최대 20회
   message: 'Too many requests, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
