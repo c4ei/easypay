@@ -1,461 +1,546 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="ko" data-bs-theme="dark">
 
 <head>
     <meta charset="utf-8">
-    <title>c4ei | Experiment to combine cryptocurrency with the world</title>
+    <title>AAH | 건강한 미래를 위한 블록체인 네트워크</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
-        content="Chain for Education and Industry | 교육 및 산업 분야에서 블록체인을 활용하는 프로젝트 | AI with Crypto | CEIK | SAWON | MTC4EI |Experiment to combine cryptocurrency with the world" />
+        content="AAH (All About Health) 네트워크: 빠르고 혁신적인 건강 중심 블록체인 생태계. AAH 코인으로 건강 데이터와 자산을 관리하고 새로운 가치를 창출하세요." />
     <meta name="author" content="c4ei.net">
+    <link rel="icon" href="https://i.ibb.co/VLXwBY3/AAH-256.png" type="image/png"> <!-- Favicon 추가 -->
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-45YTT8KLRJ"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        
         gtag('config', 'G-45YTT8KLRJ');
     </script>
 
-    <!-- ================== BEGIN core-css ================== -->
-    <!-- favicon -->
-    <link rel="apple-touch-icon" href="assets/images/fav.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/fav.png" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    <link href="asset2/css/vendor.min.css" rel="stylesheet">
-    <link href="asset2/css/app.min.css" rel="stylesheet">
-    <!-- ================== END core-css ================== -->
+    <!-- Custom CSS (기존 스타일 유지 및 개선) -->
+    <style>
+        :root {
+            --bs-primary-rgb: 77, 189, 160; /* AAH 테마 색상 (민트 계열) */
+            --bs-primary: rgb(var(--bs-primary-rgb));
+            --bs-link-color: var(--bs-primary);
+            --bs-link-hover-color: rgb(60, 150, 130); /* 링크 호버 색상 조정 */
+        }
 
+        body {
+            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+            line-height: 1.7; /* 가독성을 위한 줄 간격 조정 */
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+        }
+
+        /* --- App Structure --- */
+        #app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #content {
+            flex: 1;
+            padding-top: 2rem;
+            padding-bottom: 4rem; /* 푸터와의 간격 확보 */
+        }
+
+        /* --- Header / Brand --- */
+        .brand {
+            background-color: var(--bs-tertiary-bg);
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid var(--bs-border-color-translucent);
+        }
+        .brand-logo {
+            text-decoration: none;
+            color: var(--bs-body-color);
+            transition: opacity 0.2s ease;
+        }
+        .brand-logo:hover {
+            opacity: 0.85;
+        }
+        .brand-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 1.5rem;
+            margin-bottom: 3rem;
+            background-color: var(--bs-secondary-bg);
+            border-radius: var(--bs-border-radius-lg);
+        }
+        .hero-section .display-5 {
+            font-weight: 700;
+            color: var(--bs-primary); /* 강조 색상 */
+            margin-bottom: 1rem;
+        }
+        .hero-section .lead {
+            font-size: 1.15rem;
+            color: var(--bs-secondary-color);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 2rem;
+        }
+        .hero-section .btn-lg {
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* --- Section Heading --- */
+        .section-heading {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-weight: 600;
+            color: var(--bs-emphasis-color);
+        }
+        .section-heading i {
+            color: var(--bs-primary);
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+            vertical-align: middle;
+        }
+
+        /* --- Card Styling --- */
+        .card {
+            border: none;
+            border-radius: var(--bs-card-border-radius);
+            margin-bottom: 2rem;
+            background-color: var(--bs-secondary-bg);
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        /* .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        } */
+        .card-header {
+            background-color: var(--bs-tertiary-bg);
+            border-bottom: 1px solid var(--bs-border-color-translucent);
+            font-weight: 600;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-header i { /* 카드 헤더 아이콘 */
+            margin-right: 0.75rem;
+            font-size: 1.2em;
+            color: var(--bs-primary);
+        }
+        .card-body {
+            padding: 1.75rem; /* 내부 패딩 증가 */
+        }
+        /* 중앙 정렬된 카드 본문 내 리스트 그룹 아이템 정렬 조정 */
+        .card-body.text-center .list-group-item {
+            justify-content: center; /* Flex 아이템 중앙 정렬 */
+            text-align: center; /* 내부 텍스트도 중앙 정렬 시도 */
+        }
+        /* 중앙 정렬 시 리스트 그룹 아이템 내부 요소 정렬 (필요시 추가 조정) */
+        .card-body.text-center .list-group-item strong,
+        .card-body.text-center .list-group-item a,
+        .card-body.text-center .list-group-item small {
+             /* 필요하다면 개별 요소 정렬 조정 */
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .card-title i {
+            margin-right: 0.5rem;
+            font-size: 1.1em;
+            color: var(--bs-primary);
+        }
+        .card-link {
+            margin-right: 10px;
+            text-decoration: none;
+            color: var(--bs-link-color);
+            font-weight: 500;
+            transition: color 0.2s ease, text-decoration-color 0.2s ease;
+        }
+        .card-link:hover {
+            color: var(--bs-link-hover-color);
+            text-decoration: underline;
+            text-decoration-color: var(--bs-link-hover-color);
+        }
+
+        /* --- Feature Section --- */
+        .feature-item {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--bs-primary);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .feature-item h5 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .feature-item p {
+            color: var(--bs-secondary-color);
+            font-size: 0.95em;
+        }
+
+        /* --- List Group Styling --- */
+        .list-group-flush .list-group-item {
+            background-color: transparent;
+            border-color: var(--bs-border-color-translucent);
+            padding: 0.85rem 0; /* 패딩 조정 */
+            display: flex;
+            align-items: center;
+            font-size: 0.95em;
+            /* 기본 왼쪽 정렬 유지, text-center 클래스가 있는 부모에서만 중앙 정렬되도록 함 */
+            justify-content: flex-start;
+            text-align: left;
+        }
+        .list-group-item i {
+            margin-right: 0.85rem;
+            width: 1.5em;
+            text-align: center;
+            font-size: 1.2em; /* 아이콘 크기 조정 */
+            color: var(--bs-primary); /* 아이콘 색상 통일 */
+        }
+        .list-group-item strong {
+            margin-right: 0.5rem;
+            color: var(--bs-emphasis-color);
+        }
+
+        /* --- Specific Elements --- */
+        .contract-address {
+            word-break: break-all;
+            font-family: monospace;
+            background-color: rgba(var(--bs-emphasis-color-rgb), 0.08);
+            padding: 0.4em 0.7em; /* 패딩 조정 */
+            border-radius: 5px;
+            font-size: 0.95em; /* 폰트 크기 조정 */
+            display: inline-block;
+            border: 1px solid var(--bs-border-color-translucent); /* 테두리 추가 */
+        }
+        .contract-address:hover {
+            background-color: rgba(var(--bs-emphasis-color-rgb), 0.12);
+        }
+
+        hr {
+            border-top-color: var(--bs-border-color-translucent);
+            margin-top: 2rem; /* 간격 조정 */
+            margin-bottom: 2rem;
+        }
+
+        /* --- Alert Styling --- */
+        .alert {
+            border-radius: var(--bs-alert-border-radius);
+            border-left: 4px solid var(--bs-alert-border-color);
+            padding: 1rem 1.25rem;
+            font-size: 0.95em;
+        }
+        /* 중앙 정렬된 카드 본문 내 alert 정렬 조정 */
+        .card-body.text-center .alert {
+            text-align: left; /* Alert 내용은 왼쪽 정렬 유지 */
+            display: inline-flex; /* 내용물 크기만큼만 차지하도록 */
+            max-width: 100%; /* 최대 너비 제한 */
+        }
+        .alert i {
+            font-size: 1.2em;
+            margin-right: 0.5rem;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            border-radius: var(--bs-btn-border-radius);
+            transition: all 0.2s ease-in-out;
+            font-weight: 500; /* 버튼 폰트 두께 */
+        }
+        .btn-primary {
+             background-color: var(--bs-primary);
+             border-color: var(--bs-primary);
+             color: #fff; /* 흰색 텍스트로 가독성 확보 */
+        }
+        .btn-primary:hover {
+             background-color: var(--bs-link-hover-color);
+             border-color: var(--bs-link-hover-color);
+        }
+        .btn-outline-secondary {
+            border-color: var(--bs-border-color);
+            color: var(--bs-secondary-color);
+        }
+        .btn-outline-secondary:hover {
+            border-color: var(--bs-secondary-color);
+            background-color: var(--bs-secondary-color);
+            color: var(--bs-light);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background-color: var(--bs-tertiary-bg);
+            color: var(--bs-secondary-color);
+            padding: 1.5rem 0;
+            font-size: 0.9em;
+            border-top: 1px solid var(--bs-border-color-translucent);
+        }
+        .footer a {
+            color: var(--bs-secondary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .footer a:hover {
+            color: var(--bs-primary);
+            text-decoration: underline;
+        }
+        .footer .mx-2 {
+            opacity: 0.6;
+        }
+
+        /* --- Scroll-to-top Button --- */
+        .btn-scroll-top { /* 기본 스타일은 app.min.js 또는 vendor.min.js에 있을 수 있음 */
+            background-color: var(--bs-primary);
+        }
+        .btn-scroll-top:hover {
+            background-color: var(--bs-link-hover-color);
+        }
+        .text-start {
+            text-align: center;
+            justify-content: center; /* Flex 아이템 중앙 정렬 */
+        }
+    </style>
 </head>
 
 <body>
-    <!-- BEGIN #app -->
-    <div id="app" class="app">
-        <!-- BEGIN #header -->
-        <div id="header" class="app-header">
-            <!-- BEGIN desktop-toggler -->
-            <div class="desktop-toggler">
-                <button type="button" class="menu-toggler" data-toggle-class="app-sidebar-collapsed"
-                    data-dismiss-class="app-sidebar-toggled" data-toggle-target=".app">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-            </div>
-            <!-- BEGIN desktop-toggler -->
+    <div id="app">
 
-            <!-- BEGIN mobile-toggler -->
-            <div class="mobile-toggler">
-                <button type="button" class="menu-toggler" data-toggle-class="app-sidebar-mobile-toggled"
-                    data-toggle-target=".app">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-            </div>
-            <!-- END mobile-toggler -->
+        <!-- <div class="brand">
+            <a href="/" class="brand-logo d-flex align-items-center">
+                <span class="brand-img">
+                    <img src="https://i.ibb.co/VLXwBY3/AAH-256.png" alt="AAH 로고" width="32" height="32" class="me-2" />
+                </span>
+                <span class="brand-text">AAH 네트워크</span>
+            </a>
+        </div> -->
 
-            <!-- BEGIN brand -->
-            <div class="brand">
-                <a href="/" class="brand-logo">
-                    <span class="brand-img" style="background-color: rgb(233, 255, 108);">
-                        <img src="/c4ei.png" border="0" style="margin-left: 15px;" />
-                        <!-- <span class="brand-img-text text-theme">H</span> -->
-                    </span>
-                    <span class="brand-text">C4EI.NET</span>
+        <div id="content" class="container">
+
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <img src="https://i.ibb.co/VLXwBY3/AAH-256.png" alt="AAH 로고" width="80" height="80" class="mb-3" />
+                <h1 class="display-5">AAH: 건강한 미래를 위한 블록체인</h1>
+                <p class="lead">
+                    AAH(All About Health) 네트워크는 건강 데이터와 서비스에 블록체인 기술을 접목하여 투명하고 효율적인 건강 생태계를 구축합니다.
+                    빠르고 안전한 AAH 네트워크에 참여하여 새로운 가치를 경험하세요.
+                </p>
+                <a href="javascript:jsfn_open_metaAAHPop();" class="btn btn-primary btn-lg">
+                    <i class="bi bi-wallet2 me-2"></i>메타마스크에 AAH 추가하기
                 </a>
             </div>
-            <!-- END brand -->
 
-            <!-- BEGIN menu -->
-            <div class="menu">
-                <div class="menu-item dropdown">
-                    <a href="javascript:alert('준비중(preparing)');" data-toggle-class="app-header-menu-search-toggled"
-                        data-toggle-target=".app" class="menu-link">
-                        <div class="menu-icon"><i class="bi bi-search nav-icon"></i></div>
-                    </a>
+            <!-- Features Section -->
+            <h2 class="section-heading mb-5"><i class="bi bi-gem"></i>AAH 네트워크 주요 특징</h2>
+            <div class="row mb-4">
+                <div class="col-md-6 col-lg-3 feature-item">
+                    <i class="bi bi-speedometer2 feature-icon"></i>
+                    <h5>초고속 처리</h5>
+                    <p>평균 5초의 빠른 블록 생성 시간으로 신속한 트랜잭션 처리를 경험하세요.</p>
                 </div>
-                <div class="menu-item dropdown dropdown-mobile-full">
-                    <a href="javascript:alert('준비중(preparing)');" data-bs-toggle="dropdown" data-bs-display="static"
-                        class="menu-link">
-                        <div class="menu-icon"><i class="bi bi-grid-3x3-gap nav-icon"></i></div>
-                    </a>
-                    <div class="dropdown-menu fade dropdown-menu-end w-300px text-center p-0 mt-1">
-                        <div class="row row-grid gx-0">
-                            <div class="col-4">
-                                <a href="javascript:alert('준비중(preparing)');"
-                                    class="dropdown-item text-decoration-none p-3 bg-none">
-                                    <div class="position-relative">
-                                        <i
-                                            class="bi bi-circle-fill position-absolute text-theme top-0 mt-n2 me-n2 fs-6px d-block text-center w-100"></i>
-                                        <i class="bi bi-envelope h2 opacity-5 d-block my-1"></i>
-                                    </div>
-                                    <div class="fw-500 fs-10px text-inverse">INBOX</div>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:alert('준비중(preparing)');" target="_blank"
-                                    class="dropdown-item text-decoration-none p-3 bg-none">
-                                    <div><i class="bi bi-hdd-network h2 opacity-5 d-block my-1"></i></div>
-                                    <div class="fw-500 fs-10px text-inverse">POS SYSTEM</div>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:alert('준비중(preparing)');"
-                                    class="dropdown-item text-decoration-none p-3 bg-none">
-                                    <div><i class="bi bi-calendar4 h2 opacity-5 d-block my-1"></i></div>
-                                    <div class="fw-500 fs-10px text-inverse">CALENDAR</div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row row-grid gx-0">
-                            <div class="col-4">
-                                <a href="javascript:alert('준비중(preparing)');"
-                                    class="dropdown-item text-decoration-none p-3 bg-none">
-                                    <div><i class="bi bi-terminal h2 opacity-5 d-block my-1"></i></div>
-                                    <div class="fw-500 fs-10px text-inverse">HELPER</div>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:alert('준비중(preparing)');"
-                                    class="dropdown-item text-decoration-none p-3 bg-none">
-                                    <div class="position-relative">
-                                        <i
-                                            class="bi bi-circle-fill position-absolute text-theme top-0 mt-n2 me-n2 fs-6px d-block text-center w-100"></i>
-                                        <i class="bi bi-sliders h2 opacity-5 d-block my-1"></i>
-                                    </div>
-                                    <div class="fw-500 fs-10px text-inverse">SETTINGS</div>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:alert('준비중(preparing)');"
-                                    class="dropdown-item text-decoration-none p-3 bg-none">
-                                    <div><i class="bi bi-collection-play h2 opacity-5 d-block my-1"></i></div>
-                                    <div class="fw-500 fs-10px text-inverse">WIDGETS</div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-md-6 col-lg-3 feature-item">
+                    <i class="bi bi-heart-pulse feature-icon"></i>
+                    <h5>건강 생태계 중심</h5>
+                    <p>건강 관련 서비스(쇼핑몰, SNS 등)와 연동하여 실용적인 블록체인 활용 사례를 만듭니다.</p>
                 </div>
-                <div class="menu-item dropdown dropdown-mobile-full">
-                    <a href="javascript:alert('준비중(preparing)');" data-bs-toggle="dropdown" data-bs-display="static"
-                        class="menu-link">
-                        <div class="menu-icon"><i class="bi bi-bell nav-icon"></i></div>
-                        <div class="menu-badge bg-theme"></div>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end mt-1 w-300px fs-11px pt-1">
-                        <h6 class="dropdown-header fs-10px mb-1">NOTIFICATIONS</h6>
-                        <div
-                            class="d-flex align-items-center py-10px dropdown-item text-wrap fs-6 bg-inverse bg-opacity-15 text-inverse text-opacity-50 h-100px">
-                            No record found
-                        </div>
-                        <hr class="my-0">
-                        <div class="py-10px mb-n2 text-center">
-                            <a href="javascript:alert('준비중(preparing)');" class="text-decoration-none fw-bold">SEE
-                                ALL</a>
-                        </div>
-                    </div>
+                <div class="col-md-6 col-lg-3 feature-item">
+                    <i class="bi bi-shield-check feature-icon"></i>
+                    <h5>AUSD 안정성</h5>
+                    <p>USDT 기반의 안정적인 AUSD 토큰을 통해 네트워크 내 가치 교환을 지원합니다.</p>
                 </div>
-                <div class="menu-item dropdown dropdown-mobile-full">
-                    <a href="javascript:alert('준비중(preparing)');" data-bs-toggle="dropdown" data-bs-display="static"
-                        class="menu-link">
-                        <div class="menu-img online">
-                            <div
-                                class="d-flex align-items-center justify-content-center w-100 h-100 bg-inverse bg-opacity-25 text-inverse text-opacity-50 rounded-circle overflow-hidden">
-                                <i class="bi bi-person-fill fs-32px mb-n3"></i>
-                            </div>
-                        </div>
-                        <div class="menu-text d-sm-block d-none w-10px">&nbsp;</div>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end me-lg-3 fs-11px mt-1">
-                        <a class="dropdown-item d-flex align-items-center"
-                            href="javascript:alert('준비중(preparing)');">PROFILE <i
-                                class="bi bi-person-circle ms-auto text-theme fs-16px my-n1"></i></a>
-                        <a class="dropdown-item d-flex align-items-center"
-                            href="javascript:alert('준비중(preparing)');">INBOX <i
-                                class="bi bi-envelope ms-auto text-theme fs-16px my-n1"></i></a>
-                        <a class="dropdown-item d-flex align-items-center"
-                            href="javascript:alert('준비중(preparing)');">CALENDAR <i
-                                class="bi bi-calendar ms-auto text-theme fs-16px my-n1"></i></a>
-                        <a class="dropdown-item d-flex align-items-center"
-                            href="javascript:alert('준비중(preparing)');">SETTINGS <i
-                                class="bi bi-gear ms-auto text-theme fs-16px my-n1"></i></a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item d-flex align-items-center"
-                            href="javascript:alert('준비중(preparing)');">LOGOUT <i
-                                class="bi bi-toggle-off ms-auto text-theme fs-16px my-n1"></i></a>
-                    </div>
+                <div class="col-md-6 col-lg-3 feature-item">
+                    <i class="bi bi-arrows-angle-expand feature-icon"></i>
+                    <h5>지속적 확장</h5>
+                    <p>다양한 파트너와의 협력을 통해 AAH 생태계를 지속적으로 확장해 나갑니다.</p>
                 </div>
             </div>
-            <!-- END menu -->
 
-            <!-- BEGIN menu-search -->
-            <form class="menu-search" method="POST" name="header_search_form">
-                <div class="menu-search-container">
-                    <div class="menu-search-icon"><i class="bi bi-search"></i></div>
-                    <div class="menu-search-input">
-                        <input type="text" class="form-control form-control-lg" placeholder="Search menu...">
-                    </div>
-                    <div class="menu-search-icon">
-                        <a href="javascript:alert('준비중(preparing)');" data-toggle-class="app-header-menu-search-toggled"
-                            data-toggle-target=".app"><i class="bi bi-x-lg"></i></a>
-                    </div>
-                </div>
-            </form>
-            <!-- END menu-search -->
-        </div>
-        <!-- END #header -->
+            <hr>
 
-        <!-- BEGIN #sidebar -->
-        <div id="sidebar" class="app-sidebar">
-            <!-- BEGIN scrollbar -->
-            <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
-                <!-- BEGIN menu -->
-                <div class="menu">
-                    <div class="menu-header">Navigation</div>
-                    <div class="menu-item active">
-                        <a href="/" class="menu-link">
-                            <span class="menu-icon"><i class="bi bi-house-door"></i></span>
-                            <span class="menu-text">Home</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- END menu -->
-            </div>
-            <!-- END scrollbar -->
-        </div>
-        <!-- END #sidebar -->
-
-        <!-- BEGIN mobile-sidebar-backdrop -->
-        <button class="app-sidebar-mobile-backdrop" data-toggle-target=".app"
-            data-toggle-class="app-sidebar-mobile-toggled"></button>
-        <!-- END mobile-sidebar-backdrop -->
-
-        <!-- BEGIN #content -->
-        <div id="content" class="app-content">
-            <ul class="breadcrumb">
-                <!-- <li class="breadcrumb-item"><a href="javascript:alert('준비중(preparing)');">BREADCRUMB</a></li> -->
-                <li class="breadcrumb-item active">HOME PAGE</li>
-            </ul>
-
-            <!-- <h1 class="page-header">
-				Starter Page <small>page header description goes here...</small>
-			</h1>
-			
-			<p>
-				Start build your page here
-			</p> -->
-
-            <h4>AAH 프로젝트 소개</h4>
-            <img src="https://i.ibb.co/VLXwBY3/AAH-256.png" width="32" height="32" />
-            2024 All About Health Network 가 생성되었습니다.<br/>
-            All About Health - AAH 네트워크의 block 생성은 5초 이며 
-            건강관련 사업을 blockchain에 담으려는 시도 입니다.<br/>
-            앞으로 쇼핑몰, SNS 등과의 연계 하여 AAH를 진행 해 보겠습니다.<br/>
-            AAH 는 <a href="https://c4ex.net" target="_blank">https://c4ex.net</a> 에서 거래 가능합니다.
-            <br/>- AAH 백서 AAH whitepaper (<a
-            href="https://docs.google.com/document/d/1ERmQOBm7NwanICvbAgQO35nIfzTqkf4cnWiiLN4laJM/edit?usp=sharing"
-            target="_blank" title="AAH white paper korean">한국어</a>) / 
-            
-            <!-- network: AAH<br/>
-            RPC URL: https://rpc.c4ex.net<br/>
-            chain ID: 21133<br/>
-            symbol: AAH<br/> -->
-            <a href="https://exp.c4ex.net" target="_blank">explorer</a> / 
-            <a href="https://stat.c4ex.net" target="_blank">status</a><br/>
-            <a href="javascript:jsfn_open_metaAAHPop();">메타마스크에 AAH추가(Add AAH to metamask)</a><br/>
-            <hr/>
-            <a href="https://c4ex.net" target="_blank">C4EX</a>에서의 미국달러(USDT) 주소는 아래와 같습니다. USDT 주소가 AAH 는 AusDDeFi (AUSD) 입니다.!!!!<br/>
-            AAH-AUSD contract address : <a href="https://exp.c4ex.net/address/0x3adBF8fa04c21517D8E50908305D0413D2A44300" target="_blank">0x3adBF8fa04c21517D8E50908305D0413D2A44300</a><br/>
-            C4EI-USDT contract address : <a href="https://exp.c4ei.net/contract/0xf10E02Ce41b28e52AD015eaE3A83e040D4Aee3A8" target="_blank">0xf10E02Ce41b28e52AD015eaE3A83e040D4Aee3A8</a><br/>
-            <!-- KLAY-AUSD contract address : <a href="https://klaytnscope.com/account/0xE022f24EDd0558F22ECbd19c8Ad140a5F59B9a67" target="_blank">0xE022f24EDd0558F22ECbd19c8Ad140a5F59B9a67</a><br/> -->
-            착오 송금에 주의해 주세요!
-
-            <hr/>
-            AAH 는 C4EI장점을 개선 보완한 새로운 프로젝트이며 핵심은 산업과의 연동입니다.<br/>
-            C4EI 는 무료 배로로 나간 수량이 99% 여서 실제 사업에 적용 하기 힘들었습니다.<br/>
-            따라서 사업 분야에 연동하기 위하여 1 AAH = 1 USDT 혹은 원화 1400원 으로 최소 금액을 보증합니다.<br/>
-            다만 <u>차후 코인 가격의 상승</u>으로 비싼 가격에 타 거래소에서 구매한 부분도 1AAH당1USDT 까지만 보증 됩니다.<br/>
-
-            <hr/>
+            <!-- Getting Started & AUSD Info Row -->
+            <div class="row g-4 justify-content-center">
+                <!-- Getting Started -->
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <i class="bi bi-rocket-takeoff-fill"></i>AAH 시작하기 (Getting Started)
+                        </div>
                         
-            <div id="lyExchange" onClick="fn_showExf();" style="cursor: pointer;">
-                <a href="https://docs.google.com/document/d/1yavY9OEqn0HUPwB_eUCxFQETealZdzQu1rj7yUnmV2M/edit?usp=sharing"
-                    target="_blank">AAH 구매방법(How to purchase AAH)</a>
-                | <a href="https://docs.google.com/document/d/1cVD4bqt3K9rIK2kO1SCSWljD0X0mJ-OceeK_F3DBnaU/edit?usp=sharing"
-                    target="_blank">쇼핑몰 사용방법(How to use SHOP)</a>
-                <br />
-                <img src="/images/exchangeKRW_AAH.png" border="0">
+                        <div class="card-body text-center">
+                            <p style="text-align: center;">간단한 단계로 AAH 네트워크를 시작할 수 있습니다.</p>
+                            
+                            <ol class="list-group list-group-flush list-group-numbered text-start d-inline-block"> 
+                                <li class="list-group-item px-0">
+                                    <strong>메타마스크에 네트워크 추가:</strong>
+                                    <a href="javascript:jsfn_open_metaAAHPop();" class="btn btn-sm btn-outline-primary ms-2">
+                                        <i class="bi bi-plus-circle"></i> 네트워크 추가
+                                    </a>
+                                </li>
+                                <li class="list-group-item px-0">
+                                    <strong>AAH 코인 구매:</strong>
+                                    <a href="https://fun.c4ex.net" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success ms-2">
+                                        <i class="bi bi-cart3"></i> 구매 페이지 이동
+                                    </a>
+                                    <small class="d-block text-muted mt-1">fun.c4ex.net에서 AAH를 구매할 수 있습니다.</small>
+                                </li>
+                                <li class="list-group-item px-0">
+                                    <strong>네트워크 탐색:</strong>
+                                    <a href="https://exp.c4ex.net" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-info ms-2">
+                                        <i class="bi bi-search"></i> 탐색기 보기
+                                    </a>
+                                    <small class="d-block text-muted mt-1">블록 및 트랜잭션 정보를 확인하세요.</small>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AUSD Info -->
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <i class="bi bi-coin"></i>AUSD (AusDDeFi on AAH) 안내
+                        </div>
+                        
+                        <div class="card-body text-center"  style="text-align: center;">
+                            <p>
+                                AAH 네트워크의 <strong class="text-info">AUSD (AusDDeFi)</strong>는 USDT에 대응하는 스테이블 토큰입니다. C4EX 거래소에서 USDT 입출금 시 사용됩니다.
+                            </p>
+                            <p class="mb-2">
+                                <i class="bi bi-journal-code me-1"></i> <strong>AAH-AUSD 컨트랙트 주소:</strong>
+                            </p>
+                            <p>
+                                <a href="https://exp.c4ex.net/address/0x3adBF8fa04c21517D8E50908305D0413D2A44300" target="_blank" rel="noopener noreferrer" class="contract-address" title="AAH 익스플로러에서 AUSD 컨트랙트 보기">
+                                    0x3adBF8fa04c21517D8E50908305D0413D2A44300
+                                </a>
+                            </p>
+                            
+                            <div class="alert alert-warning mt-3 d-inline-flex align-items-center text-start" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2"></i>
+                                <div>
+                                    <strong>주의:</strong> 이 주소는 AAH 네트워크 전용 AUSD 주소입니다. 다른 네트워크(예: C4EI)의 USDT 주소와 다르니, 입출금 시 반드시 네트워크와 주소를 확인하여 착오 송금에 각별히 유의해 주십시오!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="lyForm" style="display: none;">
-                <script>
-                    function fn_showExf() {
-                        let _lyF = document.getElementById('lyForm');
-                        if (_lyF.style.display == "block") {
-                            _lyF.style.display = 'none';
-                        } else {
-                            _lyF.style.display = 'block';
-                        }
-                    }
-                    function jsfn_deposit_krw() {
-                        let frm = document.dKRWForm;
-                        let _email = document.getElementById("txt_email").value;
-                        let _c4ei_addr = document.getElementById("txt_c4ei_addr").value;
-                        let _send_krw = document.getElementById("txt_send_krw").value;
-                        // let _reffer_addr = document.getElementById("txt_reffer_addr").value;
-                        if (_email.length < 10) { alert('email을 입력 하세요'); _email.focus(); return; }
-                        if (_c4ei_addr.length < 10) { alert('AAH 주소를  입력 하세요'); _c4ei_addr.focus(); return; }
-                        frm.action = "/krwin";
-                        frm.submit();
-                    }
-                    function fn_mkKrw() {
-                        let _txt_AAHamt = document.getElementById("txt_AAHamt").value;
-                        // let _send_krw       = document.getElementById("txt_send_krw").value;
-                        let _krw = parseFloat(_txt_AAHamt * 1400);
-                        document.getElementById("txt_send_krw").value = _krw.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-                    }
-                </script>
-                <table style="font-size: 12px;">
-                    <form id="dKRWForm" name="dKRWForm" method="post">
-                        <tr>
-                            <td colspan="2"><b>원화(KRW) 입금으로 AAH 구매</b></td>
-                        </tr>
-                        <tr>
-                            <td>E-MAIL</td>
-                            <td><input type="text" id="txt_email" name="email" value="" style="width: 300px;"></td>
-                        </tr>
-                        <tr>
-                            <td>AAH주소</td>
-                            <td><input type="text" id="txt_c4ei_addr" name="c4ei_addr" value="" style="width: 300px;">
-                            </td>
-                        </tr>
+            <hr>
+            <!-- Resources Section -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card mb-4 text-center">
+                        <div class="card-header">
+                            <i class="bi bi-info-circle-fill"></i>리소스 및 추가 정보 (Resources)
+                        </div>
 
-                        <tr>
-                            <td>AAH구매수량</td>
-                            <td><input type="text" id="txt_AAHamt" name="C4EIamt" value=""
-                                    onKeyup="this.value=this.value.replace(/[^-\.0-9]/g,'');fn_mkKrw();"
-                                    style="width: 300px;">
-                                개(EA)</td>
-                        </tr>
-                        <tr>
-                            <td>원화 입금액</td>
-                            <td><input type="text" id="txt_send_krw" name="send_krw" value="" readonly
-                                    style="width: 300px;"> 원
-                                <br />1AAH=1400원(KRW)
-                            </td>
-                        </tr>
-                        <!-- <tr>
-                            <td>추천인 AAH 주소</td>
-                            <td><input type="text" id="txt_reffer_addr" name="reffer_addr" value=""
-                                    style="width: 300px;"></td>
-                        </tr> -->
-                        <tr>
-                            <td colspan="2" align="center" style="padding-top: 15px;">
-                                <input type="button" value="입금" id="btn_mining_start" onclick='jsfn_deposit_krw();'
-                                    style="width:160px;height:30px;background-color: cornflowerblue;">
-                            </td>
-                        </tr>
-                    </form>
-                </table>
+                        <div class="card-body text-center">
+                            <p class="text-start">AAH 프로젝트에 대해 더 자세히 알아보세요.</p>
+                            <div class="list-group list-group-flush d-inline-block">
+                                <div class="list-group-item px-0">
+                                    <i class="bi bi-file-earmark-text-fill"></i> <strong>백서 (Whitepaper):</strong>
+                                    <a href="https://docs.google.com/document/d/1ERmQOBm7NwanICvbAgQO35nIfzTqkf4cnWiiLN4laJM/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="card-link" title="AAH 백서 (한국어)">한국어</a>
+                                    <a href="#" target="_blank" rel="noopener noreferrer" class="card-link disabled" title="AAH Whitepaper (English) - 준비 중">English (준비 중)</a>
+                                </div>
+                                <div class="list-group-item px-0">
+                                    <i class="bi bi-search"></i> <strong>블록 탐색기 (Explorer):</strong>
+                                    <a href="https://exp.c4ex.net" target="_blank" rel="noopener noreferrer" class="card-link">exp.c4ex.net</a>
+                                </div>
+                                <div class="list-group-item px-0">
+                                    <i class="bi bi-bar-chart-line-fill"></i> <strong>네트워크 상태 (Status):</strong>
+                                    <a href="https://stat.c4ex.net" target="_blank" rel="noopener noreferrer" class="card-link">stat.c4ex.net</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </br>
-        
-            </hr>
-            </br>
-            <h4>C4EI 프로젝트 소개</h4>- C4EI백서 C4EI whitepaper (<a
-            href="https://docs.google.com/document/d/e/2PACX-1vQWg1Aj46NAaCHRoZFjykj5-g-2zgVhKa_s_eHZha2edKlxF3DZEeVblMCvt4pCqJKbsRnwNMMpWQGQ/pub"
-            target="_blank" title="c4ei white paper korean">한국어</a>,
-            <a href="https://docs.google.com/document/d/1c7bNBiWRuTD4ydYRKU_UoDIgoIjaoNacPLl_sUj-nTk/edit?usp=sharing"
-            target="_blank" title="c4ei white paper English">Eng</a>) / 
-            <a href="https://stat.c4ei.net" target="_blank" title="c4ei block chain status">C4EI status</a>
-            / <a href="https://exp.c4ei.net" target="_blank" title="c4ei block chain explore">C4EI explore</a><br />
-            C4EI는 교육 및 산업 분야에 혁신적인 기술을 제공하기 위해 설계된 블록체인 기반의 암호화폐입니다. 이 프로젝트는 다음과 같은 주요 목표를 가지고 있습니다<br /><br />
-            <b>○교육 분야 혁신:</b>
-            C4EI는 학교, 대학, 교육 기관에서 사용할 수 있는 블록체인 기반 솔루션을 제공합니다. 학생 성적, 학위 인증, 학교 관리, 학습 기록 추적 및 교육자원 관리를 향상시키는 데 도움을
-            줍니다.<br />
-            <b>○산업 분야 혁신:</b>
-            제조, 공급망, 물류 및 다양한 산업 분야에서 블록체인을 활용하여 효율성을 향상시키고 안정성을 보장합니다. 스마트 계약을 통해 계약 및 거래 프로세스를 자동화하고 신뢰성 있는 거래를
-            지원합니다.<br />
-            <b>○안전 및 보안:</b>
-            C4EI는 블록체인 기술의 핵심 보안 기능을 통해 데이터 무결성을 유지하고 거래의 투명성을 보장합니다. 사용자들은 안전하게 거래를 할 수 있으며 데이터 위변조를 방지합니다.<br />
-            <b>○사용자 친화적:</b>
-            C4EI 토큰은 사용자들에게 쉽게 액세스할 수 있도록 설계되었으며 모바일 앱 또는 웹 플랫폼을 통해 손쉽게 관리할 수 있습니다.<br />
-            <br>
-            <a href="how2meta.html" target="_blank">How can I add metamask C4EI ?</a><br />
-            <!-- network: C4EI<br>
-            RPC URL: https://rpc.c4ei.net<br>
-            chain ID: 21004<br>
-            symbol: C4EI<br> 
-            explorer URL: https://exp.c4ei.net<br />-->
-            <a href="javascript:jsfn_openmetaPop();">메타마스크에c4ei추가(Add c4ei to metamask)</a>
-            <br /><br />
-            ○ C4EI로 아래와 같은 프로젝트를 진행 중입니다.
-            <br><a href="https://play.google.com/store/apps/details?id=net.c4ei.cardc4ei" target="_blank">cardC4EI -
-                카드배틀(안드로이드)</a> (버전1.09 2023-11-23)
-            | <a href="https://drive.google.com/file/d/1SPvsfKEYX0qAdV6OD9EoykqexibaorLs/view?usp=sharing"
-                target="_blank">윈도우-c4exCrad_V1.09.exe</a>
-            | <a href="/cardc4ei.html" target="_blank">설명(DOC)</a> | <a
-                href="https://docs.google.com/document/d/1Wrn3_9TbnvIkRW_8OaCHTko1Obw4fEdtgKvjKJIdTeY/edit?usp=sharing"
-                target="_blank">cardC4EI 결재방법</a>
-
-            <br><a href="https://play.google.com/store/apps/details?id=net.c4ei.sea" target="_blank">SEAC4EI - 같은
-                바다동물 맞추기(안드로이드)</a> (버전1 2023-11-13)
-            <br><a href="https://play.google.com/store/apps/details?id=net.c4ei.majak" target="_blank">majakC4EI -
-                타일3개맞추기(안드로이드)</a> (버전2 2023-11-01)
-            <a href="/c4eimajak.html" target="_blank">설명(DOC)</a> |
-            <br>NEW !!! C4EI FPS 다운로드 (버전2 2023-10-25)
-            <a href="https://drive.google.com/file/d/1nply44lix3NzD7GaI5tdD6wNzwmbhVe1/view?usp=sharing"
-                target="_blank">윈도우Setup</a> |
-            <a href="https://play.google.com/store/apps/details?id=net.c4ei.fps2" target="_blank">구글플레이</a> |
-            <a href="https://drive.google.com/file/d/1ARxKGcNkSSjSit_ofgkJWqDmhIs-sEBt/view?usp=sharing"
-                target="_blank">맥</a> |
-            <a href="/c4eifps.html" target="_blank">설명(DOC)</a> |
-            <a href="https://docs.google.com/document/d/1JrUuGEn-iB2UvI1MJUsiP6P7QLXjMfCn-YSWb3boqac/edit?usp=sharing"
-                target="_blank">C4EI FPS 상품결제 방법</a>
-            <br><a href="https://play.google.com/store/apps/details?id=net.c4ei.shoot" target="_blank">shootC4EI(download)</a>
-            -
-            <a href="/shootC4EI.html" target="_blank">shootC4EI (doc)</a>
-            (버전21 2023-06-13 C4EI 주소 저장 기능 추가)
-            <br><a href="https://play.google.com/store/apps/details?id=net.c4ei.clashC4EI" target="_blank">clashC4EI</a>
-            (버전10 2023-06-23 광고3,2판째 마다 나오게)
-            <br><a href="https://play.google.com/store/apps/details?id=net.c4ei.bam" target="_blank">bamC4EI</a>
-            (버전8 2023-06-28 C4EI아이콘으로변경)
-
-            <br/><br/>게임 및 텔레그램으로 8시간마다 C4EI 를 획득하세요
-            <a href="https://t.me/c4eiAirdrop" target="_blank">텔레그램마이닝</a>
         </div>
 
-    <!-- END #content -->
+        <a href="#" data-toggle="scroll-to-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
 
-
-    <!-- BEGIN btn-scroll-top -->
-    <a href="javascript:alert('준비중(preparing)');" data-toggle="scroll-to-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
-    <!-- END btn-scroll-top -->
-    </div>
-    <!-- END #app -->
-    <div class="copyright-area text-center mb-0">
-        <hr/>
-        <div style="padding-top: 20px;padding-bottom: 20px;">Copyright © 2021. All Rights Reserved by C4EI
-            <a class="gafi" href="https://gplay.c4ei.net" target="_blank">구글플레이환불</a>
-            / <a class="gafi" href="https://shop.c4ei.net" target="_blank">C4EI SHOP</a>
-        </div>
+        <footer class="footer mt-auto">
+            <div class="container text-center small" style="text-align: center;">
+                Copyright © 2021-2025. All Rights Reserved by C4EI.NET
+                <span class="mx-2">|</span>
+                <a href="https://shop.c4ei.net" target="_blank" rel="noopener noreferrer">C4EI SHOP</a>
+                <!-- 필요시 다른 링크 추가 -->
+            </div>
+        </footer>
     </div>
 
-    <!-- ================== BEGIN core-js ================== -->
-    <script src="asset2/js/vendor.min.js"></script>
-    <script src="asset2/js/app.min.js"></script>
+    <!-- Core JS (기존 스크립트 유지) -->
     <script>
-        function jsfn_openmetaPop() {
-            window.open("https://c4ei.net/metapop.html", "_blank", "width=500,height=500,top=100,left=100");
-        }
+        // AAH Metamask Add Function
         function jsfn_open_metaAAHPop() {
-            window.open("https://c4ei.net/metaAAH.html", "_blank", "width=500,height=500,top=100,left=100");
+            // 네트워크 정보 (실제 정보로 업데이트 필요)
+            const chainId = '21133';
+            const chainName = 'AAH Network';
+            const rpcUrls = ['https://rpc.c4ex.net']; // AAH RPC URL - 실제 URL로 변경하세요!
+            const nativeCurrency = {
+                name: 'AAH',
+                symbol: 'AAH', // AAH 코인 심볼
+                decimals: 18,
+            };
+            const blockExplorerUrls = ['https://exp.c4ex.net']; // AAH Explorer URL
+
+            if (typeof window.ethereum !== 'undefined') {
+                window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [{
+                        chainId: chainId,
+                        chainName: chainName,
+                        rpcUrls: rpcUrls,
+                        nativeCurrency: nativeCurrency,
+                        blockExplorerUrls: blockExplorerUrls,
+                    }],
+                })
+                .then((result) => {
+                    console.log('AAH Network added or switched:', result);
+                    // 성공 시 사용자에게 알림 (선택 사항)
+                    // alert('AAH 네트워크가 메타마스크에 추가되었습니다!');
+                 })
+                .catch((error) => {
+                    console.error('Failed to add AAH Network:', error);
+                    // 실패 시 사용자에게 알림 (선택 사항)
+                    if (error.code === 4001) {
+                        // User rejected request
+                        alert('메타마스크 네트워크 추가 요청이 거절되었습니다.');
+                    } else {
+                        alert('메타마스크에 AAH 네트워크를 추가하는 중 오류가 발생했습니다.');
+                    }
+                });
+            } else {
+                // Metamask가 설치되지 않았을 경우, 팝업 창 유지 또는 안내 메시지 표시
+                alert('메타마스크가 설치되어 있지 않습니다. 메타마스크 설치 후 다시 시도해주세요.');
+                // 기존 팝업 방식 유지 또는 제거
+                // window.open("https://c4ei.net/metaAAH.html", "_blank", "width=500,height=550,top=100,left=100,resizable=yes,scrollbars=yes");
+            }
         }
+
+        // Bootstrap Tooltip 초기화 (필요한 경우)
+        // var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        //   return new bootstrap.Tooltip(tooltipTriggerEl)
+        // })
     </script>
 
-    <!-- ================== END core-js ================== -->
-
-
 </body>
-
 </html>

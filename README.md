@@ -1,3 +1,5 @@
+pm2 start --name c4ei_3001 npm -- run start
+
 # easypay
 curl -O https://cozmo.github.io/jsQR/jsQR.js
 
